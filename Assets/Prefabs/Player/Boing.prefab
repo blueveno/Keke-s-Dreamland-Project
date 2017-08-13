@@ -31,7 +31,7 @@ GameObject:
   - component: {fileID: 11400000}
   - component: {fileID: 6100000}
   m_Layer: 0
-  m_Name: CharacterRobotBoy
+  m_Name: Boing
   m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
