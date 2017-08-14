@@ -1874,7 +1874,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &422774517
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2620,7 +2620,7 @@ MonoBehaviour:
     raw: 4
     column: 12
   showBorder: 1
-  showGrid: 1
+  showGrid: 0
 --- !u!4 &612782807
 Transform:
   m_ObjectHideFlags: 0
@@ -3021,6 +3021,11 @@ Prefab:
       propertyPath: displayTransition
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 114794971077534492, guid: 2865ad98a8db55b40ae76ec6b05f905e,
+        type: 2}
+      propertyPath: doorLinked
+      value: 
+      objectReference: {fileID: 1684411068}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 2865ad98a8db55b40ae76ec6b05f905e, type: 2}
   m_IsPrefabParent: 0
@@ -5255,7 +5260,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4780c3965d5ed6c43b0d0231c6808059, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  worldmapIndex: 0
+  worldMapIndex: 0
 --- !u!1 &1172404062
 GameObject:
   m_ObjectHideFlags: 0
@@ -6026,7 +6031,7 @@ MonoBehaviour:
     raw: 4
     column: 8
   showBorder: 1
-  showGrid: 1
+  showGrid: 0
 --- !u!4 &1348414730
 Transform:
   m_ObjectHideFlags: 0
@@ -7111,6 +7116,11 @@ Prefab:
       propertyPath: displayTransition
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 114794971077534492, guid: 2865ad98a8db55b40ae76ec6b05f905e,
+        type: 2}
+      propertyPath: doorLinked
+      value: 
+      objectReference: {fileID: 660094000}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 2865ad98a8db55b40ae76ec6b05f905e, type: 2}
   m_IsPrefabParent: 0

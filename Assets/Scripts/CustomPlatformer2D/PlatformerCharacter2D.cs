@@ -39,7 +39,8 @@ namespace KekeDreamLand
             Collider2D[] colliders = Physics2D.OverlapCircleAll(m_GroundCheck.position, k_GroundedRadius, m_WhatIsGround);
             for (int i = 0; i < colliders.Length; i++)
             {
-                if (colliders[i].gameObject != gameObject)
+                // Update by Bib' -> trigger collider are not ground.
+                if (colliders[i].gameObject != gameObject && !colliders[i].isTrigger)
                     m_Grounded = true;
             }
             m_Anim.SetBool("Ground", m_Grounded);

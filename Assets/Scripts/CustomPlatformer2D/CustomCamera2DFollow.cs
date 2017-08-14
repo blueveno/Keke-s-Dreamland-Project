@@ -21,8 +21,8 @@ namespace KekeDreamLand
         #region Camera follow limit
         // TODO : put limit on level manager.
         // Add by Bib' 13/08/17 - Level boundaries
-        private LevelEditor currentArea;
-        public LevelEditor CurrentArea
+        private AreaEditor currentArea;
+        public AreaEditor CurrentArea
         {
             get
             {
@@ -62,13 +62,14 @@ namespace KekeDreamLand
             transform.parent = null;
             
             // Recover current area.
-            currentArea = target.transform.parent.parent.parent.GetComponent<LevelEditor>();
+            currentArea = target.transform.parent.parent.parent.GetComponent<AreaEditor>();
 
             SetupCameraLimit();
             
             SetupCameraPosition();
         }
 
+        // Place the camera to the right position depending the new area.
         private void SetupCameraPosition()
         {
             Vector3 newPos = Vector3.zero;

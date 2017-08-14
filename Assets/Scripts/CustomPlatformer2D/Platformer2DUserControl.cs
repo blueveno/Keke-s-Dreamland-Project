@@ -13,7 +13,6 @@ namespace KekeDreamLand
         // Add by Bib'.
         private BoingManager boing;
 
-
         private void Awake()
         {
             m_Character = GetComponent<PlatformerCharacter2D>();
@@ -37,10 +36,9 @@ namespace KekeDreamLand
         }
         
 
-        // Add by Bib'.
+        // Handle interaction with interactable gameobject. Add by Bib'
         private void HandleInteractableGameobject()
         {
-            
             if (boing.InteractableGoInRange)
             {
                 if (CrossPlatformInputManager.GetButtonDown("Fire1"))

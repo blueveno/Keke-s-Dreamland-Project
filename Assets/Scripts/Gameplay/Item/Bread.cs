@@ -16,11 +16,12 @@ namespace KekeDreamLand
             // FEEDBACK -> sound, particles...
         }
 
+        // Trigger the end of the level.
         private void TriggerEnd()
         {
             Debug.LogWarning("END OF THE LEVEL");
 
-            GameManager.instance.RestartScene();
+            GameManager.instance.FinishLevel();
         }
     }
 }

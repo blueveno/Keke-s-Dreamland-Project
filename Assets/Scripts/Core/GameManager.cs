@@ -7,9 +7,13 @@ using UnityEngine.SceneManagement;
 
 namespace KekeDreamLand
 {
+    /// <summary>
+    /// Manage game. Don't destroy on load.
+    /// </summary>
     public class GameManager : MonoBehaviour
     {
-        public int worldmapIndex;
+        [Tooltip("build index of the world map scene.")]
+        public int worldMapIndex;
 
         #region GameManager Attributes
 
@@ -19,14 +23,20 @@ namespace KekeDreamLand
         // Boing gameobject and scripts...
         private GameObject boing;
 
+        // Ui
         private GameObject ui;
 
+        // Camera follow script.
         private CustomCamera2DFollow cameraFollow;
 
+        // Transition script.
         private TransitionManager transitionManager;
 
+        // internal transition attributes.
         private GameObject nextArea;
+        private Vector3 nextPosition;
 
+        // Game manager attributes.
         private bool isEndOfLevel;
         private bool isInternalTransition;
 
@@ -36,23 +46,35 @@ namespace KekeDreamLand
 
         private void Awake()
         {
-            if (instance == null)
-                instance = this;
-            else
-                Destroy(gameObject);
-
-            DontDestroyOnLoad(gameObject);
+            SingletonThis();
 
             SceneManager.sceneLoaded += NewSceneLoaded;
 
             SetupLevel();
         }
 
+        #endregion
+
+        #region Private methods
+
+        // Singleton this class.
+        private void SingletonThis()
+        {
+            if (instance == null)
+                instance = this;
+            else
+                Destroy(gameObject);
+
+            DontDestroyOnLoad(gameObject);
+        }
+
+        // Delegate method triggered when a new scene is loaded.
         private void NewSceneLoaded(Scene arg0, LoadSceneMode arg1)
         {
             SetupLevel();
         }
 
+        // Setup all components and variables of the gamemanager.
         private void SetupLevel()
         {
             // Gameobject or script.
@@ -71,22 +93,44 @@ namespace KekeDreamLand
 
         #endregion
 
-        #region Public methods
+        #region Game management
 
+        /// <summary>
+        /// Use this when you want to finish the current level.
+        /// </summary>
         public void FinishLevel()
         {
             isEndOfLevel = true;
+
             transitionManager.FadeIn();
         }
 
-        // Use this when player die or fall.
-        public void RestartScene()
+        /// <summary>
+        /// Use this when you want to fade in and reload the current scene.
+        /// </summary>
+        public void FadeInAndReload()
         {
-            if(transitionManager)
-                transitionManager.FadeIn();
+            transitionManager.FadeIn();
         }
 
-        // Event triggered when fadeInTransition finished.
+        /// <summary>
+        /// Trigger an internal transition (Switch to an another area in the same scene).
+        /// </summary>
+        /// <param name="newArea">New Area to reach.</param>
+        /// <param name="newPosition">New position of Boing in this area.</param>
+        public void TriggerInternalTransition(GameObject newArea, Vector3 newPosition)
+        {
+            isInternalTransition = true;
+
+            transitionManager.FadeIn();
+
+            nextArea = newArea;
+            nextPosition = newPosition;
+        }
+
+        /// <summary>
+        /// Event triggered when a fadeIn transition animation finished.
+        /// </summary>
         public void FadeInFinished()
         {
             // Case of an end of level.
@@ -97,9 +141,11 @@ namespace KekeDreamLand
             else if (isInternalTransition)
             {
                 isInternalTransition = false;
-                transitionManager.FadeOut();
 
-                cameraFollow.CurrentArea = nextArea.GetComponent<LevelEditor>();
+                boing.transform.position = nextPosition;
+                cameraFollow.CurrentArea = nextArea.GetComponent<AreaEditor>();
+
+                transitionManager.FadeOut();
 
                 nextArea = null;
             }
@@ -109,34 +155,29 @@ namespace KekeDreamLand
                 ResetCurrentScene();
         }
 
-        public void InternalTransition(GameObject newArea, Vector3 newPosition)
-        {
-            isInternalTransition = true;
-
-            transitionManager.FadeIn();
-
-            nextArea = newArea;
-
-            boing.transform.position = newPosition;
-        }
-
         #endregion
 
         #region Scene management
 
+        // Switch to the next scene.
         private void NextLevel()
         {
-            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex+1);
+            //SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex+1);
+
+            // TEMPORARY loop with the current loaded scene.
+            ResetCurrentScene();
         }
 
+        // Switch to the world map scene.
+        private void SwitchToWorldMap()
+        {
+            SceneManager.LoadScene(worldMapIndex);
+        }
+
+        // Reset current loaded scene.
         private void ResetCurrentScene()
         {
             SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
-        }
-
-        private void SwitchToWorldMap()
-        {
-            SceneManager.LoadScene(worldmapIndex);
         }
 
         #endregion
