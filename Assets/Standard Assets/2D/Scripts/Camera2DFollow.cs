@@ -16,36 +16,12 @@ namespace UnityStandardAssets._2D
         private Vector3 m_CurrentVelocity;
         private Vector3 m_LookAheadPos;
 
-        /*
-        // TODO : put limit on level manager.
-        // Add by Bib' 13/08/17 - Level boundaries
-        [Header("Level bounds :")]
-        public LevelEditor levelEditor;
-
-        private float cameraMinX;
-        private float cameraMaxX;
-        private float cameraMinY;
-        private float cameraMaxY;
-        */
-
         // Use this for initialization
         private void Start()
         {
             m_LastTargetPosition = target.position;
             m_OffsetZ = (transform.position - target.position).z;
             transform.parent = null;
-
-            /*
-            // Add by Bib'
-            float cameraSizeY = Camera.main.orthographicSize;
-            float cameraSizeX = cameraSizeY * Screen.width / Screen.height;
-
-            cameraMinX = 0 + cameraSizeX;
-            cameraMaxX = 50;
-
-            cameraMinY = 0 + cameraSizeY;
-            cameraMaxY = 50;
-            */
         }
 
 
@@ -68,11 +44,6 @@ namespace UnityStandardAssets._2D
 
             Vector3 aheadTargetPos = target.position + m_LookAheadPos + Vector3.forward*m_OffsetZ;
             Vector3 newPos = Vector3.SmoothDamp(transform.position, aheadTargetPos, ref m_CurrentVelocity, damping);
-            
-            /*
-            newPos.x = Mathf.Clamp(newPos.x, cameraMinX, cameraMaxX);
-            newPos.y = Mathf.Clamp(newPos.y, cameraMinY, cameraMaxY);
-            */
 
             transform.position = newPos;
 

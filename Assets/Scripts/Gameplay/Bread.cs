@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using UnityEngine.SceneManagement;
 
 namespace KekeDreamLand
@@ -6,27 +7,20 @@ namespace KekeDreamLand
     /// <summary>
     /// Monobehaviour of the bread. When the bread is take. Trigger end of the level.
     /// </summary>
-    public class Bread : MonoBehaviour
+    public class Bread : Item
     {
-
-        private void OnTriggerEnter2D(Collider2D collision)
+        protected override void DoActionWhenPick()
         {
-            if (collision.tag == "Player")
-            {
-                TriggerEnd();
+            TriggerEnd();
 
-                Destroy(gameObject);
-            }
+            // FEEDBACK -> sound, particles...
         }
 
         private void TriggerEnd()
         {
-            // TODO : GAMEMANAGER SWITCH TO NEXT SCENE -> COROUTINE...
-            // transition fade ? other ? ...
-            // FEEDBACK -> sound, particles..
+            Debug.LogWarning("END OF THE LEVEL");
 
-            // Temporary : Reset scene.
-            SceneManager.LoadScene(0);
+            GameManager.instance.RestartScene();
         }
     }
 }

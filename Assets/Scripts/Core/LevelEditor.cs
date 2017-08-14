@@ -18,7 +18,6 @@ namespace KekeDreamLand
     /// </summary>
     public class LevelEditor : MonoBehaviour
     {
-
         [Header("Killzone and borders :")]
 
         public GameObject[] borderWalls;
@@ -39,13 +38,13 @@ namespace KekeDreamLand
             {
                 levelSize = new Vector3(level.column, level.raw);
 
-                killzone.transform.position = new Vector3(levelSize.x / 2, -2.5f);
-                killzone.GetComponent<BoxCollider2D>().size = new Vector2(levelSize.x, 5.0f);
+                killzone.transform.position = new Vector3(levelSize.x / 2, -1.25f) + transform.position;
+                killzone.GetComponent<BoxCollider2D>().size = new Vector2(levelSize.x, 2.5f);
 
                 for (int i = 0; i < borderWalls.Length; i++)
                 {
-                    borderWalls[i].GetComponent<BoxCollider2D>().size = new Vector3(2.5f, levelSize.y + 2);
-                    borderWalls[i].transform.position = new Vector3(-1 + (levelSize.x + 2) * i, levelSize.y / 2 + 1);
+                    borderWalls[i].GetComponent<BoxCollider2D>().size = new Vector3(1.5f, levelSize.y + 2);
+                    borderWalls[i].transform.position = new Vector3(-0.5f + (levelSize.x + 1) * i, levelSize.y / 2 + 1) + transform.position;
                 }
 
                 if (showBorder)
@@ -59,31 +58,37 @@ namespace KekeDreamLand
         private void DisplayBorder()
         {
             Gizmos.color = Color.red;
-            Gizmos.DrawWireCube(levelSize / 2, levelSize);
+            Gizmos.DrawWireCube(transform.position + (levelSize / 2), levelSize);
         }
 
         private void DisplayGrid()
         {
             Gizmos.color = Color.white;
 
-            Vector3 startHLine = Vector3.zero;
-            Vector3 endHLine = new Vector3(levelSize.x, 0.0f);
+            Vector3 startHLine = transform.position;
+            Vector3 endHLine = new Vector3(levelSize.x, 0.0f) + transform.position;
 
-            for (float i = 0.5f; i < level.raw; i += 0.5f)
+            float i = 0.5f;
+            while(i < level.raw)
             {
-                startHLine.y = i;
-                endHLine.y = i;
+                startHLine.y += 0.5f;
+                endHLine.y += 0.5f;
                 Gizmos.DrawLine(startHLine, endHLine);
+
+                i += 0.5f;
             }
 
-            Vector3 startVLine = Vector3.zero;
-            Vector3 endVLine = new Vector3(0.0f, levelSize.y);
+            Vector3 startVLine = transform.position;
+            Vector3 endVLine = new Vector3(0.0f, levelSize.y) + transform.position;
 
-            for (float i = 0.5f; i < level.column; i += 0.5f)
+            i = 0.5f;
+            while (i < level.column)
             {
-                startVLine.x = i;
-                endVLine.x = i;
+                startVLine.x += 0.5f;
+                endVLine.x += 0.5f;
                 Gizmos.DrawLine(startVLine, endVLine);
+
+                i += 0.5f;
             }
         }
     }
