@@ -1,17 +1,14 @@
 fileFormatVersion: 2
-guid: 53f17e7fdb8ce63428645c35236591b8
-timeCreated: 1502296875
+guid: ce3750a78a3e1d24ca4e45f522416d7f
+timeCreated: 1502296910
 licenseType: Free
 TextureImporter:
   fileIDToRecycleName:
-    21300000: Pigeon_run_0
-    21300002: Pigeon_run_1
-    21300004: Pigeon_run_2
-    21300006: Pigeon_run_3
-    21300008: Pigeon_run_4
-    21300010: Pigeon_run_5
-    21300012: Pigeon_run_6
-    21300014: Pigeon_run_7
+    21300000: Pigeon_jump_0
+    21300002: Pigeon_jump_1
+    21300004: Pigeon_jump_2
+    21300006: Pigeon_jump_3
+    21300008: Pigeon_jump_4
   serializedVersion: 4
   mipmaps:
     mipMapMode: 0
@@ -38,7 +35,7 @@ TextureImporter:
   maxTextureSize: 2048
   textureSettings:
     serializedVersion: 2
-    filterMode: -1
+    filterMode: 0
     aniso: -1
     mipBias: -1
     wrapU: 1
@@ -53,7 +50,7 @@ TextureImporter:
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
-  spritePixelsToUnits: 100
+  spritePixelsToUnits: 32
   alphaUsage: 1
   alphaIsTransparency: 1
   spriteTessellationDetail: -1
@@ -79,11 +76,27 @@ TextureImporter:
     crunchedCompression: 0
     allowsAlphaSplitting: 0
     overridden: 0
+  - buildTarget: Android
+    maxTextureSize: 2048
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+  - buildTarget: WebGL
+    maxTextureSize: 2048
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
   spriteSheet:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Pigeon_run_0
+      name: Pigeon_jump_0
       rect:
         serializedVersion: 2
         x: 0
@@ -97,7 +110,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: Pigeon_run_1
+      name: Pigeon_jump_1
       rect:
         serializedVersion: 2
         x: 32
@@ -111,7 +124,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: Pigeon_run_2
+      name: Pigeon_jump_2
       rect:
         serializedVersion: 2
         x: 64
@@ -125,7 +138,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: Pigeon_run_3
+      name: Pigeon_jump_3
       rect:
         serializedVersion: 2
         x: 96
@@ -139,52 +152,10 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: Pigeon_run_4
+      name: Pigeon_jump_4
       rect:
         serializedVersion: 2
         x: 128
-        y: 0
-        width: 32
-        height: 32
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-    - serializedVersion: 2
-      name: Pigeon_run_5
-      rect:
-        serializedVersion: 2
-        x: 160
-        y: 0
-        width: 32
-        height: 32
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-    - serializedVersion: 2
-      name: Pigeon_run_6
-      rect:
-        serializedVersion: 2
-        x: 192
-        y: 0
-        width: 32
-        height: 32
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-    - serializedVersion: 2
-      name: Pigeon_run_7
-      rect:
-        serializedVersion: 2
-        x: 224
         y: 0
         width: 32
         height: 32
