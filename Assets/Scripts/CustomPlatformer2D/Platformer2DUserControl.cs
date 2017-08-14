@@ -33,6 +33,8 @@ namespace KekeDreamLand
 
             // Add by Bib'.
             HandleInteractableGameobject();
+
+            ToggleHUD();
         }
         
 
@@ -41,10 +43,18 @@ namespace KekeDreamLand
         {
             if (boing.InteractableGoInRange)
             {
-                if (CrossPlatformInputManager.GetButtonDown("Fire1"))
+                if (CrossPlatformInputManager.GetAxis("Vertical") > 0.1f)
                 {
                     boing.InteractableGoInRange.DoActionWhenUse();
                 }
+            }
+        }
+
+        private void ToggleHUD()
+        {
+            if (CrossPlatformInputManager.GetButtonDown("ToggleHUD"))
+            {
+                GameManager.instance.ToggleHUD();
             }
         }
 

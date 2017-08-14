@@ -10,7 +10,7 @@ namespace KekeDreamLand
     /// </summary>
     public class Door : InteractableGameobject
     {
-        #region Public Door attributes
+        #region Inspector attributes
 
         [Tooltip("Door in an another area linked to this door.")]
         public Door doorLinked;
@@ -18,7 +18,7 @@ namespace KekeDreamLand
         
         #endregion
         
-        #region Private Door attributes
+        #region Private attributes
 
         // Area which contains this door.
         public GameObject CurrentArea
@@ -31,12 +31,18 @@ namespace KekeDreamLand
 
         #endregion
 
+        #region Unity methods
+
         // Setup the door.
         private void Awake()
         {
             currentArea = transform.parent.parent.parent.parent.gameObject;
             canUseDoor = true;
         }
+
+        #endregion
+
+        #region Door methods
 
         /// <summary>
         /// Use door if possible.
@@ -67,7 +73,10 @@ namespace KekeDreamLand
             GameManager.instance.TriggerInternalTransition(doorLinked.currentArea, doorLinked.transform.position);
         }
 
-        // Anti spam. TODO in another way ? Stop time and input interaction during animation ?
+        // TODO in another way ? Stop time and input interaction during animation ?
+        /// <summary>
+        /// Anti spam.
+        /// </summary>
         public void PreventUseDoor()
         {
             canUseDoor = false;
@@ -75,14 +84,21 @@ namespace KekeDreamLand
             StartCoroutine(CoolDownDoor());
         }
 
-        // Run cooldown to permit to the player to reuse the door after time.
+        /// <summary>
+        /// Run cooldown to permit to the player to reuse the door after time.
+        /// </summary>
+        /// <returns></returns>
         public IEnumerator CoolDownDoor()
         {
             yield return new WaitForSeconds(2f);
 
             canUseDoor = true;
         }
-        
+
+        #endregion
+
+        #region LevelDesign helper
+
         // Display on editor only.
         private void OnDrawGizmos()
         {
@@ -104,5 +120,7 @@ namespace KekeDreamLand
             Gizmos.color = Color.red;
             Gizmos.DrawCube(doorLinked.transform.position, Vector3.one * 0.2f);
         }
+
+        #endregion
     }
 }

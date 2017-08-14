@@ -9,6 +9,14 @@ namespace KekeDreamLand
     /// </summary>
     public class BoingManager : MonoBehaviour
     {
+        #region Inspector attributes
+
+        public int maxLifePoints = 3;
+
+        #endregion
+
+        #region Private attributes
+
         /// <summary>
         /// Current interactable gameobject in range of Boing. null if nothing is in range.
         /// </summary>
@@ -19,9 +27,50 @@ namespace KekeDreamLand
         }
         private InteractableGameobject interactableGoInRange;
 
+        /// <summary>
+        /// LifePoints of Boing. Set value to damage it. Example LifePoints-- or -= 2.
+        /// </summary>
+        public int LifePoints
+        {
+            get { return lifePoints; }
+
+            set {
+                lifePoints = value;
+
+                if(lifePoints < 0)
+                    Die();
+
+                if (lifePoints > maxLifePoints)
+                    lifePoints = maxLifePoints;
+
+                // Update HUD.
+                GameManager.instance.UpdateLifePoints(lifePoints);
+            }
+        }
+        private int lifePoints; // max 3
+
+        #endregion
+
+        #region Unity methods
+
         private void Awake()
         {
             interactableGoInRange = null;
+
+            lifePoints = maxLifePoints;
         }
+
+        #endregion
+
+        #region Private methods
+
+        private void Die()
+        {
+            // TODO animation, sound, ...
+
+            GameManager.instance.FadeInAndReload();
+        }
+
+        #endregion
     }
 }

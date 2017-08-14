@@ -25,6 +25,7 @@ namespace KekeDreamLand
 
         // Ui
         private GameObject ui;
+        private HUDManager hudManager;
 
         // Camera follow script.
         private CustomCamera2DFollow cameraFollow;
@@ -83,8 +84,11 @@ namespace KekeDreamLand
             cameraFollow = Camera.main.GetComponent<CustomCamera2DFollow>();
 
             ui = GameObject.FindGameObjectWithTag("UI");
-            if(ui)
+            if (ui)
+            {
                 transitionManager = ui.transform.Find("TransitionPanel").GetComponent<TransitionManager>();
+                hudManager = ui.transform.Find("HUD").GetComponent<HUDManager>();
+            }
 
             // Other
             isEndOfLevel = false;
@@ -178,6 +182,26 @@ namespace KekeDreamLand
         private void ResetCurrentScene()
         {
             SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        }
+
+        #endregion
+
+        #region HUD management
+
+        /// <summary>
+        /// Request HUD to be toggled.
+        /// </summary>
+        public void ToggleHUD()
+        {
+            hudManager.ToggleHUD();
+        }
+
+        /// <summary>
+        /// Request lifepoints to be updated in hud.
+        /// </summary>
+        public void UpdateLifePoints(int lifePoints)
+        {
+            hudManager.UpdateLifePoints(lifePoints);
         }
 
         #endregion
