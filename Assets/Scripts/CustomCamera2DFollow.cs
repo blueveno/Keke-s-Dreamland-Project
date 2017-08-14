@@ -1,10 +1,11 @@
 using System;
 using UnityEngine;
 
-namespace UnityStandardAssets._2D
+namespace KekeDreamLand
 {
-    public class Camera2DFollow : MonoBehaviour
+    public class CustomCamera2DFollow : MonoBehaviour
     {
+        #region Initial attributes
         public Transform target;
         public float damping = 1;
         public float lookAheadFactor = 3;
@@ -15,18 +16,19 @@ namespace UnityStandardAssets._2D
         private Vector3 m_LastTargetPosition;
         private Vector3 m_CurrentVelocity;
         private Vector3 m_LookAheadPos;
+        #endregion
 
-        /*
+        #region Camera follow limit
         // TODO : put limit on level manager.
         // Add by Bib' 13/08/17 - Level boundaries
-        [Header("Level bounds :")]
         public LevelEditor levelEditor;
 
         private float cameraMinX;
         private float cameraMaxX;
         private float cameraMinY;
         private float cameraMaxY;
-        */
+
+        #endregion
 
         // Use this for initialization
         private void Start()
@@ -35,24 +37,26 @@ namespace UnityStandardAssets._2D
             m_OffsetZ = (transform.position - target.position).z;
             transform.parent = null;
 
-            /*
-            // Add by Bib'
+            SetupCameraLimit();
+        }
+
+        // Setup camera follow limit.
+        private void SetupCameraLimit()
+        {
             float cameraSizeY = Camera.main.orthographicSize;
             float cameraSizeX = cameraSizeY * Screen.width / Screen.height;
 
             cameraMinX = 0 + cameraSizeX;
-            cameraMaxX = 50;
+            cameraMaxX = levelEditor.level.column - cameraSizeX;
 
             cameraMinY = 0 + cameraSizeY;
-            cameraMaxY = 50;
-            */
+            cameraMaxY = levelEditor.level.raw - cameraSizeY;
         }
-
-
+        
         // Update is called once per frame
         private void Update()
         {
-            // only update lookahead pos if accelerating or changed direction
+            // Only update lookahead pos if accelerating or changed direction
             float xMoveDelta = (target.position - m_LastTargetPosition).x;
 
             bool updateLookAheadTarget = Mathf.Abs(xMoveDelta) > lookAheadMoveThreshold;
@@ -69,10 +73,9 @@ namespace UnityStandardAssets._2D
             Vector3 aheadTargetPos = target.position + m_LookAheadPos + Vector3.forward*m_OffsetZ;
             Vector3 newPos = Vector3.SmoothDamp(transform.position, aheadTargetPos, ref m_CurrentVelocity, damping);
             
-            /*
+            // Limit the camera.
             newPos.x = Mathf.Clamp(newPos.x, cameraMinX, cameraMaxX);
             newPos.y = Mathf.Clamp(newPos.y, cameraMinY, cameraMaxY);
-            */
 
             transform.position = newPos;
 
