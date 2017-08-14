@@ -21,9 +21,14 @@ namespace KekeDreamLand
 
         private GameObject ui;
 
+        private CustomCamera2DFollow cameraFollow;
+
         private TransitionManager transitionManager;
 
+        private GameObject nextArea;
+
         private bool isEndOfLevel;
+        private bool isInternalTransition;
 
         #endregion
 
@@ -53,12 +58,15 @@ namespace KekeDreamLand
             // Gameobject or script.
             boing = GameObject.FindGameObjectWithTag("Player");
 
+            cameraFollow = Camera.main.GetComponent<CustomCamera2DFollow>();
+
             ui = GameObject.FindGameObjectWithTag("UI");
             if(ui)
                 transitionManager = ui.transform.Find("TransitionPanel").GetComponent<TransitionManager>();
 
             // Other
             isEndOfLevel = false;
+            isInternalTransition = false;
         }
 
         #endregion
@@ -81,10 +89,33 @@ namespace KekeDreamLand
         // Event triggered when fadeInTransition finished.
         public void FadeInFinished()
         {
+            Debug.Log("end :" + isEndOfLevel + " / internal : " + isInternalTransition);
+
             if (isEndOfLevel)
                 NextLevel();
+            else if (isInternalTransition)
+            {
+                Debug.Log("FADE OUT !!");
+                isInternalTransition = false;
+                transitionManager.FadeOut();
+
+                cameraFollow.CurrentArea = nextArea.GetComponent<LevelEditor>();
+
+                nextArea = null;
+            }
             else
                 ResetCurrentScene();
+        }
+
+        public void InternalTransition(GameObject newArea, Vector3 newPosition)
+        {
+            isInternalTransition = true;
+
+            transitionManager.FadeIn();
+
+            nextArea = newArea;
+
+            boing.transform.position = newPosition;
         }
 
         #endregion

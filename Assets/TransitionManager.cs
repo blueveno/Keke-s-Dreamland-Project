@@ -22,7 +22,7 @@ namespace KekeDreamLand
 
         public void FadeOut()
         {
-            anim.SetTrigger("FadeIn");
+            anim.SetTrigger("FadeOut");
         }
 
         #endregion
