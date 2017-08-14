@@ -10,7 +10,6 @@ namespace KekeDreamLand
     [RequireComponent(typeof(BoxCollider2D))]
     public abstract class Item : MonoBehaviour
     {
-
         private void OnTriggerEnter2D(Collider2D collision)
         {
             if (collision.tag == "Player")

@@ -89,13 +89,13 @@ namespace KekeDreamLand
         // Event triggered when fadeInTransition finished.
         public void FadeInFinished()
         {
-            Debug.Log("end :" + isEndOfLevel + " / internal : " + isInternalTransition);
-
+            // Case of an end of level.
             if (isEndOfLevel)
                 NextLevel();
+
+            // Case of an internal transition.
             else if (isInternalTransition)
             {
-                Debug.Log("FADE OUT !!");
                 isInternalTransition = false;
                 transitionManager.FadeOut();
 
@@ -103,6 +103,8 @@ namespace KekeDreamLand
 
                 nextArea = null;
             }
+
+            // Case of a restart of the level.
             else
                 ResetCurrentScene();
         }

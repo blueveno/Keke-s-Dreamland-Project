@@ -2,7 +2,7 @@ using System;
 using UnityEngine;
 using UnityStandardAssets.CrossPlatformInput;
 
-namespace UnityStandardAssets._2D
+namespace KekeDreamLand
 {
     [RequireComponent(typeof (PlatformerCharacter2D))]
     public class Platformer2DUserControl : MonoBehaviour
@@ -10,10 +10,17 @@ namespace UnityStandardAssets._2D
         private PlatformerCharacter2D m_Character;
         private bool m_Jump;
 
+        // Add by Bib'.
+        private BoingManager boing;
+
 
         private void Awake()
         {
             m_Character = GetComponent<PlatformerCharacter2D>();
+
+
+            // Add by Bib'.
+            boing = GetComponent<BoingManager>();
         }
 
 
@@ -23,6 +30,23 @@ namespace UnityStandardAssets._2D
             {
                 // Read the jump input in Update so button presses aren't missed.
                 m_Jump = CrossPlatformInputManager.GetButtonDown("Jump");
+            }
+
+            // Add by Bib'.
+            HandleInteractableGameobject();
+        }
+        
+
+        // Add by Bib'.
+        private void HandleInteractableGameobject()
+        {
+            
+            if (boing.InteractableGoInRange)
+            {
+                if (CrossPlatformInputManager.GetButtonDown("Fire1"))
+                {
+                    boing.InteractableGoInRange.DoActionWhenUse();
+                }
             }
         }
 

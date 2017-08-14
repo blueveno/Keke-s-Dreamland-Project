@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-namespace UnityStandardAssets._2D
+namespace KekeDreamLand
 {
     public class PlatformerCharacter2D : MonoBehaviour
     {
