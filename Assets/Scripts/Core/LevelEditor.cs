@@ -13,7 +13,9 @@ public struct Level
 
 namespace KekeDreamLand
 {
-
+    /// <summary>
+    /// Level editor ... TODO comment / explain if necessary.
+    /// </summary>
     public class LevelEditor : MonoBehaviour
     {
 
