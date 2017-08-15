@@ -84,6 +84,7 @@ namespace KekeDreamLand
         private void DisplayBorder()
         {
             Gizmos.color = Color.red;
+
             Gizmos.DrawWireCube(transform.position + (levelSize / 2), levelSize);
         }
 
