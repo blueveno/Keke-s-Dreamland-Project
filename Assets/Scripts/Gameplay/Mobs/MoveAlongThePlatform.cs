@@ -69,7 +69,7 @@ namespace KekeDreamLand
 
             RaycastHit2D hit = Physics2D.Raycast(rayOrigin, Vector2.down, rayLength);
 
-            if (!hit || hit.collider && hit.collider.tag == "Wall")
+            if (!hit || hit.collider && hit.collider.tag == "OutOfBound")
             {
                 Flip();
             }
