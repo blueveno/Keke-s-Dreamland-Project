@@ -6,6 +6,7 @@ TagManager:
   tags:
   - UI
   - Area
+  - Wall
   layers:
   - Default
   - TransparentFX
@@ -15,8 +16,8 @@ TagManager:
   - UI
   - 
   - 
-  - 
-  - 
+  - AntiFall
+  - Characters
   - 
   - 
   - 

@@ -4,14 +4,22 @@ using UnityEngine;
 
 namespace KekeDreamLand
 {
+    // TODO life system or invincibility.
 
+    /// <summary>
+    /// Attach this to any enemy in the game. Inherit if the mob need a specialized behaviour.
+    /// </summary>
     public class Mob : MonoBehaviour {
 
+        #region Inspector Attributes
+
+        [Header("Mob configuration :")]
         public int damage = 1;
+        #endregion
 
-        // TODO life system or invincibility.
+        #region Unity methods
 
-        private void OnCollisionEnter2D(Collision2D collision)
+        private void OnTriggerEnter2D(Collider2D collision)
         {
             if (collision.gameObject.tag == "Player")
             {
@@ -19,9 +27,11 @@ namespace KekeDreamLand
             }
         }
 
+        #endregion
+
         private void DealDamageToPlayer(GameObject player)
         {
-            player.GetComponent<BoingManager>().LifePoints--;
+            player.GetComponent<BoingManager>().LifePoints -= damage;
         }
     }
 }

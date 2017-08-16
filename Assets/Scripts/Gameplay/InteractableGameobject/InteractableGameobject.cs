@@ -11,9 +11,7 @@ namespace KekeDreamLand
         {
             if (other.tag == "Player")
             {
-                // TODO display fedback "Press button".
-
-                other.GetComponent<BoingManager>().InteractableGoInRange = this;
+                EnterInRange(other.gameObject);
             }
         }
 
@@ -22,11 +20,22 @@ namespace KekeDreamLand
         {
             if (other.tag == "Player")
             {
-                // TODO display fedback "Press button".
-
-                if (other.GetComponent<BoingManager>().InteractableGoInRange != this)
-                    other.GetComponent<BoingManager>().InteractableGoInRange = this;
+                EnterInRange(other.gameObject);
             }
+        }
+
+        private void EnterInRange(GameObject player)
+        {
+            if (player.GetComponent<BoingManager>().InteractableGoInRange == this)
+                return;
+
+            else
+            {
+                player.GetComponent<BoingManager>().InteractableGoInRange = this;
+
+                // TODO display feedback "Press button".
+            }
+            
         }
 
         // Indicates to Boing that he is no longer in range of this interactable gameobject.
@@ -35,6 +44,8 @@ namespace KekeDreamLand
             if (other.tag == "Player")
             {
                 other.GetComponent<BoingManager>().InteractableGoInRange = null;
+
+                // TODO undisplay feedback "Press button".
             }
         }
 
