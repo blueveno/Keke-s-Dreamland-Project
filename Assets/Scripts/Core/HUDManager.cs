@@ -61,6 +61,8 @@ namespace KekeDreamLand
         public void UpdateLifePoints(int lifePoints)
         {
             lifePointsText.text = lifePoints.ToString();
+
+            // TODO Add animation or effect.
         }
 
         #endregion
