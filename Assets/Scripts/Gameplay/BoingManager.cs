@@ -13,6 +13,8 @@ namespace KekeDreamLand
 
         public int maxLifePoints = 3;
 
+        public float invulnerabilityDuration = 2.0f;
+
         #endregion
 
         #region Private attributes
@@ -37,14 +39,19 @@ namespace KekeDreamLand
             set {
                 lifePoints = value;
 
-                if(lifePoints < 0)
+                if(lifePoints <= 0)
+                {
+                    lifePoints = 0;
                     Die();
+                }
 
-                if (lifePoints > maxLifePoints)
+                else if (lifePoints > maxLifePoints)
                     lifePoints = maxLifePoints;
 
                 // Update HUD.
                 GameManager.instance.UpdateLifePoints(lifePoints);
+
+                // TODO temprorary invulnerability.
             }
         }
         private int lifePoints; // max 3

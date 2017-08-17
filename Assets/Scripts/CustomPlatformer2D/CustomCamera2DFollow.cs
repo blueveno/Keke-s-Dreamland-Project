@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 
 namespace KekeDreamLand
@@ -18,10 +17,9 @@ namespace KekeDreamLand
         private Vector3 m_LookAheadPos;
         #endregion
 
-        #region Camera follow limit
-        // TODO : put limit on level manager.
-        // Add by Bib' 13/08/17 - Level boundaries
-        private AreaEditor currentArea;
+        #region Camera follow limitation
+
+        // Current area where Boing is.
         public AreaEditor CurrentArea
         {
             get
@@ -38,7 +36,9 @@ namespace KekeDreamLand
                 SetupCameraPosition();
             }
         }
+        private AreaEditor currentArea;
 
+        // Camera limit X and Y.
         private float cameraMinX;
         private float cameraMaxX;
         private float cameraMinY;

@@ -20,6 +20,11 @@ namespace KekeDreamLand
         private Rigidbody2D m_Rigidbody2D;
         private bool m_FacingRight = true;  // For determining which way the player is currently facing.
 
+        public bool IsGrounded
+        {
+            get { return m_Grounded; }
+        }
+
         private void Awake()
         {
             // Setting up references.
