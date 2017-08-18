@@ -386,7 +386,7 @@ MonoBehaviour:
     raw: 4
     column: 8
   showBorder: 1
-  showGrid: 0
+  showGrid: 1
 --- !u!1 &63446940
 GameObject:
   m_ObjectHideFlags: 0
@@ -4152,7 +4152,7 @@ MonoBehaviour:
     raw: 4
     column: 9
   showBorder: 1
-  showGrid: 0
+  showGrid: 1
 --- !u!4 &612782807
 Transform:
   m_ObjectHideFlags: 0
@@ -7955,7 +7955,7 @@ MonoBehaviour:
     raw: 5
     column: 9
   showBorder: 1
-  showGrid: 0
+  showGrid: 1
 --- !u!4 &1348414730
 Transform:
   m_ObjectHideFlags: 0
@@ -11368,7 +11368,7 @@ MonoBehaviour:
     raw: 6
     column: 9
   showBorder: 1
-  showGrid: 0
+  showGrid: 1
 --- !u!1001 &2077721770
 Prefab:
   m_ObjectHideFlags: 0

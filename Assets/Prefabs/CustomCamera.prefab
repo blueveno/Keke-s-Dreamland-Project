@@ -64,7 +64,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 2
+  orthographic size: 2.5
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -110,10 +110,6 @@ MonoBehaviour:
   lookAheadFactor: 0
   lookAheadReturnSpeed: 0
   lookAheadMoveThreshold: 0
-  displayBoundaries: 1
-  bounds:
-    m_Center: {x: 0, y: 7.5, z: 0}
-    m_Extent: {x: 20, y: 10, z: 0}
 --- !u!124 &124441591979943432
 Behaviour:
   m_ObjectHideFlags: 1

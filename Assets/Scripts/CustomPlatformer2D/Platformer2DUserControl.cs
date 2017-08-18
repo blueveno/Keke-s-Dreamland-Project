@@ -16,7 +16,7 @@ namespace KekeDreamLand
         private BoingManager boing;
         
         // List of Boing observers.
-        private List<Observer> observers;
+        private List<Observer> observers = new List<Observer>();
 
         private void Awake()
         {
@@ -24,9 +24,6 @@ namespace KekeDreamLand
             
             // Add by Bib'.
             boing = GetComponent<BoingManager>();
-
-            // Observer patern
-            observers = new List<Observer>();
         }
 
 
