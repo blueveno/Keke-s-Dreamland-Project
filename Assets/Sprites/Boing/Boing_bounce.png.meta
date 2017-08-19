@@ -1,19 +1,15 @@
 fileFormatVersion: 2
-guid: 1f7bd9e96ce202a47b79e6b2d08e7d2b
-timeCreated: 1503186366
+guid: 6ada2ee81b5cea74f9bf4d6b49548f1c
+timeCreated: 1503177080
 licenseType: Free
 TextureImporter:
   fileIDToRecycleName:
-    21300000: Items_croissant
-    21300002: Items_bread
-    21300004: Items_ sunflower_seed
-    21300006: Items_feather
-    21300008: Items_key
-    21300010: Items_lemon
-    21300012: Items_apple
-    21300014: Items_music_note
-    21300016: Items_chocolatine
-    21300018: Items_raisin_bread
+    21300000: Boing_bounce_0
+    21300002: Boing_bounce_1
+    21300004: Boing_bounce_2
+    21300006: Boing_bounce_3
+    21300008: Boing_bounce_4
+    21300010: Boing_bounce_5
   serializedVersion: 4
   mipmaps:
     mipMapMode: 0
@@ -101,13 +97,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Items_croissant
+      name: Boing_bounce_0
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 16
-        height: 16
+        width: 32
+        height: 32
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -115,13 +111,13 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: Items_bread
+      name: Boing_bounce_1
       rect:
         serializedVersion: 2
-        x: 17
+        x: 32
         y: 0
-        width: 16
-        height: 16
+        width: 32
+        height: 32
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -129,13 +125,13 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: Items_ sunflower_seed
+      name: Boing_bounce_2
       rect:
         serializedVersion: 2
-        x: 34
+        x: 64
         y: 0
-        width: 16
-        height: 16
+        width: 32
+        height: 32
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -143,13 +139,13 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: Items_feather
+      name: Boing_bounce_3
       rect:
         serializedVersion: 2
-        x: 51
+        x: 96
         y: 0
-        width: 16
-        height: 16
+        width: 32
+        height: 32
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -157,13 +153,13 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: Items_key
+      name: Boing_bounce_4
       rect:
         serializedVersion: 2
-        x: 68
+        x: 128
         y: 0
-        width: 16
-        height: 16
+        width: 32
+        height: 32
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -171,69 +167,13 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: Items_lemon
+      name: Boing_bounce_5
       rect:
         serializedVersion: 2
-        x: 85
+        x: 160
         y: 0
-        width: 16
-        height: 16
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-    - serializedVersion: 2
-      name: Items_apple
-      rect:
-        serializedVersion: 2
-        x: 102
-        y: 0
-        width: 16
-        height: 16
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-    - serializedVersion: 2
-      name: Items_music_note
-      rect:
-        serializedVersion: 2
-        x: 119
-        y: 0
-        width: 16
-        height: 16
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-    - serializedVersion: 2
-      name: Items_chocolatine
-      rect:
-        serializedVersion: 2
-        x: 136
-        y: 0
-        width: 16
-        height: 16
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-    - serializedVersion: 2
-      name: Items_raisin_bread
-      rect:
-        serializedVersion: 2
-        x: 153
-        y: 0
-        width: 16
-        height: 16
+        width: 32
+        height: 32
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}

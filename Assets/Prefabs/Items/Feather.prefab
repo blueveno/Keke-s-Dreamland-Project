@@ -19,12 +19,12 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4248763785130044}
-  - component: {fileID: 61436953726013694}
-  - component: {fileID: 114222052182277648}
+  - component: {fileID: 61625571741901832}
+  - component: {fileID: 114454200328527556}
   m_Layer: 0
-  m_Name: Bread
+  m_Name: Feather
   m_TagString: Item
-  m_Icon: {fileID: 5721338939258241955, guid: 0000000000000000d000000000000000, type: 0}
+  m_Icon: {fileID: 2974397684917235467, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -51,7 +51,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1335554156353832}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0.5, y: 0.5, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4424879272477828}
@@ -71,7 +71,7 @@ Transform:
   m_Father: {fileID: 4248763785130044}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!61 &61436953726013694
+--- !u!61 &61625571741901832
 BoxCollider2D:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -96,7 +96,7 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.5, y: 0.5}
   m_EdgeRadius: 0
---- !u!114 &114222052182277648
+--- !u!114 &114454200328527556
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -104,7 +104,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1335554156353832}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7f6646e46d4d9294e9e71a2368153e15, type: 3}
+  m_Script: {fileID: 11500000, guid: 8b8f9b6173730f740825a42a23834ea1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!212 &212243426543525098
@@ -139,7 +139,7 @@ SpriteRenderer:
   m_SortingLayerID: -1811923819
   m_SortingLayer: 2
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300002, guid: 1f7bd9e96ce202a47b79e6b2d08e7d2b, type: 3}
+  m_Sprite: {fileID: 21300006, guid: 1f7bd9e96ce202a47b79e6b2d08e7d2b, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0

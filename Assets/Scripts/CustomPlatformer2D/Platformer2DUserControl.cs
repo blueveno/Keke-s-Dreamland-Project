@@ -62,6 +62,8 @@ namespace KekeDreamLand
         {
             HandleJump();
 
+            HandleAttack();
+
             HandleInteractableGameobject();
         }
 
@@ -87,6 +89,14 @@ namespace KekeDreamLand
             }
         }
 
+        private void HandleAttack()
+        {
+            if (CrossPlatformInputManager.GetButtonDown("Attack")  /* && !boing.IsAttacking */)
+            {
+                boing.Attack();
+            }
+        }
+
         private void HandleMoveAndCrouch()
         {
             // TODO Remove crouch.
@@ -97,6 +107,12 @@ namespace KekeDreamLand
             // Pass all parameters to the character control script.
             m_Character.Move(h, crouch, m_Jump);
             m_Jump = false;
+
+            float v = CrossPlatformInputManager.GetAxis("Vertical");
+            if(v < 0)
+            {
+                m_Character.MoveDown();
+            }
         }
 
         // Start bouncing or stop.

@@ -1,15 +1,17 @@
 fileFormatVersion: 2
-guid: 03ac750a7a4c1194398af831acd38aa9
-timeCreated: 1502296818
+guid: fe7465f52ad501c429fd0e47c8a4d1fc
+timeCreated: 1503177120
 licenseType: Free
 TextureImporter:
   fileIDToRecycleName:
-    21300000: Pigeon_idle_0
-    21300002: Pigeon_idle_1
-    21300004: Pigeon_idle_2
-    21300006: Pigeon_idle_3
-    21300008: Pigeon_idle_4
-    21300010: Pigeon_idle_5
+    21300000: Boing_run_0
+    21300002: Boing_run_1
+    21300004: Boing_run_2
+    21300006: Boing_run_3
+    21300008: Boing_run_4
+    21300010: Boing_run_5
+    21300012: Boing_run_6
+    21300014: Boing_run_7
   serializedVersion: 4
   mipmaps:
     mipMapMode: 0
@@ -97,7 +99,7 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Pigeon_idle_0
+      name: Boing_run_0
       rect:
         serializedVersion: 2
         x: 0
@@ -111,7 +113,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: Pigeon_idle_1
+      name: Boing_run_1
       rect:
         serializedVersion: 2
         x: 32
@@ -125,7 +127,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: Pigeon_idle_2
+      name: Boing_run_2
       rect:
         serializedVersion: 2
         x: 64
@@ -139,7 +141,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: Pigeon_idle_3
+      name: Boing_run_3
       rect:
         serializedVersion: 2
         x: 96
@@ -153,7 +155,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: Pigeon_idle_4
+      name: Boing_run_4
       rect:
         serializedVersion: 2
         x: 128
@@ -167,10 +169,38 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: Pigeon_idle_5
+      name: Boing_run_5
       rect:
         serializedVersion: 2
         x: 160
+        y: 0
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: Boing_run_6
+      rect:
+        serializedVersion: 2
+        x: 192
+        y: 0
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: Boing_run_7
+      rect:
+        serializedVersion: 2
+        x: 224
         y: 0
         width: 32
         height: 32

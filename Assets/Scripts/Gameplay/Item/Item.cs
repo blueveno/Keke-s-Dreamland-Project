@@ -18,7 +18,7 @@ namespace KekeDreamLand
             {
                 DoActionWhenPick();
 
-                Destroy(gameObject.transform.parent.gameObject);
+                Destroy(gameObject);
             }
         }
 

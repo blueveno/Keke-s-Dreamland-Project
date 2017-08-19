@@ -9,7 +9,8 @@ namespace KekeDreamLand
     public class HUDManager : MonoBehaviour
     {
         #region Inspector attributes
-
+        
+        public Text featherText;
         public Text lifePointsText;
 
         #endregion
@@ -63,6 +64,16 @@ namespace KekeDreamLand
             lifePointsText.text = lifePoints.ToString();
 
             // TODO Add animation or effect.
+        }
+
+        /// <summary>
+        /// Update the amount of feather picked up.
+        /// </summary>
+        /// <param name="newAmount"></param>
+        /// <param name="count"></param>
+        public void UpdateFeatherPickedUp(int newAmount, int count)
+        {
+            featherText.text = newAmount + " / " + count;
         }
 
         #endregion

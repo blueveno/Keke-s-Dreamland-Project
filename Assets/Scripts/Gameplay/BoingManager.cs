@@ -114,6 +114,13 @@ namespace KekeDreamLand
             CancelInvoke("BounceEffectInRange");
         }
 
+        public void Attack()
+        {
+            boingAnimator.SetTrigger("Attack");
+
+            // TODO activate attack hitbox.
+        }
+
         #endregion
 
         #region Private methods

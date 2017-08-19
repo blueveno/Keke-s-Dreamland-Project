@@ -8,6 +8,7 @@ TagManager:
   - Area
   - Wall
   - OutOfBound
+  - Item
   layers:
   - Default
   - TransparentFX

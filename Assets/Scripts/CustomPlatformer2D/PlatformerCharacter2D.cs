@@ -1,15 +1,21 @@
-using System;
+using System.Collections;
 using UnityEngine;
 
 namespace KekeDreamLand
 {
     public class PlatformerCharacter2D : MonoBehaviour
     {
+        #region Inspector attributes
+
         [SerializeField] private float m_MaxSpeed = 10f;                    // The fastest the player can travel in the x axis.
         [SerializeField] private float m_JumpForce = 400f;                  // Amount of force added when the player jumps.
         [Range(0, 1)] [SerializeField] private float m_CrouchSpeed = .36f;  // Amount of maxSpeed applied to crouching movement. 1 = 100%
         [SerializeField] private bool m_AirControl = false;                 // Whether or not a player can steer while jumping;
         [SerializeField] private LayerMask m_WhatIsGround;                  // A mask determining what is ground to the character
+
+        #endregion
+
+        #region Private attributes
 
         private Transform m_GroundCheck;    // A position marking where to check if the player is grounded.
         const float k_GroundedRadius = .14f; // Radius of the overlap circle to determine if grounded
@@ -17,7 +23,11 @@ namespace KekeDreamLand
         private Transform m_CeilingCheck;   // A position marking where to check for ceilings
         const float k_CeilingRadius = .01f; // Radius of the overlap circle to determine if the player can stand up
         private Animator m_Anim;            // Reference to the player's animator component.
+
         private Rigidbody2D m_Rigidbody2D;
+        private BoxCollider2D m_collider;
+        private CircleCollider2D m_secondCollider;
+
         private bool m_FacingRight = true;  // For determining which way the player is currently facing.
 
         public bool IsGrounded
@@ -30,6 +40,10 @@ namespace KekeDreamLand
             get { return m_Anim.GetFloat("vSpeed"); }
         }
 
+        #endregion
+
+        #region Unity methods
+
         private void Awake()
         {
             // Setting up references.
@@ -37,8 +51,9 @@ namespace KekeDreamLand
             m_CeilingCheck = transform.Find("CeilingCheck");
             m_Anim = GetComponent<Animator>();
             m_Rigidbody2D = GetComponent<Rigidbody2D>();
+            m_collider = GetComponent<BoxCollider2D>();
+            m_secondCollider = transform.GetChild(0).gameObject.GetComponent<CircleCollider2D>();
         }
-
 
         private void FixedUpdate()
         {
@@ -60,7 +75,24 @@ namespace KekeDreamLand
             m_Anim.SetFloat("vSpeed", m_Rigidbody2D.velocity.y);
         }
 
+        private void OnDrawGizmosSelected()
+        {
+            Gizmos.color = Color.green;
 
+            if (m_GroundCheck != null)
+                Gizmos.DrawSphere(m_GroundCheck.position, k_GroundedRadius);
+        }
+
+        #endregion
+
+        #region Public methods
+
+        /// <summary>
+        /// Manage movement.
+        /// </summary>
+        /// <param name="move">horizontal movement</param>
+        /// <param name="crouch">is crouch pressed</param>
+        /// <param name="jump">is jump pressed</param>
         public void Move(float move, bool crouch, bool jump)
         {
             // If crouching, check to see if the character can stand up
@@ -114,6 +146,41 @@ namespace KekeDreamLand
             }
         }
 
+        /// <summary>
+        /// Try to pass through a one sided platform.
+        /// </summary>
+        public void MoveDown()
+        {
+            Vector2 center = new Vector2((m_collider.bounds.min.x + m_collider.bounds.max.x) / 2, m_collider.bounds.min.y);
+            RaycastHit2D hit = Physics2D.Raycast(center, Vector2.down, 0.25f, m_WhatIsGround);
+            
+            if (hit)
+            {
+                GameObject g = hit.collider.gameObject;
+                
+                if (g)
+                {
+                    PlatformEffector2D platform = g.GetComponent<PlatformEffector2D>();
+                    if(platform)
+                    {
+                        Physics2D.IgnoreCollision(hit.collider, m_collider, true);
+                        Physics2D.IgnoreCollision(hit.collider, m_secondCollider, true);
+
+                        StartCoroutine(ResetIgnoringOfCollision(hit.collider));
+                    }
+                }
+            }
+        }
+
+        #endregion
+
+        private IEnumerator ResetIgnoringOfCollision(Collider2D platform)
+        {
+            yield return new WaitForSeconds(0.5f);
+
+            Physics2D.IgnoreCollision(platform, m_collider, false);
+            Physics2D.IgnoreCollision(platform, m_secondCollider, false);
+        }
 
         private void Flip()
         {
@@ -124,14 +191,6 @@ namespace KekeDreamLand
             Vector3 theScale = transform.localScale;
             theScale.x *= -1;
             transform.localScale = theScale;
-        }
-
-        private void OnDrawGizmosSelected()
-        {
-            Gizmos.color = Color.green;
-
-            if (m_GroundCheck != null)
-                Gizmos.DrawSphere(m_GroundCheck.position, k_GroundedRadius);
         }
     }
 }

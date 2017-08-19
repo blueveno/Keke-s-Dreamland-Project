@@ -93,10 +93,10 @@ namespace KekeDreamLand
             float cameraSizeX = cameraSizeY * Screen.width / Screen.height;
 
             cameraMinX = currentArea.transform.position.x + cameraSizeX;
-            cameraMaxX = currentArea.transform.position.x + currentArea.level.column - cameraSizeX;
+            cameraMaxX = currentArea.transform.position.x + currentArea.area.column - cameraSizeX;
 
             cameraMinY = currentArea.transform.position.y + cameraSizeY;
-            cameraMaxY = currentArea.transform.position.y + currentArea.level.raw - cameraSizeY;
+            cameraMaxY = currentArea.transform.position.y + currentArea.area.raw - cameraSizeY;
         }
 
         // Center the camera on the player gameobject but restrict his position in the boundaries of the current area.
