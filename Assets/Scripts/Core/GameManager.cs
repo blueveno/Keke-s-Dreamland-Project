@@ -146,6 +146,7 @@ namespace KekeDreamLand
             {
                 isInternalTransition = false;
 
+                // Move Boing and Camera view when user don't see.
                 boing.transform.position = nextPosition;
                 cameraFollow.CurrentArea = nextArea.GetComponent<AreaEditor>();
 
