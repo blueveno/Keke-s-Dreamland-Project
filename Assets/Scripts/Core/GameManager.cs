@@ -130,6 +130,7 @@ namespace KekeDreamLand
 
             nextArea = newArea;
             nextPosition = newPosition;
+            nextPosition.z = boing.transform.position.z;
         }
 
         /// <summary>

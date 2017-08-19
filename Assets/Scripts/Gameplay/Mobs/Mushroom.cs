@@ -40,7 +40,8 @@ namespace KekeDreamLand
         /// </summary>
         public void NotifyJump()
         {
-            Jump();
+            if(!isBouncing)
+                Jump();
         }
 
         private void Jump()

@@ -23,7 +23,7 @@ GameObject:
   - component: {fileID: 95187362879978516}
   - component: {fileID: 61369487310229592}
   - component: {fileID: 114940215156632654}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Mole
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -97,6 +97,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   damage: 1
+  canBounce: 0
 --- !u!212 &212228281128996184
 SpriteRenderer:
   m_ObjectHideFlags: 1

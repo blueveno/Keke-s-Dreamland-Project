@@ -295,3 +295,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxLifePoints: 3
   invulnerabilityDuration: 2
+  bouncingEffectRadius: 1.5
+  whatIsMobs:
+    serializedVersion: 2
+    m_Bits: 512

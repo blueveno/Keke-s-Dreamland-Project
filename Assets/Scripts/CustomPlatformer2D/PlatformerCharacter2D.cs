@@ -25,6 +25,11 @@ namespace KekeDreamLand
             get { return m_Grounded; }
         }
 
+        public float VSpeed
+        {
+            get { return m_Anim.GetFloat("vSpeed"); }
+        }
+
         private void Awake()
         {
             // Setting up references.
@@ -45,7 +50,7 @@ namespace KekeDreamLand
 
             for (int i = 0; i < colliders.Length; i++)
             {
-                // Update by Bib' -> trigger collider are not ground.
+                // Update by Bib' -> trigger colliders are not ground.
                 if (colliders[i].gameObject != gameObject && !colliders[i].isTrigger)
                     m_Grounded = true;
             }
@@ -96,6 +101,7 @@ namespace KekeDreamLand
                     Flip();
                 }
             }
+
             // If the player should jump...
             if (m_Grounded && jump && m_Anim.GetBool("Ground"))
             {
@@ -103,6 +109,8 @@ namespace KekeDreamLand
                 m_Grounded = false;
                 m_Anim.SetBool("Ground", false);
                 m_Rigidbody2D.AddForce(new Vector2(0f, m_JumpForce));
+
+                m_Anim.SetTrigger("Jump");
             }
         }
 
@@ -122,7 +130,7 @@ namespace KekeDreamLand
         {
             Gizmos.color = Color.green;
 
-            if (m_GroundCheck)
+            if (m_GroundCheck != null)
                 Gizmos.DrawSphere(m_GroundCheck.position, k_GroundedRadius);
         }
     }

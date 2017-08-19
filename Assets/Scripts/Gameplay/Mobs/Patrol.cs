@@ -15,7 +15,7 @@ namespace KekeDreamLand
         WARP
     }
 
-    public class Patrol : MonoBehaviour
+    public class Patrol : AIBehaviour
     {
         #region Inspector attributes
 

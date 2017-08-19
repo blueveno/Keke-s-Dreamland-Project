@@ -7,7 +7,7 @@ namespace KekeDreamLand
     /// 
     /// Based on hitbox bounds.
     /// </summary>
-    public class MoveAlongThePlatform : MonoBehaviour
+    public class MoveAlongThePlatform : AIBehaviour
     {
         #region Inspector attributes
 
