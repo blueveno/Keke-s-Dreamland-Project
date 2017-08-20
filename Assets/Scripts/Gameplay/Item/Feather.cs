@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
-namespace KekeDreamLand {
-
+﻿namespace KekeDreamLand
+{
     public class Feather : Item
     {
         protected override void DoActionWhenPick()

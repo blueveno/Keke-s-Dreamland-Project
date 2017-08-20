@@ -1,9 +1,11 @@
 ﻿using UnityEngine;
 using UnityEditor;
 
-namespace KekeDreamLand {
+namespace KekeDreamLand
+{
 
-    public class KekeDreamlandTool : MonoBehaviour {
+    public class KekeDreamlandTool : MonoBehaviour
+    {
 
         public void SelectBoing()
         {

@@ -2,10 +2,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ResizeToScreenSize : MonoBehaviour {
-
+public class ResizeToScreenSize : MonoBehaviour
+{
 	// Use this for initialization
-	void Start () {
+	void Start ()
+    {
         Resize();
 	}
 

@@ -8,7 +8,7 @@ namespace KekeDreamLand
     /// The mushroom jumps when Boing jumps.
     /// </summary>
     [RequireComponent(typeof(Rigidbody2D))]
-    public class Mushroom : Mob, Observer
+    public class Mushroom : Mob, IObserver
     {
         #region Inspector attributes
         [Header("Mushroom configuration :")]

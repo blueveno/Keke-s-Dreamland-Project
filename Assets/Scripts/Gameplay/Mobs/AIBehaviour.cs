@@ -1,5 +1,9 @@
 ﻿using UnityEngine;
 
-public abstract class AIBehaviour : MonoBehaviour {
-    
+namespace KekeDreamLand
+{
+    public abstract class AIBehaviour : MonoBehaviour
+    {
+
+    }
 }

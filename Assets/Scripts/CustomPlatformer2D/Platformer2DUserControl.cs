@@ -20,7 +20,7 @@ namespace KekeDreamLand
         private BoingManager boing;
         
         // List of Boing observers.
-        private List<Observer> observers = new List<Observer>();
+        private List<IObserver> observers = new List<IObserver>();
 
         #endregion
 
@@ -163,19 +163,19 @@ namespace KekeDreamLand
 
         #region Observer patern
 
-        public void AddObserver(Observer obs)
+        public void AddObserver(IObserver obs)
         {
             observers.Add(obs);
         }
 
-        public void RemoveObserver(Observer obs)
+        public void RemoveObserver(IObserver obs)
         {
             observers.Remove(obs);
         }
 
         public void NotifyAll()
         {
-            foreach(Observer obs in observers)
+            foreach(IObserver obs in observers)
             {
                 obs.NotifyJump();
             }
