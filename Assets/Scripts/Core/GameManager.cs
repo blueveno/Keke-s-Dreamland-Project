@@ -41,6 +41,18 @@ namespace KekeDreamLand
         private bool isEndOfLevel;
         private bool isInternalTransition;
 
+        public int FeatherPickedUp
+        {
+            get { return featherPickedUp; }
+
+            set {
+                featherPickedUp = value;
+                RefreshFeatherCount();
+            }
+        }
+        private int featherPickedUp = 0;
+        private int featherCount = 0;
+
         #endregion
 
         #region Unity methods
@@ -93,6 +105,15 @@ namespace KekeDreamLand
             // Other
             isEndOfLevel = false;
             isInternalTransition = false;
+
+            ResetItemsPickedUp();
+        }
+
+        private void ResetItemsPickedUp()
+        {
+            featherCount = 0;
+            featherPickedUp = 0;
+            CountFeathersInCurrentLevel();
         }
 
         #endregion
@@ -130,6 +151,7 @@ namespace KekeDreamLand
 
             nextArea = newArea;
             nextPosition = newPosition;
+            nextPosition.z = boing.transform.position.z;
         }
 
         /// <summary>
@@ -146,6 +168,7 @@ namespace KekeDreamLand
             {
                 isInternalTransition = false;
 
+                // Move Boing and Camera view when user don't see.
                 boing.transform.position = nextPosition;
                 cameraFollow.CurrentArea = nextArea.GetComponent<AreaEditor>();
 
@@ -157,6 +180,20 @@ namespace KekeDreamLand
             // Case of a restart of the level.
             else
                 ResetCurrentScene();
+        }
+
+        private void CountFeathersInCurrentLevel()
+        {
+            GameObject[] items = GameObject.FindGameObjectsWithTag("Item");
+            foreach(GameObject g in items)
+            {
+                if(g.name.Contains("Feather"))
+                {
+                    featherCount++;
+                }
+            }
+
+            RefreshFeatherCount();
         }
 
         #endregion
@@ -182,6 +219,7 @@ namespace KekeDreamLand
         private void ResetCurrentScene()
         {
             SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+            ResetItemsPickedUp();
         }
 
         #endregion
@@ -202,6 +240,11 @@ namespace KekeDreamLand
         public void UpdateLifePoints(int lifePoints)
         {
             hudManager.UpdateLifePoints(lifePoints);
+        }
+
+        private void RefreshFeatherCount()
+        {
+            hudManager.UpdateFeatherPickedUp(featherPickedUp, featherCount);
         }
 
         #endregion

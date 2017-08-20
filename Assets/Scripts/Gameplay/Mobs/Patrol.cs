@@ -15,12 +15,11 @@ namespace KekeDreamLand
         WARP
     }
 
-    public class Patrol : MonoBehaviour
+    public class Patrol : AIBehaviour
     {
         #region Inspector attributes
-
+        
         public float patrolSpeed = 1.0f;
-
         public bool displayPatrolPath = true;
         public PatrolType patrolType;
         public List<Vector3> patrolPoints;

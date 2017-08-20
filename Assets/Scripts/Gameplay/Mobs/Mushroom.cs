@@ -8,7 +8,7 @@ namespace KekeDreamLand
     /// The mushroom jumps when Boing jumps.
     /// </summary>
     [RequireComponent(typeof(Rigidbody2D))]
-    public class Mushroom : Mob, Observer
+    public class Mushroom : Mob, IObserver
     {
         #region Inspector attributes
         [Header("Mushroom configuration :")]
@@ -27,10 +27,7 @@ namespace KekeDreamLand
         private void Awake()
         {
             rgbd = GetComponent<Rigidbody2D>();
-        }
 
-        private void Start()
-        {
             // Observe Boing user control.
             Platformer2DUserControl userController = GameObject.FindGameObjectWithTag("Player").GetComponent<Platformer2DUserControl>();
             userController.AddObserver(this);
@@ -43,7 +40,8 @@ namespace KekeDreamLand
         /// </summary>
         public void NotifyJump()
         {
-            Jump();
+            if(!isBouncing)
+                Jump();
         }
 
         private void Jump()

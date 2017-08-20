@@ -173,6 +173,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   damage: 1
+  canBounce: 1
+  BounceEffectDuration: 2
   jumpForce: 400
 --- !u!212 &212536206657274526
 SpriteRenderer:

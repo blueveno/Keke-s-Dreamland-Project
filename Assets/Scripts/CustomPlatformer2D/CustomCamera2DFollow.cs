@@ -6,19 +6,23 @@ namespace KekeDreamLand
     {
         #region Initial attributes
         public Transform target;
+
+        /*
         public float damping = 1;
         public float lookAheadFactor = 3;
         public float lookAheadReturnSpeed = 0.5f;
         public float lookAheadMoveThreshold = 0.1f;
 
-        private float m_OffsetZ;
         private Vector3 m_LastTargetPosition;
         private Vector3 m_CurrentVelocity;
         private Vector3 m_LookAheadPos;
+        */
+
+        private float m_OffsetZ;
         #endregion
 
-        #region Camera follow limitation
-
+        #region Camera follow restriction
+        
         // Current area where Boing is.
         public AreaEditor CurrentArea
         {
@@ -33,7 +37,7 @@ namespace KekeDreamLand
 
                 // Change limit and repositionate camera.
                 SetupCameraLimit();
-                SetupCameraPosition();
+                FollowPlayer();
             }
         }
         private AreaEditor currentArea;
@@ -46,9 +50,12 @@ namespace KekeDreamLand
 
         #endregion
 
+        #region Unity methods
+
         // Use this for initialization
         private void Start()
         {
+            // Search for player gameobject.
             target = GameObject.FindGameObjectWithTag("Player").transform;
 
             if (!target)
@@ -57,29 +64,27 @@ namespace KekeDreamLand
                 return;
             }
 
-            m_LastTargetPosition = target.position;
+            // m_LastTargetPosition = target.position; // Used for smooth follow.
+
             m_OffsetZ = (transform.position - target.position).z;
             transform.parent = null;
             
             // Recover current area.
-            currentArea = target.transform.parent.parent.parent.GetComponent<AreaEditor>();
-
-            SetupCameraLimit();
-            
-            SetupCameraPosition();
+            CurrentArea = target.transform.parent.parent.parent.GetComponent<AreaEditor>();
         }
-
-        // Place the camera to the right position depending the new area.
-        private void SetupCameraPosition()
+        
+        // Update is called once per frame
+        private void LateUpdate()
         {
-            Vector3 newPos = Vector3.zero;
+            if (target == null)
+                return;
 
-            // Limit the camera.
-            newPos.x = Mathf.Clamp(target.position.x, cameraMinX, cameraMaxX);
-            newPos.y = Mathf.Clamp(target.position.y, cameraMinY, cameraMaxY);
-
-            transform.position = newPos;
+            FollowPlayer();
         }
+
+        #endregion
+
+        #region Camera follow player and is restricted by area boundaries.
 
         // Setup camera follow limit.
         private void SetupCameraLimit()
@@ -88,42 +93,53 @@ namespace KekeDreamLand
             float cameraSizeX = cameraSizeY * Screen.width / Screen.height;
 
             cameraMinX = currentArea.transform.position.x + cameraSizeX;
-            cameraMaxX = currentArea.transform.position.x + currentArea.level.column - cameraSizeX;
+            cameraMaxX = currentArea.transform.position.x + currentArea.area.column - cameraSizeX;
 
             cameraMinY = currentArea.transform.position.y + cameraSizeY;
-            cameraMaxY = currentArea.transform.position.y + currentArea.level.raw - cameraSizeY;
+            cameraMaxY = currentArea.transform.position.y + currentArea.area.raw - cameraSizeY;
         }
-        
-        // Update is called once per frame
-        private void Update()
-        {
-            if (target == null)
-                return;
 
+        // Center the camera on the player gameobject but restrict his position in the boundaries of the current area.
+        private void FollowPlayer()
+        {
+            Vector3 newPos = Vector3.zero;
+
+            // Limit the camera.
+            newPos.x = Mathf.Clamp(target.position.x, cameraMinX, cameraMaxX);
+            newPos.y = Mathf.Clamp(target.position.y, cameraMinY, cameraMaxY);
+            newPos.z = target.position.z + m_OffsetZ;
+
+            transform.position = newPos;
+        }
+
+        #endregion
+
+        // Original code. Smooth follow, align view with what the player look ahead.
+        private void OriginalCameraScript()
+        {
+            /*
             // Only update lookahead pos if accelerating or changed direction
             float xMoveDelta = (target.position - m_LastTargetPosition).x;
-
-            bool updateLookAheadTarget = Mathf.Abs(xMoveDelta) > lookAheadMoveThreshold;
+            
+            bool updateLookAheadTarget = Mathf.Abs(xMoveDelta) > lookAheadMoveThreshold; // Always true with our parameter.
 
             if (updateLookAheadTarget)
             {
-                m_LookAheadPos = lookAheadFactor*Vector3.right*Mathf.Sign(xMoveDelta);
+                m_LookAheadPos = lookAheadFactor * Vector3.right * Mathf.Sign(xMoveDelta); // always 0 with our parameter.
             }
+
             else
             {
-                m_LookAheadPos = Vector3.MoveTowards(m_LookAheadPos, Vector3.zero, Time.deltaTime*lookAheadReturnSpeed);
+                m_LookAheadPos = Vector3.MoveTowards(m_LookAheadPos, Vector3.zero, Time.deltaTime * lookAheadReturnSpeed); // Never pass here.
             }
 
-            Vector3 aheadTargetPos = target.position + m_LookAheadPos + Vector3.forward*m_OffsetZ;
+            Vector3 aheadTargetPos = target.position + m_LookAheadPos + Vector3.forward * m_OffsetZ;
             Vector3 newPos = Vector3.SmoothDamp(transform.position, aheadTargetPos, ref m_CurrentVelocity, damping);
-            
-            // Restrict the camera in the boundaries of the current area.
-            newPos.x = Mathf.Clamp(newPos.x, cameraMinX, cameraMaxX);
-            newPos.y = Mathf.Clamp(newPos.y, cameraMinY, cameraMaxY);
 
             transform.position = newPos;
-
+            
             m_LastTargetPosition = target.position;
+            */
         }
     }
 }

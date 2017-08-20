@@ -1,14 +1,9 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace KekeDreamLand
 {
-    /// <summary>
-    /// Level configuration.
-    /// </summary>
     [System.Serializable]
-    public struct Level
+    public struct Area
     {
         [Range(0, 50)]
         public int raw;
@@ -27,11 +22,11 @@ namespace KekeDreamLand
         public GameObject[] borderWalls;
         public GameObject killzone;
 
-        [Header("Level configuration :")]
+        [Header("Area configuration :")]
 
-        public Level level;
+        public Area area;
 
-        [Header("level landmark")]
+        [Header("area landmark")]
 
         public bool showBorder;
         public bool showGrid;
@@ -40,7 +35,7 @@ namespace KekeDreamLand
 
         #region Private attributes
 
-        private Vector3 levelSize;
+        private Vector3 areaSize; // Size of the area.
 
         #endregion
 
@@ -51,7 +46,7 @@ namespace KekeDreamLand
         {
             if (showBorder || showGrid)
             {
-                levelSize = new Vector3(level.column, level.raw);
+                areaSize = new Vector3(area.column, area.raw);
 
                 MoveAndScaleKillzoneAndWalls();
 
@@ -70,13 +65,13 @@ namespace KekeDreamLand
         // Move and scale the killzone and the side walls of this area when their dimensions or position change.
         private void MoveAndScaleKillzoneAndWalls()
         {
-            killzone.transform.position = new Vector3(levelSize.x / 2, -1.25f) + transform.position;
-            killzone.GetComponent<BoxCollider2D>().size = new Vector2(levelSize.x, 2.5f);
+            killzone.transform.position = new Vector3(areaSize.x / 2, -1.25f) + transform.position;
+            killzone.GetComponent<BoxCollider2D>().size = new Vector2(areaSize.x, 2.5f);
 
             for (int i = 0; i < borderWalls.Length; i++)
             {
-                borderWalls[i].GetComponent<BoxCollider2D>().size = new Vector3(1.5f, levelSize.y + 2);
-                borderWalls[i].transform.position = new Vector3(-0.5f + (levelSize.x + 1) * i, levelSize.y / 2 + 1) + transform.position;
+                borderWalls[i].GetComponent<BoxCollider2D>().size = new Vector3(1.5f, areaSize.y + 2);
+                borderWalls[i].transform.position = new Vector3(-0.5f + (areaSize.x + 1) * i, areaSize.y / 2 + 1) + transform.position;
             }
         }
 
@@ -85,19 +80,19 @@ namespace KekeDreamLand
         {
             Gizmos.color = Color.red;
 
-            Gizmos.DrawWireCube(transform.position + (levelSize / 2), levelSize);
+            Gizmos.DrawWireCube(transform.position + (areaSize / 2), areaSize);
         }
 
-        // Display the grid to help the level designer to place tiles in this area. The grid is 
+        // Display the grid to help the level designer to place tiles in this area.
         private void DisplayGrid()
         {
             Gizmos.color = Color.white;
 
             Vector3 startHLine = transform.position;
-            Vector3 endHLine = new Vector3(levelSize.x, 0.0f) + transform.position;
+            Vector3 endHLine = new Vector3(areaSize.x, 0.0f) + transform.position;
 
             float i = 0.5f;
-            while(i < level.raw)
+            while(i < area.raw)
             {
                 startHLine.y += 0.5f;
                 endHLine.y += 0.5f;
@@ -107,10 +102,10 @@ namespace KekeDreamLand
             }
 
             Vector3 startVLine = transform.position;
-            Vector3 endVLine = new Vector3(0.0f, levelSize.y) + transform.position;
+            Vector3 endVLine = new Vector3(0.0f, areaSize.y) + transform.position;
 
             i = 0.5f;
-            while (i < level.column)
+            while (i < area.column)
             {
                 startVLine.x += 0.5f;
                 endVLine.x += 0.5f;
