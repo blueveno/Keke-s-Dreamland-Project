@@ -18,12 +18,17 @@ namespace KekeDreamLand
 
         [Header("Bouncing")]
         public float bouncingEffectRadius = 2.5f;
-        [SerializeField]
-        private LayerMask whatIsMobs;
+        [SerializeField] private LayerMask whatIsMobs;
+
+        [Header("Attack")]
+        public float timeBetweenAttack = 0.5f;
 
         #endregion
 
         #region Private attributes
+
+        private Animator boingAnimator;
+        private ParticleSystem noteEmitter;
 
         /// <summary>
         /// Current interactable gameobject in range of Boing. null if nothing is in range.
@@ -62,15 +67,18 @@ namespace KekeDreamLand
         }
         private int lifePoints; // max 3
         
+        /// <summary>
+        /// Return true if Boing is actually bouncing.
+        /// </summary>
         public bool IsBouncing
         {
             get { return boingAnimator.GetBool("Bouncing"); }
             set { boingAnimator.SetBool("Bouncing", value); }
         }
 
-        private Animator boingAnimator;
-
-        private ParticleSystem noteEmitter;
+        // Attack attributes
+        private bool isAttacking;
+        private float attackRayLength = 0.5f;
 
         #endregion
 
@@ -117,11 +125,43 @@ namespace KekeDreamLand
             CancelInvoke("BounceEffectInRange");
         }
 
+        /// <summary>
+        /// Trigger attack of Boing if it isn't already attacking.
+        /// </summary>
         public void Attack()
         {
-            boingAnimator.SetTrigger("Attack");
+            if (!isAttacking)
+            {
+                boingAnimator.SetTrigger("Attack");
 
-            // TODO activate attack hitbox.
+                StartCoroutine(AttackEffect());
+            }
+        }
+
+        private IEnumerator AttackEffect()
+        {
+            isAttacking = true;
+
+            yield return new WaitForSeconds(0.25f);
+
+            RaycastHit2D[] hits = Physics2D.RaycastAll(transform.position, Vector2.right * transform.localScale.x, attackRayLength, whatIsMobs);
+
+            Debug.DrawRay(transform.position, Vector2.right * transform.localScale.x * attackRayLength, Color.red, 1.0f);
+
+            foreach (RaycastHit2D hit in hits)
+            {
+
+                if (hit.collider && hit.collider.tag != "Player")
+                {
+                    Mob mob = hit.collider.gameObject.GetComponent<Mob>();
+                    if(mob)
+                        mob.LifePoints--;
+                }
+            }
+
+            yield return new WaitForSeconds(0.25f);
+
+            isAttacking = false;
         }
 
         #endregion

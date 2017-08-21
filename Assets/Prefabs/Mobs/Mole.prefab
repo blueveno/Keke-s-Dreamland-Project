@@ -96,8 +96,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b0b3f03f7e8f85b41a4f12c826eca8f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  damage: 1
+  mobDamage: 1
+  invincible: 1
+  mobLifePoints: 1
   canBounce: 0
+  BounceEffectDuration: 2
 --- !u!212 &212228281128996184
 SpriteRenderer:
   m_ObjectHideFlags: 1

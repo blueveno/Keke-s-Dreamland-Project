@@ -16,6 +16,12 @@ namespace KekeDreamLand
 
                 GameManager.instance.FadeInAndReload();
             }
+
+            // Destroy anything else which fall out of bounds.
+            else
+            {
+                Destroy(other.gameObject, 0.2f);
+            }
         }
     }
 }

@@ -19,7 +19,7 @@ namespace KekeDreamLand
         #region Private attributes
 
         private BoxCollider2D hitbox;
-        private SpriteRenderer spriteRenderer;
+        private Mob mobScript;
 
         // Direction to move.
         private float direction;
@@ -35,13 +35,13 @@ namespace KekeDreamLand
 
         private void Awake()
         {
-            spriteRenderer = GetComponent<SpriteRenderer>();
+            mobScript = GetComponent<Mob>();
             hitbox = GetComponent<BoxCollider2D>();
 
             direction = moveToRightFirst ? 1.0f : -1.0f;
             // Flip the sprite if necessary.
             if (direction > 0)
-                spriteRenderer.flipX = true;
+                mobScript.FlipSprite();
         }
 
         private void FixedUpdate()
@@ -69,21 +69,18 @@ namespace KekeDreamLand
 
             RaycastHit2D hit = Physics2D.Raycast(rayOrigin, Vector2.down, rayLength);
 
+            // Change direction of the 
             if (!hit || hit.collider && hit.collider.tag == "OutOfBound")
             {
-                Flip();
+                mobScript.FlipSprite();
+
+                direction *= -1;
             }
         }
 
         private void Move()
         {
             transform.Translate(Vector3.right * direction * speed * Time.deltaTime);
-        }
-
-        private void Flip()
-        {
-            spriteRenderer.flipX = !spriteRenderer.flipX;
-            direction *= -1;
         }
 
         #endregion
