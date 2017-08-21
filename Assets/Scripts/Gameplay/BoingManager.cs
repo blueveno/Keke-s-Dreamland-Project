@@ -70,6 +70,8 @@ namespace KekeDreamLand
 
         private Animator boingAnimator;
 
+        private ParticleSystem noteEmitter;
+
         #endregion
 
         #region Unity methods
@@ -77,6 +79,7 @@ namespace KekeDreamLand
         private void Awake()
         {
             boingAnimator = GetComponent<Animator>();
+            noteEmitter = GetComponentInChildren<ParticleSystem>();
 
             interactableGoInRange = null;
 
@@ -128,6 +131,8 @@ namespace KekeDreamLand
         // Search all mob in range of the effect and trigger bounce effect to them.
         private void BounceEffectInRange()
         {
+            noteEmitter.Emit(1);
+
             Collider2D[] mobs = Physics2D.OverlapCircleAll(transform.position, bouncingEffectRadius, whatIsMobs);
 
             foreach (Collider2D c in mobs)

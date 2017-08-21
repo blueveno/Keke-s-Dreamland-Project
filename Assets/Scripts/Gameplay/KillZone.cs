@@ -13,7 +13,7 @@ namespace KekeDreamLand
             {
                 // Dont show the destruction to the player.
                 Destroy(other.gameObject, 0.2f);
-                
+
                 GameManager.instance.FadeInAndReload();
             }
         }

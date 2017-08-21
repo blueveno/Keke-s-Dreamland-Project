@@ -7,7 +7,7 @@ namespace KekeDreamLand
     /// </summary>
     public class TransitionManager : MonoBehaviour {
 
-        private Animator anim;
+        public Animator anim;
 
         private void Awake()
         {

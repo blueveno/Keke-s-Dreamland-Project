@@ -5,6 +5,11 @@ using UnityStandardAssets.CrossPlatformInput;
 
 namespace KekeDreamLand
 {
+    public enum GamepadType
+    {
+        NONE, XBOX, PS, OTHER
+    }
+
     /// <summary>
     /// Input manager. Some inputs can be observed by observer.
     /// </summary>
@@ -22,6 +27,8 @@ namespace KekeDreamLand
         // List of Boing observers.
         private List<IObserver> observers = new List<IObserver>();
 
+        private GamepadType gamepadUsed;
+
         #endregion
 
         #region Unity methods
@@ -30,8 +37,9 @@ namespace KekeDreamLand
         {
             m_Character = GetComponent<PlatformerCharacter2D>();
             
-            // Add by Bib'.
             boing = GetComponent<BoingManager>();
+            
+            CheckGamepads();
         }
 
         private void Update()
@@ -84,8 +92,31 @@ namespace KekeDreamLand
                 // Read the jump input in Update so button presses aren't missed.
                 m_Jump = CrossPlatformInputManager.GetButtonDown("Jump");
 
+                HandleOneSidedPlatform();
+
                 if (m_Jump && m_Character.IsGrounded)
                     NotifyAll();
+            }
+        }
+
+        // Handle input to try to pass through a one sided platform. 
+        private void HandleOneSidedPlatform()
+        {
+            // Check gamepad and one sided platform.
+            if (m_Jump && gamepadUsed != GamepadType.NONE)
+            {
+                // If jump has been pressed and joystick is down, pass through the one sided platform.
+                if (CrossPlatformInputManager.GetAxis("Vertical") < 0)
+                {
+                    m_Character.MoveDown();
+                    m_Jump = false;
+                }
+            }
+            
+            // If player plays with keyboard, use other control :
+            if (CrossPlatformInputManager.GetButtonDown("Vertical"))
+            {
+                m_Character.MoveDown();
             }
         }
 
@@ -108,11 +139,7 @@ namespace KekeDreamLand
             m_Character.Move(h, crouch, m_Jump);
             m_Jump = false;
 
-            float v = CrossPlatformInputManager.GetAxis("Vertical");
-            if(v < 0)
-            {
-                m_Character.MoveDown();
-            }
+            // TODO : Handle input via gamepad GetAxis("Vertical"); AND via Keyboard => GetInputDown("Vertical").
         }
 
         // Start bouncing or stop.
@@ -156,6 +183,30 @@ namespace KekeDreamLand
             if (CrossPlatformInputManager.GetButtonDown("ToggleHUD"))
             {
                 GameManager.instance.ToggleHUD();
+            }
+        }
+
+        // Check if a gamepad is connected. And identify it.
+        private void CheckGamepads()
+        {
+            gamepadUsed = GamepadType.NONE;
+
+            string[] devices = Input.GetJoystickNames();
+
+            if (devices.Length == 0)
+                return;
+
+            foreach(string s in devices)
+            {
+                if(s.Contains("XBOX"))
+                {
+                    gamepadUsed = GamepadType.XBOX;
+                }
+
+                else
+                {
+                    gamepadUsed = GamepadType.OTHER;
+                }
             }
         }
 

@@ -22,6 +22,7 @@ namespace KekeDreamLand
 
         // Boing gameobject and scripts...
         private GameObject boing;
+        private BoingManager boingScript;
 
         // Ui
         private GameObject ui;
@@ -84,6 +85,19 @@ namespace KekeDreamLand
         // Delegate method triggered when a new scene is loaded.
         private void NewSceneLoaded(Scene arg0, LoadSceneMode arg1)
         {
+            // Check if it's world map or level.
+
+            /*
+            if (arg0.name.Contains("Level"))
+            {
+                SetupLevel();
+            }
+            else
+            {
+                // SetupWorldmap();
+            }
+            */
+
             SetupLevel();
         }
 
@@ -92,6 +106,7 @@ namespace KekeDreamLand
         {
             // Gameobject or script.
             boing = GameObject.FindGameObjectWithTag("Player");
+            boingScript = boing.GetComponent<BoingManager>();
 
             cameraFollow = Camera.main.GetComponent<CustomCamera2DFollow>();
 
@@ -114,6 +129,8 @@ namespace KekeDreamLand
             featherCount = 0;
             featherPickedUp = 0;
             CountFeathersInCurrentLevel();
+
+            UpdateLifePoints(boingScript.maxLifePoints);
         }
 
         #endregion
