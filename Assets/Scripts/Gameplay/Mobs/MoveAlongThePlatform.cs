@@ -13,8 +13,13 @@ namespace KekeDreamLand
     {
         #region Inspector attributes
 
-        public float speed = 0.5f;
-        public bool moveToRightFirst;
+        public float speed = 1.0f;
+
+        [Tooltip("Check that if you want that this mob start to facingRight.")]
+        public bool facingRight;
+
+        [Tooltip("Check that if you want that this mob collide with other mobs.")]
+        public bool collideWithOthers = false;
 
         #endregion
 
@@ -40,7 +45,7 @@ namespace KekeDreamLand
             mobScript = GetComponent<Mob>();
             hitbox = GetComponent<BoxCollider2D>();
 
-            direction = moveToRightFirst ? 1.0f : -1.0f;
+            direction = facingRight ? 1.0f : -1.0f;
             // Flip the sprite if necessary.
             if (direction > 0)
                 mobScript.FlipSprite();
@@ -71,11 +76,23 @@ namespace KekeDreamLand
 
             RaycastHit2D hit = Physics2D.Raycast(rayOrigin, Vector2.down, rayLength);
 
-            // Change direction of the 
+            // Change direction of the mob
             if (!hit || hit.collider && hit.collider.tag == "OutOfBound")
             {
                 mobScript.FlipSprite();
 
+                direction *= -1;
+            }
+        }
+
+        private void OnTriggerEnter2D(Collider2D collision)
+        {
+            if (!collideWithOthers)
+                return;
+
+            if(collision.tag == "Ennemy")
+            {
+                mobScript.FlipSprite();
                 direction *= -1;
             }
         }

@@ -56,7 +56,7 @@ GameObject:
   - component: {fileID: 58688165211210608}
   m_Layer: 0
   m_Name: Dodo
-  m_TagString: Untagged
+  m_TagString: Ennemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

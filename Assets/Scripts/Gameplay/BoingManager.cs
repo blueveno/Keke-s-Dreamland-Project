@@ -22,6 +22,7 @@ namespace KekeDreamLand
 
         [Header("Attack")]
         public float timeBetweenAttack = 0.5f;
+        public Vector2 attackBox;
 
         #endregion
 
@@ -78,7 +79,6 @@ namespace KekeDreamLand
 
         // Attack attributes
         private bool isAttacking;
-        private float attackRayLength = 0.5f;
 
         #endregion
 
@@ -96,8 +96,14 @@ namespace KekeDreamLand
 
         private void OnDrawGizmosSelected()
         {
+            // Debug bouncing range circle.
             Gizmos.color = Color.magenta;
             Gizmos.DrawWireSphere(transform.position, bouncingEffectRadius);
+
+            // Debug attack hitbox.
+            Gizmos.color = Color.red;
+            Vector2 pos = new Vector2(transform.position.x + transform.localScale.x * 0.5f, transform.position.y + 0.05f);
+            Gizmos.DrawCube(pos, attackBox);
         }
 
         #endregion
@@ -132,8 +138,6 @@ namespace KekeDreamLand
         {
             if (!isAttacking)
             {
-                boingAnimator.SetTrigger("Attack");
-
                 StartCoroutine(AttackEffect());
             }
         }
@@ -142,19 +146,23 @@ namespace KekeDreamLand
         {
             isAttacking = true;
 
+            boingAnimator.SetTrigger("Attack");
+
             yield return new WaitForSeconds(0.25f);
 
-            RaycastHit2D[] hits = Physics2D.RaycastAll(transform.position, Vector2.right * transform.localScale.x, attackRayLength, whatIsMobs);
+            // Positionnate and create attack hitbox.
+            Vector2 pos = new Vector2(transform.position.x + transform.localScale.x * 0.5f, transform.position.y + 0.05f);
+            Collider2D[] hits = Physics2D.OverlapBoxAll(pos, attackBox, 0.0f, whatIsMobs);
 
-            Debug.DrawRay(transform.position, Vector2.right * transform.localScale.x * attackRayLength, Color.red, 1.0f);
-
-            foreach (RaycastHit2D hit in hits)
+            // Attack concerns all mob touch by the ray.
+            foreach (Collider2D hit in hits)
             {
-
-                if (hit.collider && hit.collider.tag != "Player")
+                if (hit && hit.tag != "Player")
                 {
-                    Mob mob = hit.collider.gameObject.GetComponent<Mob>();
-                    if(mob)
+                    Mob mob = hit.gameObject.GetComponent<Mob>();
+
+                    // Damage mob hit.
+                    if (mob)
                         mob.LifePoints--;
                 }
             }

@@ -4,7 +4,8 @@ using UnityEngine;
 
 namespace KekeDreamLand
 {
-    // TODO life system or invincibility.
+    // TODO Feedback when the mob is hit by Player
+    // TODO Feedback when the mob dies ?
 
     /// <summary>
     /// Attach this to any enemy in the game. Inherit if the mob need a specialized behaviour.
@@ -44,7 +45,7 @@ namespace KekeDreamLand
             {
                 // No taking damage if invincible.
                 if (invincible)
-                    return; // TODO check if it's possible.
+                    return;
 
                 lifePoints = value;
 
@@ -70,6 +71,9 @@ namespace KekeDreamLand
 
             if(canBounce)
                 noteEmitter = transform.Find("NoteEmitter").gameObject;
+
+            // Setup mob.
+            lifePoints = mobLifePoints;
         }
 
         private void OnTriggerEnter2D(Collider2D collision)
@@ -162,6 +166,7 @@ namespace KekeDreamLand
             foreach(AIBehaviour ai in ais)
             {
                 ai.enabled = enabled;
+
                 Debug.Log(ai.name + " : " + enabled);
             }
         }

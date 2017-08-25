@@ -42,6 +42,11 @@ namespace KekeDreamLand
         private bool isEndOfLevel;
         private bool isInternalTransition;
 
+        public bool IsTransition
+        {
+            get { return isEndOfLevel || isInternalTransition; }
+        }
+
         public int FeatherPickedUp
         {
             get { return featherPickedUp; }

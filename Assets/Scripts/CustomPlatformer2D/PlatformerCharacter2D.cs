@@ -181,6 +181,8 @@ namespace KekeDreamLand
 
         #endregion
 
+        #region Private methods
+
         private IEnumerator ResetIgnoringOfCollision(Collider2D platform)
         {
             yield return new WaitForSeconds(0.5f);
@@ -199,5 +201,7 @@ namespace KekeDreamLand
             theScale.x *= -1;
             transform.localScale = theScale;
         }
+
+        #endregion
     }
 }

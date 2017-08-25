@@ -1,48 +1,34 @@
 fileFormatVersion: 2
-guid: 667eb7f71636a8b4c932ec19e8d91275
-timeCreated: 1503176814
+guid: 51791e67f5edbc4419feb945bb2c723a
+timeCreated: 1503661414
 licenseType: Free
 TextureImporter:
   fileIDToRecycleName:
-    21300000: Boing_idle_0
-    21300002: Boing_v2_idle_1
-    21300004: Boing_v2_idle_2
-    21300006: Boing_v2_idle_3
-    21300008: Boing_v2_idle_4
-    21300010: Boing_v2_idle_5
-    21300012: Boing_v2_idle_6
-    21300014: Boing_v2_idle_7
-    21300016: Boing_v2_idle_8
-    21300018: Boing_v2_idle_9
-    21300020: Boing_v2_idle_10
-    21300022: Boing_v2_idle_11
-    21300024: Boing_v2_idle_12
-    21300026: Boing_v2_idle_13
-    21300028: Boing_v2_idle_14
-    21300030: Boing_v2_idle_15
-    21300032: Boing_v2_idle_16
-    21300034: Boing_v2_idle_17
-    21300036: Boing_v2_idle_18
-    21300038: Boing_v2_idle_19
-    21300040: Boing_idle_1
-    21300042: Boing_idle_2
-    21300044: Boing_idle_3
-    21300046: Boing_idle_4
-    21300048: Boing_idle_5
-    21300050: Boing_idle_6
-    21300052: Boing_idle_7
-    21300054: Boing_idle_8
-    21300056: Boing_idle_9
-    21300058: Boing_idle_10
-    21300060: Boing_idle_11
-    21300062: Boing_idle_12
-    21300064: Boing_idle_13
-    21300066: Boing_idle_14
-    21300068: Boing_idle_15
-    21300070: Boing_idle_16
-    21300072: Boing_idle_17
-    21300074: Boing_idle_18
-    21300076: Boing_idle_19
+    21300000: Squirrel_right_0
+    21300002: Squirrel_right_1
+    21300004: Squirrel_right_2
+    21300006: Squirrel_right_3
+    21300008: Squirrel_right_4
+    21300010: Squirrel_right_5
+    21300012: Squirrel_right_6
+    21300014: Squirrel_right_7
+    21300016: Squirrel_right_8
+    21300018: Squirrel_right_9
+    21300020: Squirrel_right_10
+    21300022: Squirrel_right_11
+    21300024: Squirrel_right_12
+    21300026: Squirrel_right_13
+    21300028: Squirrel_right_14
+    21300030: Squirrel_right_15
+    21300032: Squirrel_right_16
+    21300034: Squirrel_right_17
+    21300036: Squirrel_right_18
+    21300038: Squirrel_right_19
+    21300040: Squirrel_right_20
+    21300042: Squirrel_right_21
+    21300044: Squirrel_right_22
+    21300046: Squirrel_right_23
+    21300048: Squirrel_right_24
   serializedVersion: 4
   mipmaps:
     mipMapMode: 0
@@ -86,7 +72,7 @@ TextureImporter:
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spritePixelsToUnits: 32
   alphaUsage: 1
-  alphaIsTransparency: 0
+  alphaIsTransparency: 1
   spriteTessellationDetail: -1
   textureType: 8
   textureShape: 1
@@ -95,30 +81,14 @@ TextureImporter:
   textureFormatSet: 0
   platformSettings:
   - buildTarget: DefaultTexturePlatform
-    maxTextureSize: 1024
+    maxTextureSize: 2048
     textureFormat: -1
-    textureCompression: 0
+    textureCompression: 1
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
     overridden: 0
   - buildTarget: Standalone
-    maxTextureSize: 1024
-    textureFormat: -1
-    textureCompression: 0
-    compressionQuality: 50
-    crunchedCompression: 0
-    allowsAlphaSplitting: 0
-    overridden: 0
-  - buildTarget: Android
-    maxTextureSize: 2048
-    textureFormat: 47
-    textureCompression: 1
-    compressionQuality: 50
-    crunchedCompression: 0
-    allowsAlphaSplitting: 0
-    overridden: 1
-  - buildTarget: WebGL
     maxTextureSize: 2048
     textureFormat: -1
     textureCompression: 1
@@ -130,7 +100,7 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Boing_idle_0
+      name: Squirrel_right_0
       rect:
         serializedVersion: 2
         x: 0
@@ -144,7 +114,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: Boing_idle_1
+      name: Squirrel_right_1
       rect:
         serializedVersion: 2
         x: 32
@@ -158,7 +128,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: Boing_idle_2
+      name: Squirrel_right_2
       rect:
         serializedVersion: 2
         x: 64
@@ -172,7 +142,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: Boing_idle_3
+      name: Squirrel_right_3
       rect:
         serializedVersion: 2
         x: 96
@@ -186,7 +156,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: Boing_idle_4
+      name: Squirrel_right_4
       rect:
         serializedVersion: 2
         x: 128
@@ -200,7 +170,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: Boing_idle_5
+      name: Squirrel_right_5
       rect:
         serializedVersion: 2
         x: 160
@@ -214,7 +184,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: Boing_idle_6
+      name: Squirrel_right_6
       rect:
         serializedVersion: 2
         x: 192
@@ -228,7 +198,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: Boing_idle_7
+      name: Squirrel_right_7
       rect:
         serializedVersion: 2
         x: 224
@@ -242,7 +212,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: Boing_idle_8
+      name: Squirrel_right_8
       rect:
         serializedVersion: 2
         x: 256
@@ -256,7 +226,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: Boing_idle_9
+      name: Squirrel_right_9
       rect:
         serializedVersion: 2
         x: 288
@@ -270,7 +240,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: Boing_idle_10
+      name: Squirrel_right_10
       rect:
         serializedVersion: 2
         x: 320
@@ -284,7 +254,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: Boing_idle_11
+      name: Squirrel_right_11
       rect:
         serializedVersion: 2
         x: 352
@@ -298,7 +268,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: Boing_idle_12
+      name: Squirrel_right_12
       rect:
         serializedVersion: 2
         x: 384
@@ -312,7 +282,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: Boing_idle_13
+      name: Squirrel_right_13
       rect:
         serializedVersion: 2
         x: 416
@@ -326,7 +296,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: Boing_idle_14
+      name: Squirrel_right_14
       rect:
         serializedVersion: 2
         x: 448
@@ -340,7 +310,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: Boing_idle_15
+      name: Squirrel_right_15
       rect:
         serializedVersion: 2
         x: 480
@@ -354,7 +324,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: Boing_idle_16
+      name: Squirrel_right_16
       rect:
         serializedVersion: 2
         x: 512
@@ -368,7 +338,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: Boing_idle_17
+      name: Squirrel_right_17
       rect:
         serializedVersion: 2
         x: 544
@@ -382,7 +352,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: Boing_idle_18
+      name: Squirrel_right_18
       rect:
         serializedVersion: 2
         x: 576
@@ -396,10 +366,80 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: Boing_idle_19
+      name: Squirrel_right_19
       rect:
         serializedVersion: 2
         x: 608
+        y: 0
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: Squirrel_right_20
+      rect:
+        serializedVersion: 2
+        x: 640
+        y: 0
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: Squirrel_right_21
+      rect:
+        serializedVersion: 2
+        x: 672
+        y: 0
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: Squirrel_right_22
+      rect:
+        serializedVersion: 2
+        x: 704
+        y: 0
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: Squirrel_right_23
+      rect:
+        serializedVersion: 2
+        x: 736
+        y: 0
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: Squirrel_right_24
+      rect:
+        serializedVersion: 2
+        x: 768
         y: 0
         width: 32
         height: 32
