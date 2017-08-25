@@ -48,7 +48,7 @@ namespace KekeDreamLand
         private void Update()
         {
             // Stop interaction with game in specific case (intern transition, end of the level, ...).
-            if (GameManager.instance.IsTransition)
+            if (GameManager.instance.CurrentLevel.IsTransition)
             {
                 StopBoing();
                 return;
@@ -66,7 +66,7 @@ namespace KekeDreamLand
         private void FixedUpdate()
         {
             // Stop interaction with game in specific case (intern transition, end of the level, ...).
-            if (GameManager.instance.IsTransition)
+            if (GameManager.instance.CurrentLevel.IsTransition)
             {
                 StopBoing();
                 return;
@@ -196,7 +196,7 @@ namespace KekeDreamLand
         }
 
         // Stop instantaneously Boing at his current position.
-        private void StopBoing()
+        public void StopBoing()
         {
             m_Character.Move(0.0f, false, false);
         }
@@ -210,7 +210,7 @@ namespace KekeDreamLand
         {
             if (CrossPlatformInputManager.GetButtonDown("ToggleHUD"))
             {
-                GameManager.instance.ToggleHUD();
+                GameManager.instance.CurrentLevel.ToggleHUD();
             }
         }
 

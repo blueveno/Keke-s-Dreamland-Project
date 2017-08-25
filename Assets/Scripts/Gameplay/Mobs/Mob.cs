@@ -97,7 +97,7 @@ namespace KekeDreamLand
             if (canBounce)
                 Bounce();
             else
-                Debug.Log(name + " can't bounce !");
+                Debug.LogWarning(name + " can't bounce !");
 
             // TODO feedback when not affected.
         }

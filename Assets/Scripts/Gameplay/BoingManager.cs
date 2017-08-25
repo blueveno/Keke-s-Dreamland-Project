@@ -61,7 +61,7 @@ namespace KekeDreamLand
                     lifePoints = maxLifePoints;
 
                 // Update HUD.
-                GameManager.instance.UpdateLifePoints(lifePoints);
+                GameManager.instance.CurrentLevel.UpdateLifePoints(lifePoints);
 
                 // TODO temprorary invulnerability.
             }
@@ -197,11 +197,10 @@ namespace KekeDreamLand
         {
             // TODO animation, sound, ...
 
-            GameManager.instance.FadeInAndReload();
+            GameManager.instance.TriggerFadeIn();
 
-            // Stop the player and disable inputs interaction.
-            GetComponent<Platformer2DUserControl>().enabled = false;
-            GetComponent<PlatformerCharacter2D>().Move(0.0f, false, false);
+            // Stop Boing velocity.
+            GetComponent<Platformer2DUserControl>().StopBoing();
         }
 
         #endregion

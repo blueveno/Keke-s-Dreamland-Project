@@ -331,6 +331,8 @@ MonoBehaviour:
   whatIsMobs:
     serializedVersion: 2
     m_Bits: 512
+  timeBetweenAttack: 0.5
+  attackBox: {x: 0.6, y: 0.25}
 --- !u!198 &198838159415641174
 ParticleSystem:
   m_ObjectHideFlags: 1
@@ -3642,9 +3644,9 @@ ParticleSystemRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingLayerID: -79787979
+  m_SortingLayer: 3
+  m_SortingOrder: 2
   m_RenderMode: 3
   m_SortMode: 3
   m_MinParticleSize: 0

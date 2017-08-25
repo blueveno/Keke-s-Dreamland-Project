@@ -1,63 +1,44 @@
-﻿// Dont delete for list or coroutine.
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
-
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
 namespace KekeDreamLand
 {
     /// <summary>
-    /// Manage game. Don't destroy on load.
+    /// The GameManager permit to switch easily between scenes.
     /// </summary>
     public class GameManager : MonoBehaviour
     {
-        [Tooltip("build index of the world map scene.")]
-        public int worldMapIndex;
+        #region Inspector attributes
 
-        #region GameManager Attributes
+        [Header("Build indexes :")]
+        public int mainMenuIndex = 0;
+        public int worldMapIndex = 1;
 
-        // Singleton.
+        // TODO player progress class.
+        // See Trello !
+
+        #endregion
+
+        #region Game Manager attributes
+
+        /// <summary>
+        /// Singleton of the gamemanager.
+        /// </summary>
         public static GameManager instance = null;
 
-        // Boing gameobject and scripts...
-        private GameObject boing;
-        private BoingManager boingScript;
+        /// <summary>
+        /// Level manager. Ready only.
+        /// </summary>
+        public LevelManager CurrentLevel { get; private set; }
 
-        // Ui
+        // Animation transition script.
         private GameObject ui;
-        private HUDManager hudManager;
-
-        // Camera follow script.
-        private CustomCamera2DFollow cameraFollow;
-
-        // Transition script.
         private TransitionManager transitionManager;
 
-        // internal transition attributes.
-        private GameObject nextArea;
-        private Vector3 nextPosition;
-
-        // Game manager attributes.
-        private bool isEndOfLevel;
-        private bool isInternalTransition;
-
-        public bool IsTransition
-        {
-            get { return isEndOfLevel || isInternalTransition; }
-        }
-
-        public int FeatherPickedUp
-        {
-            get { return featherPickedUp; }
-
-            set {
-                featherPickedUp = value;
-                RefreshFeatherCount();
-            }
-        }
-        private int featherPickedUp = 0;
-        private int featherCount = 0;
+        private bool isWorldMap = false;
+        private WorldMapManager worldmap;
 
         #endregion
 
@@ -66,209 +47,195 @@ namespace KekeDreamLand
         private void Awake()
         {
             SingletonThis();
+        }
 
+        private void OnEnable()
+        {
+            // Called only once because it's singleton.
             SceneManager.sceneLoaded += NewSceneLoaded;
+        }
 
-            SetupLevel();
+        private void OnDisable()
+        {
+            SceneManager.sceneLoaded -= NewSceneLoaded;
         }
 
         #endregion
 
-        #region Private methods
+        #region GameManager methods
+
+        // Delegate method triggered when a new scene is loaded.
+        private void NewSceneLoaded(Scene arg0, LoadSceneMode arg1)
+        {
+            // Reset information.
+            CurrentLevel = null;
+
+            isWorldMap = false;
+            worldmap = null;
+
+            // Setup transition manager of the current scene.
+            ui = GameObject.FindGameObjectWithTag("UI");
+            if (ui)
+                transitionManager = ui.transform.Find("TransitionPanel").GetComponent<TransitionManager>();
+
+            // Load main menu :
+            if (arg0.buildIndex == mainMenuIndex)
+            {
+                // Here we can change settings. Create new game or load existing game.
+            }
+
+            // Load world map :
+            else if (arg0.buildIndex == worldMapIndex)
+            {
+                isWorldMap = true;
+                worldmap = GameObject.Find("WorldMap").GetComponent<WorldMapManager>();
+
+                // Here we can move on the world map and enter in a level.
+                // TODO Don't display map until the player data are correcly loaded.
+            }
+
+            // Load a level :
+            else
+            {
+                // Try to get the level manager of this level.
+                GameObject levelManager = GameObject.FindGameObjectWithTag("LevelManager");
+                if (levelManager)
+                {
+                    CurrentLevel = levelManager.GetComponent<LevelManager>();
+                }
+            }
+        }
 
         // Singleton this class.
         private void SingletonThis()
         {
             if (instance == null)
                 instance = this;
+
             else
+            {
                 Destroy(gameObject);
+                return;
+            }
 
             DontDestroyOnLoad(gameObject);
         }
 
-        // Delegate method triggered when a new scene is loaded.
-        private void NewSceneLoaded(Scene arg0, LoadSceneMode arg1)
+        #endregion
+
+        #region Load and Save System
+
+        #endregion
+
+        #region Scene management
+
+        /// <summary>
+        /// Switch to the main menu scene.
+        /// </summary>
+        public void SwitchToMainMenu()
         {
-            // Check if it's world map or level.
-
-            /*
-            if (arg0.name.Contains("Level"))
-            {
-                SetupLevel();
-            }
-            else
-            {
-                // SetupWorldmap();
-            }
-            */
-
-            SetupLevel();
+            SceneManager.LoadScene(mainMenuIndex);
         }
 
-        // Setup all components and variables of the gamemanager.
-        private void SetupLevel()
+        /// <summary>
+        /// Switch to the world map scene.
+        /// </summary>
+        public void SwitchToWorldMap()
         {
-            // Gameobject or script.
-            boing = GameObject.FindGameObjectWithTag("Player");
-            boingScript = boing.GetComponent<BoingManager>();
-
-            cameraFollow = Camera.main.GetComponent<CustomCamera2DFollow>();
-
-            ui = GameObject.FindGameObjectWithTag("UI");
-            if (ui)
-            {
-                transitionManager = ui.transform.Find("TransitionPanel").GetComponent<TransitionManager>();
-                hudManager = ui.transform.Find("HUD").GetComponent<HUDManager>();
-            }
-
-            // Other
-            isEndOfLevel = false;
-            isInternalTransition = false;
-
-            ResetItemsPickedUp();
+            SceneManager.LoadScene(worldMapIndex);
         }
 
-        private void ResetItemsPickedUp()
+        /// <summary>
+        /// Switch to the new specified level.
+        /// </summary>
+        /// <param name="world">world index</param>
+        /// <param name="level">level index of this world</param>
+        public void SwitchToNewLevel(int world, int level)
         {
-            featherCount = 0;
-            featherPickedUp = 0;
-            CountFeathersInCurrentLevel();
+            SceneManager.LoadScene("Level " + world + "-" + level);
+        }
 
-            UpdateLifePoints(boingScript.maxLifePoints);
+        /// <summary>
+        /// Reset current loaded scene.
+        /// </summary>
+        public void ResetCurrentScene()
+        {
+            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
         }
 
         #endregion
 
-        #region Game management
+        #region Level management
 
         /// <summary>
         /// Use this when you want to finish the current level.
         /// </summary>
-        public void FinishLevel()
+        public void FinishCurrentLevel()
         {
-            isEndOfLevel = true;
+            CurrentLevel.IsLevelFinished = true;
 
+            // TODO for levelFinished : display a "Level finished" panel where the player can see what he has found and chose to go to the world map, go to main menu or quit.
+
+            // TODO fadeIn when the player has chose a button.
             transitionManager.FadeIn();
         }
+
+        #endregion
+
+        #region Transition management
 
         /// <summary>
         /// Use this when you want to fade in and reload the current scene.
         /// </summary>
-        public void FadeInAndReload()
+        public void TriggerFadeIn()
         {
             transitionManager.FadeIn();
         }
 
-        /// <summary>
-        /// Trigger an internal transition (Switch to an another area in the same scene).
-        /// </summary>
-        /// <param name="newArea">New Area to reach.</param>
-        /// <param name="newPosition">New position of Boing in this area.</param>
-        public void TriggerInternalTransition(GameObject newArea, Vector3 newPosition)
-        {
-            isInternalTransition = true;
-
-            transitionManager.FadeIn();
-
-            nextArea = newArea;
-            nextPosition = newPosition;
-            nextPosition.z = boing.transform.position.z;
-        }
+        // TODO use delegate to easily done what we want when fadeIn is finished.
 
         /// <summary>
         /// Event triggered when a fadeIn transition animation finished.
         /// </summary>
         public void FadeInFinished()
         {
-            // Case of an end of level.
-            if (isEndOfLevel)
-                NextLevel();
-
-            // Case of an internal transition.
-            else if (isInternalTransition)
+            // Case of a level scene.
+            if(CurrentLevel)
             {
-                isInternalTransition = false;
+                // Case of an end of level.
+                if (CurrentLevel.IsLevelFinished)
+                    SwitchToWorldMap();
 
-                // Move Boing and Camera view when user don't see.
-                boing.transform.position = nextPosition;
-                cameraFollow.CurrentArea = nextArea.GetComponent<AreaEditor>();
-
-                transitionManager.FadeOut();
-
-                nextArea = null;
-            }
-
-            // Case of a restart of the level.
-            else
-                ResetCurrentScene();
-        }
-
-        private void CountFeathersInCurrentLevel()
-        {
-            GameObject[] items = GameObject.FindGameObjectsWithTag("Item");
-            foreach(GameObject g in items)
-            {
-                if(g.name.Contains("Feather"))
+                // Case of an internal transition.
+                else if (CurrentLevel.IsInternalTransition)
                 {
-                    featherCount++;
+                    // Move Boing and Camera view when user don't see.
+                    CurrentLevel.MoveBoingToNewArea();
+
+                    transitionManager.FadeOut();
+                    return;
                 }
+
+                // Case of a restart of the level.
+                else
+                    ResetCurrentScene();
+
+                CurrentLevel = null;
+                return;
             }
 
-            RefreshFeatherCount();
-        }
-
-        #endregion
-
-        #region Scene management
-
-        // Switch to the next scene.
-        private void NextLevel()
-        {
-            //SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex+1);
-
-            // TEMPORARY loop with the current loaded scene.
-            ResetCurrentScene();
-        }
-
-        // Switch to the world map scene.
-        private void SwitchToWorldMap()
-        {
-            SceneManager.LoadScene(worldMapIndex);
-        }
-
-        // Reset current loaded scene.
-        private void ResetCurrentScene()
-        {
-            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
-            ResetItemsPickedUp();
-        }
-
-        #endregion
-
-        #region HUD management
-
-        /// <summary>
-        /// Request HUD to be toggled.
-        /// </summary>
-        public void ToggleHUD()
-        {
-            hudManager.ToggleHUD();
-        }
-
-        /// <summary>
-        /// Request lifepoints to be updated in hud.
-        /// </summary>
-        public void UpdateLifePoints(int lifePoints)
-        {
-            hudManager.UpdateLifePoints(lifePoints);
-        }
-
-        private void RefreshFeatherCount()
-        {
-            hudManager.UpdateFeatherPickedUp(featherPickedUp, featherCount);
+            else if(isWorldMap)
+            {
+                worldmap.SwitchToNewLevel();
+            }
+            
+            else
+            {
+                SwitchToWorldMap();
+            }
         }
 
         #endregion
     }
+
 }
