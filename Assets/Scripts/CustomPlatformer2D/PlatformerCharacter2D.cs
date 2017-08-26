@@ -7,6 +7,7 @@ namespace KekeDreamLand
     {
         #region Inspector attributes
 
+        [SerializeField] private float m_maxYSpeed = 4f;
         [SerializeField] private float m_MaxSpeed = 10f;                    // The fastest the player can travel in the x axis.
         [SerializeField] private float m_JumpForce = 400f;                  // Amount of force added when the player jumps.
         [Range(0, 1)] [SerializeField] private float m_CrouchSpeed = .36f;  // Amount of maxSpeed applied to crouching movement. 1 = 100%
@@ -18,7 +19,7 @@ namespace KekeDreamLand
         #region Private attributes
 
         private Transform m_GroundCheck;    // A position marking where to check if the player is grounded.
-        const float k_GroundedRadius = .14f; // Radius of the overlap circle to determine if grounded
+        const float k_GroundedRadius = .12f; // Radius of the overlap circle to determine if grounded
         private bool m_Grounded;            // Whether or not the player is grounded.
         private Transform m_CeilingCheck;   // A position marking where to check for ceilings
         const float k_CeilingRadius = .01f; // Radius of the overlap circle to determine if the player can stand up
@@ -73,6 +74,11 @@ namespace KekeDreamLand
 
             // Set the vertical animation
             m_Anim.SetFloat("vSpeed", m_Rigidbody2D.velocity.y);
+
+            if (m_Rigidbody2D.velocity.y >= m_maxYSpeed)
+            {
+                m_Rigidbody2D.velocity = new Vector2(m_Rigidbody2D.velocity.x, m_maxYSpeed);
+            }
         }
 
         private void OnDrawGizmosSelected()
@@ -140,6 +146,7 @@ namespace KekeDreamLand
                 // Add a vertical force to the player.
                 m_Grounded = false;
                 m_Anim.SetBool("Ground", false);
+                
                 m_Rigidbody2D.AddForce(new Vector2(0f, m_JumpForce));
 
                 m_Anim.SetTrigger("Jump");
@@ -174,6 +181,8 @@ namespace KekeDreamLand
 
         #endregion
 
+        #region Private methods
+
         private IEnumerator ResetIgnoringOfCollision(Collider2D platform)
         {
             yield return new WaitForSeconds(0.5f);
@@ -192,5 +201,7 @@ namespace KekeDreamLand
             theScale.x *= -1;
             transform.localScale = theScale;
         }
+
+        #endregion
     }
 }

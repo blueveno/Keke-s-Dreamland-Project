@@ -9,6 +9,8 @@ TagManager:
   - Wall
   - OutOfBound
   - Item
+  - Ennemy
+  - LevelManager
   layers:
   - Default
   - TransparentFX

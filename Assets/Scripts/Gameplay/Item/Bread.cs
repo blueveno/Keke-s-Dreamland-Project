@@ -17,9 +17,7 @@ namespace KekeDreamLand
         // Trigger the end of the level.
         private void TriggerEnd()
         {
-            Debug.LogWarning("END OF THE LEVEL");
-
-            GameManager.instance.FinishLevel();
+            GameManager.instance.FinishCurrentLevel();
         }
     }
 }

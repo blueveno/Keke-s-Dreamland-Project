@@ -1,5 +1,7 @@
 ﻿using UnityEngine;
 
+// TODO Check sides of the mob (and then add a boolean to collide with other mobs).
+
 namespace KekeDreamLand
 {
     /// <summary>
@@ -11,15 +13,20 @@ namespace KekeDreamLand
     {
         #region Inspector attributes
 
-        public float speed = 0.5f;
-        public bool moveToRightFirst;
+        public float speed = 1.0f;
+
+        [Tooltip("Check that if you want that this mob start to facingRight.")]
+        public bool facingRight;
+
+        [Tooltip("Check that if you want that this mob collide with other mobs.")]
+        public bool collideWithOthers = false;
 
         #endregion
 
         #region Private attributes
 
         private BoxCollider2D hitbox;
-        private SpriteRenderer spriteRenderer;
+        private Mob mobScript;
 
         // Direction to move.
         private float direction;
@@ -35,13 +42,13 @@ namespace KekeDreamLand
 
         private void Awake()
         {
-            spriteRenderer = GetComponent<SpriteRenderer>();
+            mobScript = GetComponent<Mob>();
             hitbox = GetComponent<BoxCollider2D>();
 
-            direction = moveToRightFirst ? 1.0f : -1.0f;
+            direction = facingRight ? 1.0f : -1.0f;
             // Flip the sprite if necessary.
             if (direction > 0)
-                spriteRenderer.flipX = true;
+                mobScript.FlipSprite();
         }
 
         private void FixedUpdate()
@@ -69,21 +76,30 @@ namespace KekeDreamLand
 
             RaycastHit2D hit = Physics2D.Raycast(rayOrigin, Vector2.down, rayLength);
 
+            // Change direction of the mob
             if (!hit || hit.collider && hit.collider.tag == "OutOfBound")
             {
-                Flip();
+                mobScript.FlipSprite();
+
+                direction *= -1;
+            }
+        }
+
+        private void OnTriggerEnter2D(Collider2D collision)
+        {
+            if (!collideWithOthers)
+                return;
+
+            if(collision.tag == "Ennemy")
+            {
+                mobScript.FlipSprite();
+                direction *= -1;
             }
         }
 
         private void Move()
         {
             transform.Translate(Vector3.right * direction * speed * Time.deltaTime);
-        }
-
-        private void Flip()
-        {
-            spriteRenderer.flipX = !spriteRenderer.flipX;
-            direction *= -1;
         }
 
         #endregion

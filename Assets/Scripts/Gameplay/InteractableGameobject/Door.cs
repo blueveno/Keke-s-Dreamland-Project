@@ -70,7 +70,7 @@ namespace KekeDreamLand
             PreventUseDoor();
             doorLinked.PreventUseDoor();
 
-            GameManager.instance.TriggerInternalTransition(doorLinked.currentArea, doorLinked.transform.position);
+            GameManager.instance.CurrentLevel.PrepareInternalTransition(doorLinked.currentArea, doorLinked.transform.position);
         }
 
         // TODO in another way ? Stop time and input interaction during animation ?
