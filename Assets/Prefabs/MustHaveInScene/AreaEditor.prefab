@@ -482,8 +482,8 @@ MonoBehaviour:
   - {fileID: 1633542951454158}
   - {fileID: 1847873914041790}
   killzone: {fileID: 1244839035950094}
-  level:
-    raw: 8
+  area:
+    raw: 5
     column: 8
   showBorder: 1
   showGrid: 1

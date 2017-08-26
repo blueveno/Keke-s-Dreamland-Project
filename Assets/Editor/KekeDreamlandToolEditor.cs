@@ -19,7 +19,7 @@ public class KekeDreamlandToolEditor : Editor
         EditorGUILayout.LabelField("Boing manipulation :");
         if (GUILayout.Button("Select Boing"))
         {
-            tools.SelectBoing();
+            SelectBoing();
         }
 
         EditorGUILayout.Space();
@@ -32,12 +32,16 @@ public class KekeDreamlandToolEditor : Editor
         {
             gridsDisplayed = !gridsDisplayed;
             tools.DisplayGrid(gridsDisplayed);
+
+            SceneView.RepaintAll();
         }
 
         if (GUILayout.Button("Toggle borders"))
         {
             bordersDisplayed = !bordersDisplayed;
             tools.DisplayBorder(bordersDisplayed);
+
+            SceneView.RepaintAll();
         }
 
         EditorGUILayout.EndHorizontal();
@@ -45,5 +49,10 @@ public class KekeDreamlandToolEditor : Editor
         EditorGUILayout.Space();
 
         EditorGUILayout.HelpBox("Need a new button ? Ask to Bib' !", MessageType.Info);
+    }
+
+    private void SelectBoing()
+    {
+        Selection.activeGameObject = GameObject.FindGameObjectWithTag("Player");
     }
 }

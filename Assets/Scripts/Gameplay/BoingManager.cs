@@ -18,12 +18,18 @@ namespace KekeDreamLand
 
         [Header("Bouncing")]
         public float bouncingEffectRadius = 2.5f;
-        [SerializeField]
-        private LayerMask whatIsMobs;
+        [SerializeField] private LayerMask whatIsMobs;
+
+        [Header("Attack")]
+        public float timeBetweenAttack = 0.5f;
+        public Vector2 attackBox;
 
         #endregion
 
         #region Private attributes
+
+        private Animator boingAnimator;
+        private ParticleSystem noteEmitter;
 
         /// <summary>
         /// Current interactable gameobject in range of Boing. null if nothing is in range.
@@ -55,20 +61,24 @@ namespace KekeDreamLand
                     lifePoints = maxLifePoints;
 
                 // Update HUD.
-                GameManager.instance.UpdateLifePoints(lifePoints);
+                GameManager.instance.CurrentLevel.UpdateLifePoints(lifePoints);
 
                 // TODO temprorary invulnerability.
             }
         }
         private int lifePoints; // max 3
         
+        /// <summary>
+        /// Return true if Boing is actually bouncing.
+        /// </summary>
         public bool IsBouncing
         {
             get { return boingAnimator.GetBool("Bouncing"); }
             set { boingAnimator.SetBool("Bouncing", value); }
         }
 
-        private Animator boingAnimator;
+        // Attack attributes
+        private bool isAttacking;
 
         #endregion
 
@@ -77,6 +87,7 @@ namespace KekeDreamLand
         private void Awake()
         {
             boingAnimator = GetComponent<Animator>();
+            noteEmitter = GetComponentInChildren<ParticleSystem>();
 
             interactableGoInRange = null;
 
@@ -85,8 +96,14 @@ namespace KekeDreamLand
 
         private void OnDrawGizmosSelected()
         {
+            // Debug bouncing range circle.
             Gizmos.color = Color.magenta;
             Gizmos.DrawWireSphere(transform.position, bouncingEffectRadius);
+
+            // Debug attack hitbox.
+            Gizmos.color = Color.red;
+            Vector2 pos = new Vector2(transform.position.x + transform.localScale.x * 0.5f, transform.position.y + 0.05f);
+            Gizmos.DrawCube(pos, attackBox);
         }
 
         #endregion
@@ -114,11 +131,45 @@ namespace KekeDreamLand
             CancelInvoke("BounceEffectInRange");
         }
 
+        /// <summary>
+        /// Trigger attack of Boing if it isn't already attacking.
+        /// </summary>
         public void Attack()
         {
+            if (!isAttacking)
+            {
+                StartCoroutine(AttackEffect());
+            }
+        }
+
+        private IEnumerator AttackEffect()
+        {
+            isAttacking = true;
+
             boingAnimator.SetTrigger("Attack");
 
-            // TODO activate attack hitbox.
+            yield return new WaitForSeconds(0.25f);
+
+            // Positionnate and create attack hitbox.
+            Vector2 pos = new Vector2(transform.position.x + transform.localScale.x * 0.5f, transform.position.y + 0.05f);
+            Collider2D[] hits = Physics2D.OverlapBoxAll(pos, attackBox, 0.0f, whatIsMobs);
+
+            // Attack concerns all mob touch by the ray.
+            foreach (Collider2D hit in hits)
+            {
+                if (hit && hit.tag != "Player")
+                {
+                    Mob mob = hit.gameObject.GetComponent<Mob>();
+
+                    // Damage mob hit.
+                    if (mob)
+                        mob.LifePoints--;
+                }
+            }
+
+            yield return new WaitForSeconds(0.25f);
+
+            isAttacking = false;
         }
 
         #endregion
@@ -128,6 +179,8 @@ namespace KekeDreamLand
         // Search all mob in range of the effect and trigger bounce effect to them.
         private void BounceEffectInRange()
         {
+            noteEmitter.Emit(1);
+
             Collider2D[] mobs = Physics2D.OverlapCircleAll(transform.position, bouncingEffectRadius, whatIsMobs);
 
             foreach (Collider2D c in mobs)
@@ -144,11 +197,10 @@ namespace KekeDreamLand
         {
             // TODO animation, sound, ...
 
-            GameManager.instance.FadeInAndReload();
+            GameManager.instance.TriggerFadeIn();
 
-            // Stop the player and disable inputs interaction.
-            GetComponent<Platformer2DUserControl>().enabled = false;
-            GetComponent<PlatformerCharacter2D>().Move(0.0f, false, false);
+            // Stop Boing velocity.
+            GetComponent<Platformer2DUserControl>().StopBoing();
         }
 
         #endregion

@@ -28,6 +28,8 @@ namespace KekeDreamLand
 
         #region Private attributes
 
+        private Mob mobScript;
+
         private Vector3 initialPosition;
         private Vector3 nextPatrolPoint;
         private int nextPatrolPointIndex;
@@ -41,6 +43,8 @@ namespace KekeDreamLand
         // Use this for initialization
         void Awake()
         {
+            mobScript = GetComponent<Mob>();
+
             initialPosition = transform.position;
             nextPatrolPointIndex = 1;
 
@@ -88,13 +92,15 @@ namespace KekeDreamLand
             {
                 reverseDirection = true;
                 nextPatrolPointIndex = patrolPoints.Count - 1;
-                GetComponent<SpriteRenderer>().flipX = true;
+
+                mobScript.FlipSprite();
             }
             else if (nextPatrolPointIndex == -1)
             {
                 reverseDirection = false;
                 nextPatrolPointIndex = 1;
-                GetComponent<SpriteRenderer>().flipX = false;
+
+                mobScript.FlipSprite();
             }
 
             if (reverseDirection)

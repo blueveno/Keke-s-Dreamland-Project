@@ -5,9 +5,9 @@ namespace KekeDreamLand
     [System.Serializable]
     public struct Area
     {
-        [Range(0, 50)]
+        [Range(0, 100)]
         public int raw;
-        [Range(0, 50)]
+        [Range(0, 100)]
         public int column;
     }
 
