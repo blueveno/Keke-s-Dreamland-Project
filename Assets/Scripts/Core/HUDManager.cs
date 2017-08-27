@@ -1,6 +1,8 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 
+using System.Collections.Generic;
+
 namespace KekeDreamLand
 {
     /// <summary>
@@ -9,9 +11,20 @@ namespace KekeDreamLand
     public class HUDManager : MonoBehaviour
     {
         #region Inspector attributes
-        
+
+        public GameObject featherParent;
         public Text featherText;
-        public Text lifePointsText;
+
+        [Header("Lifepoints :")]
+        
+        public Transform lifePointsParent;
+        public GameObject lifePointSprite;
+
+        [Header("Special items :")]
+        public Image KeySprite;
+        public Image RaisinBreadSprite;
+        public Image ChocolatineSprite;
+        public Image SunflowerSeedSprite;
 
         #endregion
 
@@ -19,6 +32,8 @@ namespace KekeDreamLand
 
         private Animator hudAnimator;
         private bool displayed;
+
+        private List<GameObject> lifePointsSprites = new List<GameObject>();
 
         #endregion
 
@@ -56,24 +71,81 @@ namespace KekeDreamLand
         }
 
         /// <summary>
-        /// Update the amount of lifepoints in the HUD.
+        /// Update the amount of lifepoints sprites in the HUD.
         /// </summary>
         /// <param name="lifePoints">New amount</param>
         public void UpdateLifePoints(int lifePoints)
         {
-            lifePointsText.text = lifePoints.ToString();
+            int spriteDiff = Mathf.Abs(lifePointsSprites.Count - lifePoints);
 
+            // Remove sprites from the lifepoints HUD.
+            if (lifePoints < lifePointsSprites.Count)
+            {
+                for(int i = 0; i < spriteDiff; i++)
+                {
+                    //GameObject spriteRemoved = lifePointsSprites[0];
+                    // TODO trigger animation ?
+
+                    Destroy(lifePointsSprites[0]);
+                    lifePointsSprites.RemoveAt(0);
+                }
+            }
+
+            // Add sprites to the lifepoints HUD.
+            else
+            {
+                for (int i = 0; i < spriteDiff; i++)
+                {
+                    GameObject sprite = Instantiate(lifePointSprite, lifePointsParent);
+                    lifePointsSprites.Add(sprite);
+                }
+            }
             // TODO Add animation or effect.
+        }
+
+        /// <summary>
+        /// Setup the feather indicators on the level HUD.
+        /// </summary>
+        /// <param name="count">Total number of collectable feathers.</param>
+        public void SetupFeatherIndicators(int count)
+        {
+            if (count == 0)
+            {
+                featherParent.SetActive(false);
+                return;
+            }
+
+            featherText.text = 0 + " / " + count;
         }
 
         /// <summary>
         /// Update the amount of feather picked up.
         /// </summary>
-        /// <param name="newAmount"></param>
-        /// <param name="count"></param>
+        /// <param name="newAmount">new amount of collected feathers.</param>
+        /// <param name="count">Total number of collectable feathers.</param>
         public void UpdateFeatherPickedUp(int newAmount, int count)
         {
             featherText.text = newAmount + " / " + count;
+        }
+
+        /// <summary>
+        /// Display the specific item indicator or not.
+        /// </summary>
+        /// <param name="specialItem">Which special item indicator to display.</param>
+        /// <param name="enabled">Displayed or not</param>
+        public void SetupSpecificItem(Image specialItem, bool displayed)
+        {
+            specialItem.gameObject.SetActive(displayed);
+        }
+
+        /// <summary>
+        /// Unlock a specific item.
+        /// </summary>
+        /// <param name="specialItem"></param>
+        public void UnlockSpecialItem(Image specialItem)
+        {
+            // TODO trigger animation of Unlock ?
+            specialItem.color = Color.white;
         }
 
         #endregion

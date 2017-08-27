@@ -49,25 +49,40 @@ namespace KekeDreamLand
             get { return lifePoints; }
 
             set {
-                lifePoints = value;
+                // No taking damage while Boing is invulnerable.
+                if (isInvulnerable)
+                    return;
 
-                if(lifePoints <= 0)
+                // Boing is damaged and no lifepoints remind.
+                if(value <= 0)
                 {
                     lifePoints = 0;
                     Die();
                 }
 
-                else if (lifePoints > maxLifePoints)
+                // Boing is heal but he's already full life.
+                else if (value > maxLifePoints)
+                {
                     lifePoints = maxLifePoints;
+                }
 
+                // Boing is damaged but life 
+                else
+                {
+                    lifePoints = value;
+
+                    // Trigger temporary invulnerability.
+                    StartCoroutine(Invulnerability());
+                }
+                
                 // Update HUD.
                 GameManager.instance.CurrentLevel.UpdateLifePoints(lifePoints);
-
-                // TODO temprorary invulnerability.
             }
         }
         private int lifePoints; // max 3
-        
+
+        private bool isInvulnerable = false;
+
         /// <summary>
         /// Return true if Boing is actually bouncing.
         /// </summary>
@@ -191,6 +206,34 @@ namespace KekeDreamLand
                 Mob mob = c.gameObject.GetComponent<Mob>();
                 mob.TriggerBounce();
             }
+        }
+
+        // Shake the sprite.
+        private IEnumerator Invulnerability()
+        {
+            isInvulnerable = true;
+
+            int i = 0;
+            int blinkCount = 12;
+
+            SpriteRenderer sprite = GetComponent<SpriteRenderer>();
+
+            while (i < blinkCount)
+            {
+                // Change color of Boing.
+                if(i % 2 == 0)
+                    sprite.color = Color.grey;
+                else
+                    sprite.color = Color.white;
+
+                yield return new WaitForSeconds(invulnerabilityDuration / blinkCount);
+                i++;
+            }
+
+            isInvulnerable = false;
+
+            // Reset color of the sprite.
+            sprite.color = Color.white;
         }
 
         private void Die()

@@ -186,7 +186,7 @@ namespace KekeDreamLand
         // Handle interaction with interactable gameobject when button is pressed and object is in range.
         private void HandleInteractableGameobject()
         {
-            if (boing.InteractableGoInRange)
+            if (boing.InteractableGoInRange && m_Character.IsGrounded)
             {
                 if (CrossPlatformInputManager.GetAxis("Vertical") > 0.1f)
                 {

@@ -24,6 +24,7 @@ namespace KekeDreamLand
         [Header("Bounce behaviour")]
         public bool canBounce = false;
         public float BounceEffectDuration = 2.0f;
+        
         #endregion
 
         #region Private attributes
@@ -53,11 +54,15 @@ namespace KekeDreamLand
                 {
                     lifePoints = 0;
                     Die();
+                    return;
                 }
-
+                
                 // Can be heal ?
                 else if (lifePoints > mobLifePoints)
                     lifePoints = mobLifePoints;
+
+                // Shake sprite when mob is damaged but don't die.
+                StartCoroutine(ShakeSprite());
             }
         }
         private int lifePoints;
@@ -167,10 +172,44 @@ namespace KekeDreamLand
             {
                 ai.enabled = enabled;
 
-                Debug.Log(ai.name + " : " + enabled);
+                // Debug ai activation or desactivation.
+                //Debug.Log(ai.name + " : " + enabled);
             }
         }
+        
+        // Shake the sprite.
+        private IEnumerator ShakeSprite()
+        {
+            GameObject sprite = transform.Find("Sprite").gameObject;
+            
+            Vector3 shakingPos = Vector3.zero;
 
+            int shakingCount = 10;
+            float shakeDuration = 0.1f / shakingCount;
+
+            int i = 0;
+            while (i < shakingCount)
+            {
+                shakingPos = Random.insideUnitCircle * 0.05f;
+
+                // Change local position to simulate shake.
+                sprite.transform.localPosition = shakingPos;
+
+                yield return new WaitForSeconds(shakeDuration);
+                i++;
+            }
+
+            // Reset position of the sprite.
+            sprite.transform.localPosition = Vector3.zero;
+        }
+
+        #endregion
+
+        #region Public methods
+
+        /// <summary>
+        /// Flip the sprite verticaly.
+        /// </summary>
         public void FlipSprite()
         {
             // Multiply the mob's x local scale by -1.

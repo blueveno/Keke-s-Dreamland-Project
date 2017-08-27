@@ -61,6 +61,8 @@ namespace KekeDreamLand
         private int featherPickedUp = 0;
         private int featherCount = 0;
 
+        private bool[] specialItemPresent = new bool[4];
+
         #endregion
 
         #region Unity methods
@@ -86,23 +88,57 @@ namespace KekeDreamLand
             GameObject ui = GameObject.FindGameObjectWithTag("UI");
             if (ui)
                 hudManager = ui.transform.Find("HUD").GetComponent<HUDManager>();
-
-            // Count all collectables on the level.
+            
             CountFeathersInCurrentLevel();
+
+            // Special items.
+            for (int i = 0; i < specialItemPresent.Length; i++)
+            {
+                specialItemPresent[i] = false;
+            }
+            CheckSpecialItemsPresent();
 
             // Update level HUD.
             UpdateLifePoints(boingScript.maxLifePoints);
-            RefreshFeatherCount();
+            hudManager.SetupFeatherIndicators(featherCount);
+
+            hudManager.SetupSpecificItem(hudManager.KeySprite, specialItemPresent[0]);
+            hudManager.SetupSpecificItem(hudManager.RaisinBreadSprite, specialItemPresent[1]);
+            hudManager.SetupSpecificItem(hudManager.ChocolatineSprite, specialItemPresent[2]);
+            hudManager.SetupSpecificItem(hudManager.SunflowerSeedSprite, specialItemPresent[3]);
         }
 
+        // Count all feathers on the level and check for special items.
         private void CountFeathersInCurrentLevel()
         {
+            GameObject[] feathers = GameObject.FindGameObjectsWithTag("Feather");
+            featherCount = feathers.Length;
+        }
+
+        // Check all special items on the level.
+        private void CheckSpecialItemsPresent()
+        {
             GameObject[] items = GameObject.FindGameObjectsWithTag("Item");
-            foreach (GameObject g in items)
+            foreach (GameObject item in items)
             {
-                if (g.name.Contains("Feather"))
+                if (item.name.Contains("Key"))
                 {
-                    featherCount++;
+                    specialItemPresent[0] = true;
+                }
+
+                else if (item.name.Contains("Raisin Bread"))
+                {
+                    specialItemPresent[1] = true;
+                }
+
+                else if (item.name.Contains("Chocolatine"))
+                {
+                    specialItemPresent[2] = true;
+                }
+
+                else if (item.name.Contains("Sunflower seed"))
+                {
+                    specialItemPresent[3] = true;
                 }
             }
         }

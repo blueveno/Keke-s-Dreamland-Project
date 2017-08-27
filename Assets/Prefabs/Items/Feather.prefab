@@ -40,7 +40,7 @@ GameObject:
   - component: {fileID: 114454200328527556}
   m_Layer: 0
   m_Name: Feather
-  m_TagString: Item
+  m_TagString: Feather
   m_Icon: {fileID: 2974397684917235467, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
