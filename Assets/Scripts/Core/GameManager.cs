@@ -102,6 +102,7 @@ namespace KekeDreamLand
                 if (levelManager)
                 {
                     CurrentLevel = levelManager.GetComponent<LevelManager>();
+                    CurrentLevel.StartCoroutine(CurrentLevel.DisplayLevelIntro(arg0.name));
                 }
             }
         }
@@ -174,7 +175,13 @@ namespace KekeDreamLand
         {
             CurrentLevel.IsLevelFinished = true;
 
-            // TODO for levelFinished : display a "Level finished" panel where the player can see what he has found and chose to go to the world map, go to main menu or quit.
+            // TODO for levelFinished : FadeIn then display a "Level finished" panel where the player can see what he has found and chose to go to the world map, go to main menu or quit.
+
+            if(CurrentLevel.HasCollectAllFeathers())
+            {
+                Debug.Log("All feathers have been collected.");
+                CurrentLevel.PickSpecialItem(1);
+            }
 
             // TODO fadeIn when the player has chose a button.
             transitionManager.FadeIn();
@@ -183,6 +190,14 @@ namespace KekeDreamLand
         #endregion
 
         #region Transition management
+
+        /// <summary>
+        /// Activate transition animator.
+        /// </summary>
+        public void ActivateAnimator()
+        {
+            transitionManager.ActivateAnimator();
+        }
 
         /// <summary>
         /// Use this when you want to fade in and reload the current scene.
@@ -204,7 +219,7 @@ namespace KekeDreamLand
             {
                 // Case of an end of level.
                 if (CurrentLevel.IsLevelFinished)
-                    SwitchToWorldMap();
+                    CurrentLevel.DisplayLevelOutro();
 
                 // Case of an internal transition.
                 else if (CurrentLevel.IsInternalTransition)

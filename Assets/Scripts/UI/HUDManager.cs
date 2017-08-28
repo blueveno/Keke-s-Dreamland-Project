@@ -11,20 +11,19 @@ namespace KekeDreamLand
     public class HUDManager : MonoBehaviour
     {
         #region Inspector attributes
-
-        public GameObject featherParent;
-        public Text featherText;
-
+        
         [Header("Lifepoints :")]
         
         public Transform lifePointsParent;
         public GameObject lifePointSprite;
 
-        [Header("Special items :")]
-        public Image KeySprite;
-        public Image RaisinBreadSprite;
-        public Image ChocolatineSprite;
-        public Image SunflowerSeedSprite;
+        [Header("Collectables :")]
+        public GameObject featherParent;
+        public Text featherText;
+
+        [Space]
+
+        public Image[] specialItemSprites = new Image[4];
 
         #endregion
 
@@ -133,19 +132,19 @@ namespace KekeDreamLand
         /// </summary>
         /// <param name="specialItem">Which special item indicator to display.</param>
         /// <param name="enabled">Displayed or not</param>
-        public void SetupSpecificItem(Image specialItem, bool displayed)
+        public void SetupSpecificItem(int i, bool displayed)
         {
-            specialItem.gameObject.SetActive(displayed);
+            specialItemSprites[i].gameObject.SetActive(displayed);
         }
 
         /// <summary>
         /// Unlock a specific item.
         /// </summary>
         /// <param name="specialItem"></param>
-        public void UnlockSpecialItem(Image specialItem)
+        public void UnlockSpecialItem(int i)
         {
             // TODO trigger animation of Unlock ?
-            specialItem.color = Color.white;
+            specialItemSprites[i].color = Color.white;
         }
 
         #endregion

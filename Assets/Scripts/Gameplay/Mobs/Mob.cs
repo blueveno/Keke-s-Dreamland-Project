@@ -46,7 +46,11 @@ namespace KekeDreamLand
             {
                 // No taking damage if invincible.
                 if (invincible)
+                {
+                    Debug.LogWarning(name + " is invicible !");
                     return;
+                }
+                    
 
                 lifePoints = value;
 

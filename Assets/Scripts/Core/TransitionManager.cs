@@ -42,6 +42,11 @@ namespace KekeDreamLand
             GameManager.instance.FadeInFinished();
         }
 
+        public void ActivateAnimator()
+        {
+            anim.enabled = true;
+        }
+
         #endregion
     }
 }

@@ -42,44 +42,58 @@ namespace KekeDreamLand
         private InteractableGameobject interactableGoInRange;
 
         /// <summary>
-        /// LifePoints of Boing. Set value to damage it. Example LifePoints-- or -= 2.
+        /// Current life points of Boing. Set value to damage it or heal it. Example LifePoints-- or -= 2.
         /// </summary>
         public int LifePoints
         {
             get { return lifePoints; }
 
             set {
-                // No taking damage while Boing is invulnerable.
-                if (isInvulnerable)
-                    return;
-
-                // Boing is damaged and no lifepoints remind.
-                if(value <= 0)
+                // Boing is healing.
+                if (value > lifePoints)
                 {
-                    lifePoints = 0;
-                    Die();
+                    // Heal
+                    if(lifePoints < maxLifePoints)
+                    {
+                        lifePoints = value;
+                    }
+
+                    // Overheal.
+                    else
+                    {
+                        lifePoints = maxLifePoints;
+                    }
                 }
 
-                // Boing is heal but he's already full life.
-                else if (value > maxLifePoints)
-                {
-                    lifePoints = maxLifePoints;
-                }
-
-                // Boing is damaged but life 
+                // Boing is taking damage.
                 else
                 {
-                    lifePoints = value;
+                    // No taking damage while Boing is invulnerable.
+                    if (isInvulnerable)
+                        return;
 
-                    // Trigger temporary invulnerability.
-                    StartCoroutine(Invulnerability());
+                    // Boing is damaged and no lifepoints remind.
+                    if (value <= 0)
+                    {
+                        lifePoints = 0;
+                        Die();
+                    }
+
+                    // Boing is damaged but alive.
+                    else
+                    {
+                        // Trigger temporary invulnerability if Boing has taken a damage.
+                        StartCoroutine(Invulnerability());
+
+                        lifePoints = value;
+                    }
                 }
                 
                 // Update HUD.
                 GameManager.instance.CurrentLevel.UpdateLifePoints(lifePoints);
             }
         }
-        private int lifePoints; // max 3
+        private int lifePoints; // current life points.
 
         private bool isInvulnerable = false;
 
@@ -105,7 +119,7 @@ namespace KekeDreamLand
             noteEmitter = GetComponentInChildren<ParticleSystem>();
 
             interactableGoInRange = null;
-
+            
             lifePoints = maxLifePoints;
         }
 

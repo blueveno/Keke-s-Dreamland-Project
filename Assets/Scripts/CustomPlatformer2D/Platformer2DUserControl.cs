@@ -54,7 +54,6 @@ namespace KekeDreamLand
                 return;
             }
                 
-
             HandleActionsWhenBouncing();
 
             if (boing.IsBouncing)

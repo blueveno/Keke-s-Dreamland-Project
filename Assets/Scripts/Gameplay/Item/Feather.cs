@@ -7,6 +7,8 @@
     {
         protected override void DoActionWhenPick()
         {
+            // FEEDBACK -> sound, particles...
+
             GameManager.instance.CurrentLevel.FeatherPickedUp++;
         }
     }
