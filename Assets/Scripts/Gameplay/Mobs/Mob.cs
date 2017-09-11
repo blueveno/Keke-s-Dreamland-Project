@@ -4,8 +4,7 @@ using UnityEngine;
 
 namespace KekeDreamLand
 {
-    // TODO Feedback when the mob is hit by Player
-    // TODO Feedback when the mob dies ?
+    // TODO feedback when the mob dies ?
 
     /// <summary>
     /// Attach this to any enemy in the game. Inherit if the mob need a specialized behaviour.
@@ -85,7 +84,7 @@ namespace KekeDreamLand
             lifePoints = mobLifePoints;
         }
 
-        private void OnTriggerEnter2D(Collider2D collision)
+        protected void OnTriggerEnter2D(Collider2D collision)
         {
             // Damage player if enter in collision with. Only if the mob is not bouncing.
             if (!isBouncing && collision.gameObject.tag == "Player")
@@ -115,7 +114,7 @@ namespace KekeDreamLand
 
         #region Private methods
 
-        private void DealDamageToPlayer(GameObject player)
+        protected void DealDamageToPlayer(GameObject player)
         {
             player.GetComponent<BoingManager>().LifePoints -= mobDamage;
         }

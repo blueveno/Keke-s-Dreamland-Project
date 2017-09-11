@@ -11,6 +11,7 @@ namespace KekeDreamLand
         #region Inspector Attributes
 
         [Header("Level intro")]
+
         public string levelName;
         public float levelIntroDuration = 3.0f;
 
@@ -60,6 +61,11 @@ namespace KekeDreamLand
             get { return isLevelFinished || isInternalTransition || isDisplayLevelIntro; }
         }
 
+        // Items
+
+        /// <summary>
+        /// Return number of feathers collected.
+        /// </summary>
         public int FeatherPickedUp
         {
             get { return featherPickedUp; }
@@ -75,6 +81,7 @@ namespace KekeDreamLand
         private bool[] specialItemPresent = new bool[4];
         private bool[] specialItemFound = new bool[4];
 
+        // True if level intro is currently displayed.
         private bool isDisplayLevelIntro = false;
 
         #endregion
@@ -161,17 +168,25 @@ namespace KekeDreamLand
         }
 
         #endregion
-        
+
         #region Level transitions methods
 
         /// <summary>
-        /// Display level name at the start of the level.
+        /// Display level name at the start of the level. Or skip it.
         /// </summary>
         /// <param name="levelNumber"></param>
-        /// <param name="levelName"></param>
+        /// <param name="skipIntro">Skip directly the level intro.</param>
         /// <returns></returns>
-        public IEnumerator DisplayLevelIntro(string levelNumber)
+        public IEnumerator DisplayLevelIntro(string levelNumber, bool skipIntro)
         {
+            // Skip intro.
+            if (skipIntro)
+            {
+                levelIntroMgr.gameObject.SetActive(false);
+                GameManager.instance.ActivateAnimator();
+                yield break;
+            }
+            
             isDisplayLevelIntro = true;
 
             // Configurate level name and world/level number.
@@ -188,11 +203,14 @@ namespace KekeDreamLand
 
         public void DisplayLevelOutro()
         {
-            //levelOutroMgr.Display();
             Debug.Log("OUTRO");
 
-            // TODO Display step by step stats of the level and buttons to continue.
-            // TODO Automatic Save
+            //levelOutroMgr.Display();
+            // TODO display step by step stats of the level and buttons to continue.
+            // TODO automatic Save
+
+            // Temporary.
+            GameManager.instance.SwitchToWorldMap();
         }
 
         /// <summary>
@@ -235,7 +253,7 @@ namespace KekeDreamLand
         public void PickSpecialItem(int specialItemIndex)
         {
             specialItemFound[specialItemIndex] = true;
-            // Todo create bool for each special item. itemFound[i] = true;
+
             hudMgr.UnlockSpecialItem(specialItemIndex);
         }
 
@@ -257,8 +275,6 @@ namespace KekeDreamLand
         }
 
         #endregion
-
-        // TODO move also HUD ?
 
         #region HUD management
 

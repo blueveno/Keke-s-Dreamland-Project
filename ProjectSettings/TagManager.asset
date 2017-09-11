@@ -12,6 +12,7 @@ TagManager:
   - Ennemy
   - LevelManager
   - Feather
+  - SpecialTiles
   layers:
   - Default
   - TransparentFX

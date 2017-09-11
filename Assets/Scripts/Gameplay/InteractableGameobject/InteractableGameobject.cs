@@ -33,7 +33,7 @@ namespace KekeDreamLand
             {
                 player.GetComponent<BoingManager>().InteractableGoInRange = this;
 
-                // TODO display feedback "Press button".
+                // TODO display feedback "Press button" ?
             }
             
         }
@@ -45,7 +45,7 @@ namespace KekeDreamLand
             {
                 other.GetComponent<BoingManager>().InteractableGoInRange = null;
 
-                // TODO undisplay feedback "Press button".
+                // TODO undisplay feedback "Press button" ?
             }
         }
 

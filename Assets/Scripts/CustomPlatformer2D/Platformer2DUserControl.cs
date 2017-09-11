@@ -47,7 +47,7 @@ namespace KekeDreamLand
 
         private void Update()
         {
-            // Stop interaction with game in specific case (intern transition, end of the level, ...).
+            // Prevent interaction with the game in specific case (intern transition, end of the level, ...).
             if (GameManager.instance.CurrentLevel.IsTransition)
             {
                 StopBoing();
@@ -150,13 +150,11 @@ namespace KekeDreamLand
 
         private void HandleMoveAndCrouch()
         {
-            // TODO Remove crouch.
-
             // Read the inputs.
-            bool crouch = Input.GetKey(KeyCode.LeftControl);
             float h = CrossPlatformInputManager.GetAxis("Horizontal");
+
             // Pass all parameters to the character control script.
-            m_Character.Move(h, crouch, m_Jump);
+            m_Character.Move(h, m_Jump);
             m_Jump = false;
         }
 
@@ -197,7 +195,7 @@ namespace KekeDreamLand
         // Stop instantaneously Boing at his current position.
         public void StopBoing()
         {
-            m_Character.Move(0.0f, false, false);
+            m_Character.Move(0.0f, false);
         }
 
         #endregion

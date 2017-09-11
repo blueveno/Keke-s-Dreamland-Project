@@ -99,7 +99,7 @@ namespace KekeDreamLand
                     lifePointsSprites.Add(sprite);
                 }
             }
-            // TODO Add animation or effect.
+            // TODO add animation or effect.
         }
 
         /// <summary>

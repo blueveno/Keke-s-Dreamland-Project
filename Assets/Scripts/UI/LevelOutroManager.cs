@@ -2,7 +2,13 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class LevelOutroManager : MonoBehaviour {
+namespace KekeDreamLand
+{
+    /// <summary>
+    /// Manage the informations displayed on a level outro.
+    /// </summary>
+    public class LevelOutroManager : MonoBehaviour
+    {
 
-	
+    }
 }

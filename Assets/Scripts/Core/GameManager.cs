@@ -32,6 +32,7 @@ namespace KekeDreamLand
         /// Level manager. Ready only.
         /// </summary>
         public LevelManager CurrentLevel { get; private set; }
+        private bool isReset = false;
 
         // Animation transition script.
         private GameObject ui;
@@ -91,7 +92,7 @@ namespace KekeDreamLand
                 worldmap = GameObject.Find("WorldMap").GetComponent<WorldMapManager>();
 
                 // Here we can move on the world map and enter in a level.
-                // TODO Don't display map until the player data are correcly loaded.
+                // TODO don't display map until the player data are correcly loaded.
             }
 
             // Load a level :
@@ -102,7 +103,8 @@ namespace KekeDreamLand
                 if (levelManager)
                 {
                     CurrentLevel = levelManager.GetComponent<LevelManager>();
-                    CurrentLevel.StartCoroutine(CurrentLevel.DisplayLevelIntro(arg0.name));
+                    CurrentLevel.StartCoroutine(CurrentLevel.DisplayLevelIntro(arg0.name, isReset));
+                    isReset = false;
                 }
             }
         }
@@ -175,15 +177,12 @@ namespace KekeDreamLand
         {
             CurrentLevel.IsLevelFinished = true;
 
-            // TODO for levelFinished : FadeIn then display a "Level finished" panel where the player can see what he has found and chose to go to the world map, go to main menu or quit.
-
             if(CurrentLevel.HasCollectAllFeathers())
             {
                 Debug.Log("All feathers have been collected.");
                 CurrentLevel.PickSpecialItem(1);
             }
-
-            // TODO fadeIn when the player has chose a button.
+            
             transitionManager.FadeIn();
         }
 
@@ -233,7 +232,11 @@ namespace KekeDreamLand
 
                 // Case of a restart of the level.
                 else
+                {
                     ResetCurrentScene();
+                    isReset = true;
+                }
+                    
 
                 CurrentLevel = null;
                 return;
