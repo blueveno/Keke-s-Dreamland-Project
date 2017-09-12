@@ -58,8 +58,12 @@ namespace KekeDreamLand
 
         public bool IsTransition
         {
-            get { return isLevelFinished || isInternalTransition || isDisplayLevelIntro; }
+            get { return isLevelFinished || isInternalTransition || isDisplayLevelIntro || isDisplayLevelOutro; }
         }
+
+        // Ennemies
+
+        GameObject[] ennemies;
 
         // Items
 
@@ -84,18 +88,49 @@ namespace KekeDreamLand
         // True if level intro is currently displayed.
         private bool isDisplayLevelIntro = false;
 
+        // True if level outro is currently displayed.
+        public bool IsDisplayLevelOutro
+        {
+            get { return isDisplayLevelOutro; }
+            set { isDisplayLevelOutro = value; }
+        }
+        private bool isDisplayLevelOutro = false;
+
         #endregion
 
         #region Unity methods
-        
+
         private void Awake()
         {
+            SetupEnnemies();
+
             SetupLevel();
         }
 
         #endregion
 
         #region Private methods
+
+        private void SetupEnnemies()
+        {
+            EnableAllEnnemies(false);
+
+            Debug.Log(ennemies.Length + " enemies on the level");
+        }
+
+        private void EnableAllEnnemies(bool enabled)
+        {
+            // Get all alive ennemies.
+            ennemies = GameObject.FindGameObjectsWithTag("Enemy");
+
+            foreach (GameObject enemy in ennemies)
+            {
+                foreach (AIBehaviour ai in enemy.GetComponents<AIBehaviour>())
+                {
+                    ai.enabled = enabled;
+                }
+            }
+        }
 
         // Setup all components and variables of the gamemanager.
         private void SetupLevel()
@@ -123,16 +158,17 @@ namespace KekeDreamLand
             }
             CheckSpecialItemsPresent();
 
-            // Update level HUD.
+            // Update level HUD and level outro.
             UpdateLifePoints(boingScript.maxLifePoints);
             hudMgr.SetupFeatherIndicators(featherCount);
-
+            
             for (int i = 0; i < specialItemPresent.Length; i++)
             {
                 hudMgr.SetupSpecificItem(i, specialItemPresent[i]);
+                levelOutroMgr.SetupSpecificItem(i, specialItemPresent[i]);
             }
         }
-
+        
         // Count all feathers on the level and check for special items.
         private void CountFeathersInCurrentLevel()
         {
@@ -163,7 +199,7 @@ namespace KekeDreamLand
                 
             }
 
-            // In all levels.
+            // Raisin bread is available for all level. it is unlocked if the player collect all feathers.
             specialItemPresent[1] = true;
         }
 
@@ -182,8 +218,7 @@ namespace KekeDreamLand
             // Skip intro.
             if (skipIntro)
             {
-                levelIntroMgr.gameObject.SetActive(false);
-                GameManager.instance.ActivateAnimator();
+                StartLevel();
                 yield break;
             }
             
@@ -191,26 +226,61 @@ namespace KekeDreamLand
 
             // Configurate level name and world/level number.
             levelIntroMgr.SetupLevelIntro(levelNumber, levelName);
+            levelOutroMgr.SetupLevelName(levelNumber, levelName);
             levelIntroMgr.TriggerDisplay();
 
             yield return new WaitForSeconds(levelIntroDuration);
 
             isDisplayLevelIntro = false;
 
-            levelIntroMgr.gameObject.SetActive(false);
-            GameManager.instance.ActivateAnimator();
+            StartLevel();
         }
 
-        public void DisplayLevelOutro()
+        private void StartLevel()
         {
-            Debug.Log("OUTRO");
+            levelIntroMgr.gameObject.SetActive(false);
+            GameManager.instance.ActivateAnimator();
+            EnableAllEnnemies(true);
+        }
 
-            //levelOutroMgr.Display();
+        /// <summary>
+        /// Display level outro and automatic save.
+        /// </summary>
+        public void LevelOutro()
+        {
+            // Stop all ennemies.
+            EnableAllEnnemies(false);
+
+            // Update stats before display them.
+            levelOutroMgr.UpdateFeatherPickedUp(featherPickedUp, featherCount);
+            
+            for (int i = 0; i < specialItemFound.Length; i++)
+            {
+                if (specialItemPresent[i])
+                    levelOutroMgr.UpdateSpecialItems(i, specialItemFound[i]);
+            }
+
+            // And Update comment and boing special anim.
+            levelOutroMgr.UpdateLevelOutro();
+
             // TODO display step by step stats of the level and buttons to continue.
+            levelOutroMgr.DisplayStepByStep();
+
             // TODO automatic Save
 
-            // Temporary.
-            GameManager.instance.SwitchToWorldMap();
+            // TODO wait during displaying and saving.
+
+            isDisplayLevelOutro = false; // user can switch to world map.
+        }
+
+        /// <summary>
+        /// Display all components directly.
+        /// </summary>
+        public void SkipOutro()
+        {
+            levelOutroMgr.DisplayDirectly();
+
+            isDisplayLevelOutro = false; // user can switch to world map.
         }
 
         /// <summary>
@@ -272,6 +342,23 @@ namespace KekeDreamLand
         public bool HasCollectAllFeathers()
         {
             return featherPickedUp == featherCount;
+        }
+
+        /// <summary>
+        /// Return true if all special items have been collected.
+        /// </summary>
+        /// <returns></returns>
+        public bool HasCollectAllItems()
+        {
+            bool allFound = true;
+
+            for (int i = 0; i < specialItemFound.Length && allFound; i++)
+            {
+                if (specialItemPresent[i])
+                    allFound = specialItemFound[i];
+            }
+
+            return allFound;
         }
 
         #endregion

@@ -47,6 +47,8 @@ namespace KekeDreamLand
 
         private void Update()
         {
+            HandleLevelFinished();
+
             // Prevent interaction with the game in specific case (intern transition, end of the level, ...).
             if (GameManager.instance.CurrentLevel.IsTransition)
             {
@@ -201,6 +203,29 @@ namespace KekeDreamLand
         #endregion
 
         #region Other actions
+
+        private void HandleLevelFinished()
+        {
+            /*
+            // Skip outro if his displaying is in progress.
+            if(GameManager.instance.CurrentLevel.IsDisplayLevelOutro)
+            {
+                if (Input.anyKeyDown)
+                {
+                    GameManager.instance.CurrentLevel.SkipOutro();
+                    return;
+                }
+            }
+            */
+
+            if (GameManager.instance.CurrentLevel.IsLevelFinished /* && !GameManager.instance.isSaving*/)
+            {
+                if (Input.anyKeyDown)
+                {
+                    GameManager.instance.SwitchToWorldMap();
+                }
+            }
+        }
 
         // Display or undisplay HUD.
         private void ToggleHUD()

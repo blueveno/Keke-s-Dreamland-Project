@@ -41,6 +41,8 @@ namespace KekeDreamLand
         private bool isWorldMap = false;
         private WorldMapManager worldmap;
 
+        // TODO add isSaving.
+
         #endregion
 
         #region Unity methods
@@ -175,7 +177,7 @@ namespace KekeDreamLand
         /// </summary>
         public void FinishCurrentLevel()
         {
-            CurrentLevel.IsLevelFinished = true;
+            CurrentLevel.IsDisplayLevelOutro = true;
 
             if(CurrentLevel.HasCollectAllFeathers())
             {
@@ -217,8 +219,11 @@ namespace KekeDreamLand
             if(CurrentLevel)
             {
                 // Case of an end of level.
-                if (CurrentLevel.IsLevelFinished)
-                    CurrentLevel.DisplayLevelOutro();
+                if (CurrentLevel.IsDisplayLevelOutro)
+                {
+                    CurrentLevel.LevelOutro();
+                    return;
+                }
 
                 // Case of an internal transition.
                 else if (CurrentLevel.IsInternalTransition)
@@ -236,10 +241,6 @@ namespace KekeDreamLand
                     ResetCurrentScene();
                     isReset = true;
                 }
-                    
-
-                CurrentLevel = null;
-                return;
             }
 
             else if(isWorldMap)

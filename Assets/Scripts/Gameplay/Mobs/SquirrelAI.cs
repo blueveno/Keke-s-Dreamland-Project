@@ -46,6 +46,9 @@ namespace KekeDreamLand
         /// </summary>
         public void ThrowProjectile()
         {
+            if (!enabled || target == null)
+                return;
+
             // TODO activate only when the squirrel is on the same area that the player and at correct distance (sight view ?).
             if(Vector3.Distance(transform.position, target.transform.position) < 15.0f)
             {
