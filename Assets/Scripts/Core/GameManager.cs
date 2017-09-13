@@ -195,7 +195,12 @@ namespace KekeDreamLand
         /// <param name="level">level index of this world</param>
         public void LoadNewLevel(int world, int level)
         {
-            SceneManager.LoadScene("Level " + (world+1) + "-" + (level+1));
+            string sceneName = "Level " + (world + 1) + "-" + (level + 1);
+            
+            if (SceneManager.GetSceneByName(sceneName).IsValid())
+                SceneManager.LoadScene(sceneName);
+            else
+                Debug.LogWarning("The scene " + sceneName + " doesn't exist !");
         }
 
         /// <summary>

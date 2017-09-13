@@ -38,7 +38,7 @@ GameObject:
   - component: {fileID: 58898659566479478}
   m_Layer: 8
   m_Name: DontFall
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -53,8 +53,8 @@ GameObject:
   - component: {fileID: 4694638595549014}
   - component: {fileID: 50419938354351894}
   - component: {fileID: 58957761893136234}
-  - component: {fileID: 114859643618532262}
   - component: {fileID: 95931512010896320}
+  - component: {fileID: 114502818851100444}
   m_Layer: 9
   m_Name: Sawblade
   m_TagString: Enemy
@@ -170,7 +170,7 @@ Animator:
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
---- !u!114 &114859643618532262
+--- !u!114 &114502818851100444
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -178,14 +178,18 @@ MonoBehaviour:
   m_GameObject: {fileID: 1752314121407104}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b0b3f03f7e8f85b41a4f12c826eca8f7, type: 3}
+  m_Script: {fileID: 11500000, guid: fe9296bd070f55043b5819d76b2a0191, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   mobDamage: 1
   invincible: 1
-  mobLifePoints: 0
+  mobLifePoints: 1
   canBounce: 0
   BounceEffectDuration: 0
+  ignored:
+    serializedVersion: 2
+    m_Bits: 1
+  rayLength: 0.3
 --- !u!212 &212532712089003290
 SpriteRenderer:
   m_ObjectHideFlags: 1

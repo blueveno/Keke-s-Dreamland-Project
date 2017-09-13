@@ -37,8 +37,6 @@ namespace KekeDreamLand
 
         public void SetupMap(PlayerProgress playerProgress)
         {
-            Debug.Log("Setup worldmap of world " + (playerProgress.currentWorldIndex + 1));
-
             ChangeWorldMap(playerProgress.currentWorldIndex);
 
             SetupGraph();
@@ -74,7 +72,7 @@ namespace KekeDreamLand
         {
             if (worldIndex >= worldMapSprites.Length || worldIndex >= worldGraphPrefabs.Length)
             {
-                Debug.LogWarning("World " + worldIndex + " doesn't exist !");
+                Debug.LogWarning("World " + (worldIndex+1) + " doesn't exist !");
                 return;
             }
 

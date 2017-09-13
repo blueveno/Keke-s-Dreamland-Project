@@ -92,10 +92,15 @@ namespace KekeDreamLand
             }
 
             // Move on map.
+            HandleMoveOnMap();
+        }
 
+        private void HandleMoveOnMap()
+        {
             float horizontal = CrossPlatformInputManager.GetAxisRaw("Horizontal");
-            if (horizontal != 0) {
-                
+            if (horizontal != 0)
+            {
+
                 if (!xAxisUsed)
                 {
                     xAxisUsed = true;
@@ -104,28 +109,32 @@ namespace KekeDreamLand
                         GameManager.instance.MoveOnWorldMap(InputDirection.RIGHT);
                     else if (horizontal < 0.0f)
                         GameManager.instance.MoveOnWorldMap(InputDirection.LEFT);
+
+                    return;
                 }
             }
             else
                 xAxisUsed = false;
             
-            float vertical = CrossPlatformInputManager.GetAxisRaw("Vertical");
-
-            if (vertical != 0)
+            if (!xAxisUsed)
             {
-                if (!yAxisUsed)
+                float vertical = CrossPlatformInputManager.GetAxisRaw("Vertical");
+
+                if (vertical != 0)
                 {
-                    yAxisUsed = true;
+                    if (!yAxisUsed)
+                    {
+                        yAxisUsed = true;
 
-                    if (vertical > 0.0f)
-                        GameManager.instance.MoveOnWorldMap(InputDirection.UP);
-                    else if (vertical < 0.0f)
-                        GameManager.instance.MoveOnWorldMap(InputDirection.DOWN);
+                        if (vertical > 0.0f)
+                            GameManager.instance.MoveOnWorldMap(InputDirection.UP);
+                        else if (vertical < 0.0f)
+                            GameManager.instance.MoveOnWorldMap(InputDirection.DOWN);
+                    }
                 }
+                else
+                    yAxisUsed = false;
             }
-            else
-                yAxisUsed = false;
-
         }
 
         #endregion

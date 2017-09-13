@@ -1283,7 +1283,7 @@ MonoBehaviour:
     targetNodeindex: 3
   - inputNeeded: 3
     targetNodeindex: 4
-  - inputNeeded: 2
+  - inputNeeded: 0
     targetNodeindex: 1
   positionOnMap: {x: 0, y: 0}
   worldIndex: 0
