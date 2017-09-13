@@ -14,6 +14,7 @@ TagManager:
   - Feather
   - SpecialTiles
   - Enemy
+  - Node
   layers:
   - Default
   - TransparentFX

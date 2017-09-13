@@ -35,7 +35,7 @@ namespace KekeDreamLand
         private GameObject nextArea; // next area where Boing will go.
         private Vector3 nextPosition; // next position on this area where Boing will spawn.
 
-        // Game manager attributes.
+        // Level manager attributes.
 
         /// <summary>
         /// Return true if the level is finished.
@@ -62,7 +62,6 @@ namespace KekeDreamLand
         }
 
         // Ennemies
-
         GameObject[] ennemies;
 
         // Items
@@ -267,6 +266,7 @@ namespace KekeDreamLand
             levelOutroMgr.DisplayStepByStep();
 
             // TODO automatic Save
+            GameManager.instance.ValidateCurrentNode(featherPickedUp, specialItemFound);
 
             // TODO wait during displaying and saving.
 

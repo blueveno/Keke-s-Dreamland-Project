@@ -38,10 +38,20 @@ namespace KekeDreamLand
         private GameObject ui;
         private TransitionManager transitionManager;
 
+        /// <summary>
+        /// Return true if the current screen is the world map.
+        /// </summary>
+        public bool IsWorldMapScreen
+        {
+            get { return isWorldMap; }
+        }
         private bool isWorldMap = false;
         private WorldMapManager worldmap;
 
-        // TODO add isSaving.
+        // TODO add is Saving or useless ?
+
+        // Load/Save system.
+        private PlayerProgress playerProgress;
 
         #endregion
 
@@ -50,6 +60,8 @@ namespace KekeDreamLand
         private void Awake()
         {
             SingletonThis();
+
+            playerProgress = SaveLoadManager.LoadPlayerProgress();
         }
 
         private void OnEnable()
@@ -91,7 +103,9 @@ namespace KekeDreamLand
             else if (arg0.buildIndex == worldMapIndex)
             {
                 isWorldMap = true;
+                
                 worldmap = GameObject.Find("WorldMap").GetComponent<WorldMapManager>();
+                worldmap.SetupMap(playerProgress);
 
                 // Here we can move on the world map and enter in a level.
                 // TODO don't display map until the player data are correcly loaded.
@@ -125,10 +139,34 @@ namespace KekeDreamLand
 
             DontDestroyOnLoad(gameObject);
         }
-
+        
         #endregion
 
         #region Load and Save System
+        
+        /// <summary>
+        /// Store all level progress and save them.
+        /// </summary>
+        /// <param name="feathersCollected"></param>
+        /// <param name="itemsFound"></param>
+        public void ValidateCurrentNode(int feathersCollected, bool[] itemsFound)
+        {
+            int worldIndex = playerProgress.currentWorldIndex;
+            int nodeIndex = playerProgress.currentNodeIndex;
+            
+            /*
+            playerProgress.finishedLevels[worldIndex][nodeIndex].finished = true;
+            playerProgress.finishedLevels[worldIndex][nodeIndex].feathersCollected = 5;
+            playerProgress.finishedLevels[worldIndex][nodeIndex].specialItemsFound = itemsFound;
+            */
+
+            //SavePlayerProgress();
+        }
+
+        public void SavePlayerProgress()
+        {
+            SaveLoadManager.SavePlayerProgress(playerProgress);
+        }
 
         #endregion
 
@@ -137,7 +175,7 @@ namespace KekeDreamLand
         /// <summary>
         /// Switch to the main menu scene.
         /// </summary>
-        public void SwitchToMainMenu()
+        public void LoadMainMenu()
         {
             SceneManager.LoadScene(mainMenuIndex);
         }
@@ -145,7 +183,7 @@ namespace KekeDreamLand
         /// <summary>
         /// Switch to the world map scene.
         /// </summary>
-        public void SwitchToWorldMap()
+        public void LoadWorldMap()
         {
             SceneManager.LoadScene(worldMapIndex);
         }
@@ -155,9 +193,9 @@ namespace KekeDreamLand
         /// </summary>
         /// <param name="world">world index</param>
         /// <param name="level">level index of this world</param>
-        public void SwitchToNewLevel(int world, int level)
+        public void LoadNewLevel(int world, int level)
         {
-            SceneManager.LoadScene("Level " + world + "-" + level);
+            SceneManager.LoadScene("Level " + (world+1) + "-" + (level+1));
         }
 
         /// <summary>
@@ -190,6 +228,25 @@ namespace KekeDreamLand
 
         #endregion
 
+        #region World map management
+
+        public void InteractWithCurrentNode()
+        {
+            worldmap.InteractWithCurrentNode(playerProgress);
+        }
+
+        public void MoveOnWorldMap(InputDirection directionPressed)
+        {
+            worldmap.TryToMove(playerProgress, directionPressed);
+        }
+
+        public void UpdateCurrentPosition(GraphNode g)
+        {
+            playerProgress.currentNodeIndex = g.nodeIndex;
+        }
+
+        #endregion
+
         #region Transition management
 
         /// <summary>
@@ -206,6 +263,11 @@ namespace KekeDreamLand
         public void TriggerFadeIn()
         {
             transitionManager.FadeIn();
+        }
+
+        public void TriggerFadeOut()
+        {
+            transitionManager.FadeOut();
         }
 
         // TODO use delegate to easily done what we want when fadeIn is finished.
@@ -245,12 +307,12 @@ namespace KekeDreamLand
 
             else if(isWorldMap)
             {
-                worldmap.SwitchToNewLevel();
+                
             }
             
             else
             {
-                SwitchToWorldMap();
+                LoadWorldMap();
             }
         }
 

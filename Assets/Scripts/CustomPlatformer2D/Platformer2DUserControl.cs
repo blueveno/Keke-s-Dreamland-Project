@@ -16,7 +16,6 @@ namespace KekeDreamLand
     /// <summary>
     /// Input manager. Some inputs can be observed by observer.
     /// </summary>
-    [RequireComponent(typeof (PlatformerCharacter2D))]
     public class Platformer2DUserControl : MonoBehaviour
     {
         #region Private attributes
@@ -47,6 +46,94 @@ namespace KekeDreamLand
 
         private void Update()
         {
+            // Case of a level
+            if (GameManager.instance.CurrentLevel)
+                HandleLevelInteraction();
+
+            // Case of the world map.
+            else if (GameManager.instance.IsWorldMapScreen)
+                HandleWorldMapInteraction();
+
+            // TODO Main screen, other case, ...
+        }
+
+        private void FixedUpdate()
+        {
+            if (!GameManager.instance.CurrentLevel)
+                return;
+
+                // Stop interaction with game in specific case (intern transition, end of the level, ...).
+                if (GameManager.instance.CurrentLevel.IsTransition)
+                {
+                    StopBoing();
+                    return;
+                }
+
+                // Can't move if Boing is bouncing.
+                if (boing.IsBouncing)
+                    return;
+
+                HandleMove();
+        }
+
+        #endregion
+
+        #region World map interaction
+
+        private bool xAxisUsed = false;
+        private bool yAxisUsed = false;
+
+        private void HandleWorldMapInteraction()
+        {
+            // Interact with node.
+            if (Input.GetButtonDown("Jump"))
+            {
+                GameManager.instance.InteractWithCurrentNode();
+            }
+
+            // Move on map.
+
+            float horizontal = CrossPlatformInputManager.GetAxisRaw("Horizontal");
+            if (horizontal != 0) {
+                
+                if (!xAxisUsed)
+                {
+                    xAxisUsed = true;
+
+                    if (horizontal > 0.0f)
+                        GameManager.instance.MoveOnWorldMap(InputDirection.RIGHT);
+                    else if (horizontal < 0.0f)
+                        GameManager.instance.MoveOnWorldMap(InputDirection.LEFT);
+                }
+            }
+            else
+                xAxisUsed = false;
+            
+            float vertical = CrossPlatformInputManager.GetAxisRaw("Vertical");
+
+            if (vertical != 0)
+            {
+                if (!yAxisUsed)
+                {
+                    yAxisUsed = true;
+
+                    if (vertical > 0.0f)
+                        GameManager.instance.MoveOnWorldMap(InputDirection.UP);
+                    else if (vertical < 0.0f)
+                        GameManager.instance.MoveOnWorldMap(InputDirection.DOWN);
+                }
+            }
+            else
+                yAxisUsed = false;
+
+        }
+
+        #endregion
+
+        // In a level
+
+        private void HandleLevelInteraction()
+        {
             HandleLevelFinished();
 
             // Prevent interaction with the game in specific case (intern transition, end of the level, ...).
@@ -55,7 +142,7 @@ namespace KekeDreamLand
                 StopBoing();
                 return;
             }
-                
+
             HandleActionsWhenBouncing();
 
             if (boing.IsBouncing)
@@ -63,24 +150,6 @@ namespace KekeDreamLand
 
             HandleActionsWhenNotBouncing();
         }
-
-        private void FixedUpdate()
-        {
-            // Stop interaction with game in specific case (intern transition, end of the level, ...).
-            if (GameManager.instance.CurrentLevel.IsTransition)
-            {
-                StopBoing();
-                return;
-            }
-
-            // Can't move if Boing is bouncing.
-            if (boing.IsBouncing)
-                return;
-
-            HandleMoveAndCrouch();
-        }
-
-        #endregion
 
         #region All Actions of Boing
 
@@ -150,7 +219,7 @@ namespace KekeDreamLand
             }
         }
 
-        private void HandleMoveAndCrouch()
+        private void HandleMove()
         {
             // Read the inputs.
             float h = CrossPlatformInputManager.GetAxis("Horizontal");
@@ -222,7 +291,7 @@ namespace KekeDreamLand
             {
                 if (Input.anyKeyDown)
                 {
-                    GameManager.instance.SwitchToWorldMap();
+                    GameManager.instance.LoadWorldMap();
                 }
             }
         }
@@ -239,6 +308,8 @@ namespace KekeDreamLand
         // TODO pause action
 
         #endregion
+
+        // Other
 
         #region Input manager utilities
 
