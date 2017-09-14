@@ -25,12 +25,11 @@ namespace KekeDreamLand
     {
         public InputDirection inputNeeded;
         public int targetNodeindex;
-        public bool unlocked;
+        public Path path;
 
         public GraphTransition() {
             inputNeeded = InputDirection.DOWN;
             targetNodeindex = -1;
-            unlocked = false;
         }
     }
 

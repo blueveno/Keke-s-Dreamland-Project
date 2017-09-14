@@ -94,7 +94,7 @@ namespace KekeDreamLand
 
         /// <summary>
         /// Unlock path depending the finished levels on the current world.
-        /// O(n^3).
+        /// O(n^2).
         /// </summary>
         /// <param name="playerProgress"></param>
         private void UnlockPaths(PlayerProgress playerProgress)
@@ -113,24 +113,11 @@ namespace KekeDreamLand
                     {
                         // If found and level finished, unlock all paths of this node.
                         if (levelProgress.finished)
-                            foreach(Transform t in node.gameObject.transform)
-                            {
-                                t.gameObject.SetActive(true);
-                            }
-
-                            // And unlock path to back to this node for each new unlocked nodes.
                             foreach (GraphTransition t in ln.linkedNodes)
                             {
-                                if (!t.unlocked)
+                                if (!t.path.unlocked)
                                 {
-                                    t.unlocked = true;
-
-                                    GraphNode targetNode = graph.Find(x => x.nodeIndex == t.targetNodeindex);
-                                    foreach (GraphTransition t2 in targetNode.linkedNodes)
-                                    {
-                                        if (t2.targetNodeindex == ln.nodeIndex)
-                                            t2.unlocked = true;
-                                    }
+                                    t.path.UnlockPath();
                                 }
                             }
                     }
@@ -177,11 +164,13 @@ namespace KekeDreamLand
         {
             GraphNode node = graph.Find(x => x.nodeIndex == playerProgress.currentNodeIndex);
             
-            // Check if a direction is correct.
+            // Check all paths.
             foreach (GraphTransition t in node.linkedNodes)
             {
-                if (t.inputNeeded == direction && t.unlocked)
+                // Check if a direction is correc and the associated path is unlocked.
+                if (t.inputNeeded == direction && t.path.unlocked)
                 {
+                    // Move along this path.
                     GraphNode targetNode = graph.Find(x => x.nodeIndex == t.targetNodeindex);
                     UpdateBoingPosition(targetNode);
                     GameManager.instance.UpdateCurrentNodeOnWorld(t.targetNodeindex);

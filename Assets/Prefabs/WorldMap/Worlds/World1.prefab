@@ -19,13 +19,14 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4819109849080644}
+  - component: {fileID: 114207941723097270}
   m_Layer: 0
-  m_Name: pathRight
+  m_Name: path1-3to1-5
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!1 &1064920139816052
 GameObject:
   m_ObjectHideFlags: 0
@@ -51,13 +52,14 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4664963282913388}
+  - component: {fileID: 114369175746272714}
   m_Layer: 0
-  m_Name: pathDown
+  m_Name: path1-1to1-2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!1 &1121446502726220
 GameObject:
   m_ObjectHideFlags: 1
@@ -73,7 +75,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!1 &1135917712855686
 GameObject:
   m_ObjectHideFlags: 1
@@ -89,7 +91,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!1 &1144506346911532
 GameObject:
   m_ObjectHideFlags: 1
@@ -105,7 +107,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!1 &1160202284401258
 GameObject:
   m_ObjectHideFlags: 1
@@ -121,7 +123,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!1 &1161206722628822
 GameObject:
   m_ObjectHideFlags: 0
@@ -154,7 +156,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!1 &1212836478708596
 GameObject:
   m_ObjectHideFlags: 1
@@ -170,7 +172,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!1 &1213301334097870
 GameObject:
   m_ObjectHideFlags: 0
@@ -203,7 +205,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!1 &1227224780930824
 GameObject:
   m_ObjectHideFlags: 1
@@ -212,13 +214,14 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4643487214345234}
+  - component: {fileID: 114382702425900716}
   m_Layer: 0
-  m_Name: pathDown
+  m_Name: path1-3to1-4
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!1 &1229191449228256
 GameObject:
   m_ObjectHideFlags: 1
@@ -234,7 +237,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!1 &1297822938315540
 GameObject:
   m_ObjectHideFlags: 1
@@ -250,7 +253,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!1 &1301091830731392
 GameObject:
   m_ObjectHideFlags: 1
@@ -266,7 +269,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!1 &1373228541259630
 GameObject:
   m_ObjectHideFlags: 1
@@ -282,7 +285,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!1 &1388751983632666
 GameObject:
   m_ObjectHideFlags: 0
@@ -315,7 +318,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!1 &1517426291266080
 GameObject:
   m_ObjectHideFlags: 1
@@ -331,7 +334,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!1 &1530409565701316
 GameObject:
   m_ObjectHideFlags: 1
@@ -347,7 +350,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!1 &1609346904865416
 GameObject:
   m_ObjectHideFlags: 0
@@ -378,7 +381,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!1 &1626884785451410
 GameObject:
   m_ObjectHideFlags: 1
@@ -387,13 +390,14 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4320546713827808}
+  - component: {fileID: 114993189814032398}
   m_Layer: 0
-  m_Name: pathUp
+  m_Name: path1-6to1-7
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!1 &1689579192002696
 GameObject:
   m_ObjectHideFlags: 0
@@ -426,7 +430,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!1 &1693533996584574
 GameObject:
   m_ObjectHideFlags: 1
@@ -442,7 +446,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!1 &1716644342798336
 GameObject:
   m_ObjectHideFlags: 0
@@ -475,7 +479,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!1 &1742501595820578
 GameObject:
   m_ObjectHideFlags: 1
@@ -491,7 +495,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!1 &1756130567009068
 GameObject:
   m_ObjectHideFlags: 0
@@ -541,7 +545,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!1 &1808916853511950
 GameObject:
   m_ObjectHideFlags: 1
@@ -550,6 +554,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4695290652669930}
+  - component: {fileID: 114352364677995762}
   m_Layer: 0
   m_Name: pathStart
   m_TagString: Untagged
@@ -572,7 +577,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!1 &1851168607656734
 GameObject:
   m_ObjectHideFlags: 1
@@ -588,7 +593,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!1 &1870192274780388
 GameObject:
   m_ObjectHideFlags: 1
@@ -613,13 +618,14 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4629074824899930}
+  - component: {fileID: 114724808150699332}
   m_Layer: 0
-  m_Name: pathUp
+  m_Name: path1-5toW2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!1 &1948865929297108
 GameObject:
   m_ObjectHideFlags: 1
@@ -628,13 +634,14 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4260259082779464}
+  - component: {fileID: 114213022128149796}
   m_Layer: 0
-  m_Name: pathRight
+  m_Name: path1-2to1-3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!1 &1963784648185210
 GameObject:
   m_ObjectHideFlags: 1
@@ -643,13 +650,14 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4446362182469722}
+  - component: {fileID: 114539421204675132}
   m_Layer: 0
-  m_Name: pathRight
+  m_Name: path1-5to1-6
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &4017036066382912
 Transform:
   m_ObjectHideFlags: 1
@@ -1224,10 +1232,13 @@ MonoBehaviour:
   linkedNodes:
   - inputNeeded: 2
     targetNodeindex: 2
+    path: {fileID: 114207941723097270}
   - inputNeeded: 0
     targetNodeindex: 7
+    path: {fileID: 114724808150699332}
   - inputNeeded: 3
     targetNodeindex: 5
+    path: {fileID: 114539421204675132}
   positionOnMap: {x: 0, y: 0}
   worldIndex: 0
   levelIndex: 4
@@ -1246,6 +1257,7 @@ MonoBehaviour:
   linkedNodes:
   - inputNeeded: 3
     targetNodeindex: 4
+    path: {fileID: 114724808150699332}
   positionOnMap: {x: 0, y: 0}
   worldIndex: 1
 --- !u!114 &114159009204417668
@@ -1263,9 +1275,34 @@ MonoBehaviour:
   linkedNodes:
   - inputNeeded: 1
     targetNodeindex: 1
+    path: {fileID: 114369175746272714}
   positionOnMap: {x: 0, y: 0}
   worldIndex: 0
   levelIndex: 0
+--- !u!114 &114207941723097270
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1014347045675556}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7c603b797dd69aa45a6b93cc5fd4878b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  unlocked: 0
+--- !u!114 &114213022128149796
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1948865929297108}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7c603b797dd69aa45a6b93cc5fd4878b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  unlocked: 0
 --- !u!114 &114222279354141758
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1281,13 +1318,76 @@ MonoBehaviour:
   linkedNodes:
   - inputNeeded: 1
     targetNodeindex: 3
+    path: {fileID: 114382702425900716}
   - inputNeeded: 3
     targetNodeindex: 4
+    path: {fileID: 114207941723097270}
   - inputNeeded: 0
     targetNodeindex: 1
+    path: {fileID: 114213022128149796}
   positionOnMap: {x: 0, y: 0}
   worldIndex: 0
   levelIndex: 2
+--- !u!114 &114352364677995762
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1808916853511950}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7c603b797dd69aa45a6b93cc5fd4878b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  unlocked: 0
+--- !u!114 &114369175746272714
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1085881937814428}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7c603b797dd69aa45a6b93cc5fd4878b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  unlocked: 0
+--- !u!114 &114382702425900716
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1227224780930824}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7c603b797dd69aa45a6b93cc5fd4878b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  unlocked: 0
+--- !u!114 &114539421204675132
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1963784648185210}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7c603b797dd69aa45a6b93cc5fd4878b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  unlocked: 0
+--- !u!114 &114724808150699332
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1917983007885906}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7c603b797dd69aa45a6b93cc5fd4878b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  unlocked: 0
 --- !u!114 &114800596033941060
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1303,8 +1403,10 @@ MonoBehaviour:
   linkedNodes:
   - inputNeeded: 0
     targetNodeindex: 0
+    path: {fileID: 114369175746272714}
   - inputNeeded: 3
     targetNodeindex: 2
+    path: {fileID: 114213022128149796}
   positionOnMap: {x: 0, y: 0}
   worldIndex: 0
   levelIndex: 1
@@ -1323,6 +1425,7 @@ MonoBehaviour:
   linkedNodes:
   - inputNeeded: 1
     targetNodeindex: 5
+    path: {fileID: 114993189814032398}
   positionOnMap: {x: 0, y: 0}
   worldIndex: 0
   levelIndex: 6
@@ -1341,8 +1444,10 @@ MonoBehaviour:
   linkedNodes:
   - inputNeeded: 2
     targetNodeindex: 4
+    path: {fileID: 114539421204675132}
   - inputNeeded: 0
     targetNodeindex: 6
+    path: {fileID: 114993189814032398}
   positionOnMap: {x: 0, y: 0}
   worldIndex: 0
   levelIndex: 5
@@ -1361,9 +1466,22 @@ MonoBehaviour:
   linkedNodes:
   - inputNeeded: 0
     targetNodeindex: 2
+    path: {fileID: 114382702425900716}
   positionOnMap: {x: 0, y: 0}
   worldIndex: 0
   levelIndex: 3
+--- !u!114 &114993189814032398
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1626884785451410}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7c603b797dd69aa45a6b93cc5fd4878b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  unlocked: 0
 --- !u!212 &212037573087414380
 SpriteRenderer:
   m_ObjectHideFlags: 1
