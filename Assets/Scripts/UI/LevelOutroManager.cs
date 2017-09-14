@@ -124,8 +124,7 @@ namespace KekeDreamLand
                 else
                     Debug.LogWarning("Level outro boing animator is not affected !");
             }
-
-            // TODO remove this when the save system is finished...
+            
             DisplaySaveComplete();
         }
 

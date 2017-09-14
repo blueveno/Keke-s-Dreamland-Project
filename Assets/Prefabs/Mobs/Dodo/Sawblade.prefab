@@ -38,7 +38,7 @@ GameObject:
   - component: {fileID: 58898659566479478}
   m_Layer: 8
   m_Name: DontFall
-  m_TagString: Enemy
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -57,7 +57,7 @@ GameObject:
   - component: {fileID: 114502818851100444}
   m_Layer: 9
   m_Name: Sawblade
-  m_TagString: Enemy
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -186,7 +186,7 @@ MonoBehaviour:
   mobLifePoints: 1
   canBounce: 0
   BounceEffectDuration: 0
-  ignored:
+  destroyingLayer:
     serializedVersion: 2
     m_Bits: 1
   rayLength: 0.3

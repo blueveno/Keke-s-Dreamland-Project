@@ -121,7 +121,7 @@ namespace KekeDreamLand
         {
             // Get all alive ennemies.
             ennemies = GameObject.FindGameObjectsWithTag("Enemy");
-
+            
             foreach (GameObject enemy in ennemies)
             {
                 foreach (AIBehaviour ai in enemy.GetComponents<AIBehaviour>())
@@ -261,14 +261,11 @@ namespace KekeDreamLand
 
             // And Update comment and boing special anim.
             levelOutroMgr.UpdateLevelOutro();
-
-            // TODO display step by step stats of the level and buttons to continue.
+            
             levelOutroMgr.DisplayStepByStep();
-
-            // TODO automatic Save
+            
+            // Automatic save.
             GameManager.instance.ValidateCurrentNode(featherPickedUp, specialItemFound);
-
-            // TODO wait during displaying and saving.
 
             isDisplayLevelOutro = false; // user can switch to world map.
         }

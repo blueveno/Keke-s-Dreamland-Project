@@ -6,7 +6,7 @@ namespace KekeDreamLand
 {
     public class SawBlade : Mob
     {
-        public LayerMask ignored;
+        public LayerMask destroyingLayer;
         public float rayLength = 0.3f;
 
         private void FixedUpdate()
@@ -25,13 +25,13 @@ namespace KekeDreamLand
 
         private void CheckWall(Vector2 dir)
         {
-            RaycastHit2D hit = Physics2D.Raycast(transform.position, dir, rayLength, ignored);
-
-            if (hit && hit.collider.tag == "Untagged")
+            RaycastHit2D hit = Physics2D.Raycast(transform.position, dir, rayLength, destroyingLayer);
+            
+            if (hit.collider != null)
             {
                 Destroy(gameObject);
             }
         }
-
+        
     }
 }

@@ -1,28 +1,36 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 namespace KekeDreamLand
 {
     public class WorldMapManager : MonoBehaviour
     {
+        #region Inspector attributes
+
         public Sprite[] worldMapSprites;
         public GameObject[] worldGraphPrefabs;
-                
+
+        #endregion
+
+        #region Private attributes
+
+        private GameObject currentGraph = null;
+
+        private List<GraphNode> graph = new List<GraphNode>();
+        
+        private GameObject boing;
+        
+        /// <summary>
+        /// Return the number of worlds on the game.
+        /// </summary>
         public int WorldCount
         {
             get { return worldGraphPrefabs.Length; }
         }
 
-        private GameObject currentGraph = null;
-        private List<GraphNode> graph = new List<GraphNode>();
-
-        private GameObject boing;
+        #endregion
 
         // World map = Graph - Nodes and transitions.
-
-        // TODO load only world where the player is.
 
         // TODO change animator controller for another effect ?
 
@@ -40,8 +48,8 @@ namespace KekeDreamLand
             ChangeWorldMap(playerProgress.currentWorldIndex);
 
             SetupGraph();
-
-            // TODO display all paths unlocked.
+            
+            // TODO animation when unlock ?
             UnlockPaths(playerProgress);
 
             // TODO Put Boing to the correct node of the graph.
@@ -86,11 +94,48 @@ namespace KekeDreamLand
 
         /// <summary>
         /// Unlock path depending the finished levels on the current world.
+        /// O(n^3).
         /// </summary>
         /// <param name="playerProgress"></param>
         private void UnlockPaths(PlayerProgress playerProgress)
         {
-            // TODO UnlockPaths
+            // Check all nodes of the world.
+            foreach(GraphNode node in graph)
+            {
+                LevelNode ln = node as LevelNode;
+                if (ln)
+                {
+                    LevelProgress levelProgress;
+                    string key = ln.worldIndex + "-" + ln.levelIndex;
+
+                    // Get informations about the player progress on this level.
+                    if (playerProgress.finishedLevels.TryGetValue(key, out levelProgress))
+                    {
+                        // If found and level finished, unlock all paths of this node.
+                        if (levelProgress.finished)
+                            foreach(Transform t in node.gameObject.transform)
+                            {
+                                t.gameObject.SetActive(true);
+                            }
+
+                            // And unlock path to back to this node for each new unlocked nodes.
+                            foreach (GraphTransition t in ln.linkedNodes)
+                            {
+                                if (!t.unlocked)
+                                {
+                                    t.unlocked = true;
+
+                                    GraphNode targetNode = graph.Find(x => x.nodeIndex == t.targetNodeindex);
+                                    foreach (GraphTransition t2 in targetNode.linkedNodes)
+                                    {
+                                        if (t2.targetNodeindex == ln.nodeIndex)
+                                            t2.unlocked = true;
+                                    }
+                                }
+                            }
+                    }
+                }
+            }
         }
 
         private void SetupGraph()
@@ -126,19 +171,20 @@ namespace KekeDreamLand
         }
 
         /// <summary>
-        /// 
+        /// Try to move from the node to the specified direction.
         /// </summary>
         public void TryToMove(PlayerProgress playerProgress, InputDirection direction)
         {
             GraphNode node = graph.Find(x => x.nodeIndex == playerProgress.currentNodeIndex);
-
-            foreach(GraphTransition t in node.linkedNodes)
+            
+            // Check if a direction is correct.
+            foreach (GraphTransition t in node.linkedNodes)
             {
-                if (t.inputNeeded == direction)
+                if (t.inputNeeded == direction && t.unlocked)
                 {
                     GraphNode targetNode = graph.Find(x => x.nodeIndex == t.targetNodeindex);
                     UpdateBoingPosition(targetNode);
-                    GameManager.instance.UpdateCurrentPosition(targetNode);
+                    GameManager.instance.UpdateCurrentNodeOnWorld(t.targetNodeindex);
                 }
             }
         }
@@ -146,6 +192,9 @@ namespace KekeDreamLand
         private void SwitchToNewWorld(WorldNode node)
         {
             ChangeWorldMap(node.worldIndex);
+
+            // TODO update current world index.
+            //GameManager.instance.UpdateCurrentPosition(0);
         }
 
         private void SwitchToNewLevel(LevelNode node)
@@ -153,7 +202,23 @@ namespace KekeDreamLand
             GameManager.instance.LoadNewLevel(node.worldIndex, node.levelIndex);
         }
 
+        /// <summary>
+        /// Get level index associated to the node index.
+        /// </summary>
+        /// <param name="nodeIndex"></param>
+        /// <returns></returns>
+        public int GetLevelIndex(int nodeIndex)
+        {
+            int levelIndex = -1;
 
+            GraphNode node = graph.Find(x => x.nodeIndex == nodeIndex);
+            LevelNode ln = node as LevelNode;
+
+            if (ln)
+                levelIndex = ln.levelIndex;
+
+            return levelIndex;
+        }
     }
 
 }

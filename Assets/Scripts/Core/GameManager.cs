@@ -16,9 +16,6 @@ namespace KekeDreamLand
         public int mainMenuIndex = 0;
         public int worldMapIndex = 1;
 
-        // TODO player progress class.
-        // See Trello !
-
         #endregion
 
         #region Game Manager attributes
@@ -33,6 +30,7 @@ namespace KekeDreamLand
         /// </summary>
         public LevelManager CurrentLevel { get; private set; }
         private bool isReset = false;
+        public int currentLevelIndex;
 
         // Animation transition script.
         private GameObject ui;
@@ -61,7 +59,12 @@ namespace KekeDreamLand
         {
             SingletonThis();
 
+            // Load data
             playerProgress = SaveLoadManager.LoadPlayerProgress();
+
+            // Reset
+            //playerProgress = new PlayerProgress();
+            //SaveLoadManager.SavePlayerProgress(playerProgress);
         }
 
         private void OnEnable()
@@ -102,13 +105,12 @@ namespace KekeDreamLand
             // Load world map :
             else if (arg0.buildIndex == worldMapIndex)
             {
+                // Here we can move on the world map and enter in a level or access to an another world.
+
                 isWorldMap = true;
                 
                 worldmap = GameObject.Find("WorldMap").GetComponent<WorldMapManager>();
                 worldmap.SetupMap(playerProgress);
-
-                // Here we can move on the world map and enter in a level.
-                // TODO don't display map until the player data are correcly loaded.
             }
 
             // Load a level :
@@ -120,6 +122,7 @@ namespace KekeDreamLand
                 {
                     CurrentLevel = levelManager.GetComponent<LevelManager>();
                     CurrentLevel.StartCoroutine(CurrentLevel.DisplayLevelIntro(arg0.name, isReset));
+
                     isReset = false;
                 }
             }
@@ -151,20 +154,18 @@ namespace KekeDreamLand
         /// <param name="itemsFound"></param>
         public void ValidateCurrentNode(int feathersCollected, bool[] itemsFound)
         {
-            int worldIndex = playerProgress.currentWorldIndex;
-            int nodeIndex = playerProgress.currentNodeIndex;
+            // Create key for the dictionnary.
+            string key = playerProgress.currentWorldIndex + "-" + currentLevelIndex;
             
-            /*
-            playerProgress.finishedLevels[worldIndex][nodeIndex].finished = true;
-            playerProgress.finishedLevels[worldIndex][nodeIndex].feathersCollected = 5;
-            playerProgress.finishedLevels[worldIndex][nodeIndex].specialItemsFound = itemsFound;
-            */
+            // Remove old entry to avoid duplicate entries.
+            if (playerProgress.finishedLevels.ContainsKey(key))
+                playerProgress.finishedLevels.Remove(key);
 
-            //SavePlayerProgress();
-        }
+            // Create and add the new entry.
+            LevelProgress levelProgress = new LevelProgress(feathersCollected, itemsFound);
+            playerProgress.finishedLevels.Add(key, levelProgress);
 
-        public void SavePlayerProgress()
-        {
+            // Save.
             SaveLoadManager.SavePlayerProgress(playerProgress);
         }
 
@@ -185,6 +186,8 @@ namespace KekeDreamLand
         /// </summary>
         public void LoadWorldMap()
         {
+            currentLevelIndex = -1;
+
             SceneManager.LoadScene(worldMapIndex);
         }
 
@@ -195,12 +198,10 @@ namespace KekeDreamLand
         /// <param name="level">level index of this world</param>
         public void LoadNewLevel(int world, int level)
         {
-            string sceneName = "Level " + (world + 1) + "-" + (level + 1);
-            
-            if (SceneManager.GetSceneByName(sceneName).IsValid())
-                SceneManager.LoadScene(sceneName);
-            else
-                Debug.LogWarning("The scene " + sceneName + " doesn't exist !");
+            // Update current level index.
+            currentLevelIndex = worldmap.GetLevelIndex(playerProgress.currentNodeIndex);
+
+            SceneManager.LoadScene("Level " + (world + 1) + "-" + (level + 1));
         }
 
         /// <summary>
@@ -245,9 +246,13 @@ namespace KekeDreamLand
             worldmap.TryToMove(playerProgress, directionPressed);
         }
 
-        public void UpdateCurrentPosition(GraphNode g)
+        /// <summary>
+        /// Update the current position of Boing on the current world.
+        /// </summary>
+        /// <param name="nodeIndex"></param>
+        public void UpdateCurrentNodeOnWorld(int nodeIndex)
         {
-            playerProgress.currentNodeIndex = g.nodeIndex;
+            playerProgress.currentNodeIndex = nodeIndex;
         }
 
         #endregion
@@ -275,7 +280,7 @@ namespace KekeDreamLand
             transitionManager.FadeOut();
         }
 
-        // TODO use delegate to easily done what we want when fadeIn is finished.
+        // TODO use delegate to easily done what we want when fadeIn is finished ?
 
         /// <summary>
         /// Event triggered when a fadeIn transition animation finished.

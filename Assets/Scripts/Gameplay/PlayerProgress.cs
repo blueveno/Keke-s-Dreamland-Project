@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
+using System.Collections.Generic;
 
 namespace KekeDreamLand {
 
@@ -14,25 +15,34 @@ namespace KekeDreamLand {
             feathersCollected = 0;
             specialItemsFound = new bool[4];
         }
+
+        public LevelProgress(int feathersCollected, bool[] specialItemsFound)
+        {
+            finished = true;
+            this.feathersCollected = feathersCollected;
+            this.specialItemsFound = specialItemsFound;
+        }
     }
 
+    [System.Serializable]
     public class PlayerProgress {
 
         // TODO Cumulate the time played on each level.
+        // TODO death count.
         //public int timePlayed;
 
         public int currentWorldIndex;
         public int currentNodeIndex;
 
-        // First list is list of worlds that contains a list of bool to indicates that a specific level is finished.
-        public List<List<LevelProgress>> finishedLevels;
+        // Dictionnary of all level progress.
+        public Dictionary<string, LevelProgress> finishedLevels;
 
         public PlayerProgress()
         {
             currentWorldIndex = 0;
             currentNodeIndex = 0;
 
-            finishedLevels = new List<List<LevelProgress>>();
+            finishedLevels = new Dictionary<string, LevelProgress>();
         }
     }
 }

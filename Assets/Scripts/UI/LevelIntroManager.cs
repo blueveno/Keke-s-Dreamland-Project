@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 
 namespace KekeDreamLand
@@ -14,8 +12,6 @@ namespace KekeDreamLand
         private Text levelNumber;
 
         private Animator anim;
-
-        // TODO animator ?
 
         private void Awake()
         {

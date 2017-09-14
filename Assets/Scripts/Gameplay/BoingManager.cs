@@ -257,7 +257,7 @@ namespace KekeDreamLand
             GameManager.instance.TriggerFadeIn();
 
             // Stop Boing velocity.
-            GetComponent<Platformer2DUserControl>().StopBoing();
+            GetComponent<InputManager>().StopBoing();
         }
 
         #endregion

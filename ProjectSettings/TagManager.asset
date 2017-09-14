@@ -9,7 +9,6 @@ TagManager:
   - Wall
   - OutOfBound
   - Item
-  - Ennemy
   - LevelManager
   - Feather
   - SpecialTiles

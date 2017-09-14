@@ -27,7 +27,7 @@ namespace KekeDreamLand
             rgbd = GetComponent<Rigidbody2D>();
 
             // Observe Boing user control.
-            Platformer2DUserControl userController = GameObject.FindGameObjectWithTag("Player").GetComponent<Platformer2DUserControl>();
+            InputManager userController = GameObject.FindGameObjectWithTag("Player").GetComponent<InputManager>();
             userController.AddObserver(this);
         }
 
@@ -55,7 +55,7 @@ namespace KekeDreamLand
             GameObject player = GameObject.FindGameObjectWithTag("Player");
 
             if(player)
-                player.GetComponent<Platformer2DUserControl>().RemoveObserver(this);
+                player.GetComponent<InputManager>().RemoveObserver(this);
         }
     }
 }

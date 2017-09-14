@@ -21,10 +21,17 @@ namespace KekeDreamLand
     }
 
     [System.Serializable]
-    public struct GraphTransition
+    public class GraphTransition
     {
         public InputDirection inputNeeded;
         public int targetNodeindex;
+        public bool unlocked;
+
+        public GraphTransition() {
+            inputNeeded = InputDirection.DOWN;
+            targetNodeindex = -1;
+            unlocked = false;
+        }
     }
 
     public enum InputDirection

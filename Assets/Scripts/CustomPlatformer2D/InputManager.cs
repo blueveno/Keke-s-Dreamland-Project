@@ -16,7 +16,7 @@ namespace KekeDreamLand
     /// <summary>
     /// Input manager. Some inputs can be observed by observer.
     /// </summary>
-    public class Platformer2DUserControl : MonoBehaviour
+    public class InputManager : MonoBehaviour
     {
         #region Private attributes
 
@@ -62,18 +62,18 @@ namespace KekeDreamLand
             if (!GameManager.instance.CurrentLevel)
                 return;
 
-                // Stop interaction with game in specific case (intern transition, end of the level, ...).
-                if (GameManager.instance.CurrentLevel.IsTransition)
-                {
-                    StopBoing();
-                    return;
-                }
+            // Stop interaction with game in specific case (intern transition, end of the level, ...).
+            if (GameManager.instance.CurrentLevel.IsTransition)
+            {
+                StopBoing();
+                return;
+            }
 
-                // Can't move if Boing is bouncing.
-                if (boing.IsBouncing)
-                    return;
+            // Can't move if Boing is bouncing.
+            if (boing.IsBouncing)
+                return;
 
-                HandleMove();
+            HandleMove();
         }
 
         #endregion
