@@ -61,9 +61,9 @@ namespace KekeDreamLand {
                 {
                     if (levelData.itemsPresent[i])
                     {
-                        SpriteRenderer sr = child.gameObject.GetComponent<SpriteRenderer>();
+                        Image img = child.gameObject.GetComponent<Image>();
                         if (levelProgress != null && levelProgress.specialItemsFound[i])
-                            sr.color = Color.white;
+                            img.color = Color.white;
                     }
                     else
                         child.gameObject.SetActive(false);
