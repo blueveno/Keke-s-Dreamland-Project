@@ -11,9 +11,10 @@ namespace KekeDreamLand
         #region Inspector Attributes
 
         [Header("Level intro")]
-
-        public string levelName;
+        
         public float levelIntroDuration = 3.0f;
+
+        public LevelData data;
 
         #endregion
 
@@ -24,7 +25,7 @@ namespace KekeDreamLand
         private BoingManager boingScript;
 
         // UI
-        private HUDManager hudMgr;
+        private LevelHUDManager hudMgr;
         private LevelIntroManager levelIntroMgr;
         private LevelOutroManager levelOutroMgr;
 
@@ -143,7 +144,7 @@ namespace KekeDreamLand
             GameObject ui = GameObject.FindGameObjectWithTag("UI");
             if (ui)
             {
-                hudMgr = ui.transform.Find("HUD").GetComponent<HUDManager>();
+                hudMgr = ui.transform.Find("HUD").GetComponent<LevelHUDManager>();
                 levelIntroMgr = ui.transform.Find("LevelIntro").GetComponent<LevelIntroManager>();
                 levelOutroMgr = ui.transform.Find("LevelOutro").GetComponent<LevelOutroManager>();
             }
@@ -224,8 +225,8 @@ namespace KekeDreamLand
             isDisplayLevelIntro = true;
 
             // Configurate level name and world/level number.
-            levelIntroMgr.SetupLevelIntro(levelNumber, levelName);
-            levelOutroMgr.SetupLevelName(levelNumber, levelName);
+            levelIntroMgr.SetupLevelIntro(levelNumber, data.levelName);
+            levelOutroMgr.SetupLevelName(levelNumber, data.levelName);
             levelIntroMgr.TriggerDisplay();
 
             yield return new WaitForSeconds(levelIntroDuration);

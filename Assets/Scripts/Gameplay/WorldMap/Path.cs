@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using UnityEngine;
 
 namespace KekeDreamLand
 {
@@ -8,18 +9,33 @@ namespace KekeDreamLand
     public class Path : MonoBehaviour
     {
         public bool unlocked = false;
+        public bool secretLevel = false;
 
         /// <summary>
-        /// Unlock the path and also display it.
+        /// Unlock the path and display it immediatly.
         /// </summary>
-        public void UnlockPath()
+        public void DisplayPath()
         {
-            unlocked = true;
-
-            foreach(Transform t in transform)
+            foreach (Transform t in transform)
             {
                 t.gameObject.SetActive(true);
             }
+
+            unlocked = true;
+        }
+
+        /// <summary>
+        /// Unlock the path and display it step by step.
+        /// </summary>
+        public IEnumerator UnlockPath()
+        {
+            foreach(Transform t in transform)
+            {
+                t.gameObject.SetActive(true);
+                yield return new WaitForSeconds(0.1f);
+            }
+
+            unlocked = true;
         }
     }
 }

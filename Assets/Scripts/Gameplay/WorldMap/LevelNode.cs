@@ -11,9 +11,18 @@ namespace KekeDreamLand
         public int worldIndex;
         public int levelIndex;
 
+        public LevelData data;
+
         protected new void Awake()
         {
             base.Awake();
+
+            // Indicates to the linked path that this level is secret.
+            if (data.isSecretLevel)
+                foreach (GraphTransition gt in linkedNodes)
+                {
+                    gt.path.secretLevel = true;
+                }
         }
     }
 }

@@ -8,7 +8,7 @@ namespace KekeDreamLand
     /// <summary>
     /// Manager of the HUD. Display Life points and other value. 
     /// </summary>
-    public class HUDManager : MonoBehaviour
+    public class LevelHUDManager : MonoBehaviour
     {
         #region Inspector attributes
         
