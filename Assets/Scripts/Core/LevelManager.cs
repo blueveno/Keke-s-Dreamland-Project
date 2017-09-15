@@ -149,14 +149,9 @@ namespace KekeDreamLand
                 levelOutroMgr = ui.transform.Find("LevelOutro").GetComponent<LevelOutroManager>();
             }
 
-            CountFeathersInCurrentLevel();
-
-            // Special items.
-            for (int i = 0; i < specialItemPresent.Length; i++)
-            {
-                specialItemPresent[i] = false;
-            }
-            CheckSpecialItemsPresent();
+            // Retrieve informations about the level.
+            featherCount = data.totalFeathers;
+            specialItemPresent = data.itemsPresent;
 
             // Update level HUD and level outro.
             UpdateLifePoints(boingScript.maxLifePoints);
@@ -167,40 +162,6 @@ namespace KekeDreamLand
                 hudMgr.SetupSpecificItem(i, specialItemPresent[i]);
                 levelOutroMgr.SetupSpecificItem(i, specialItemPresent[i]);
             }
-        }
-        
-        // Count all feathers on the level and check for special items.
-        private void CountFeathersInCurrentLevel()
-        {
-            GameObject[] feathers = GameObject.FindGameObjectsWithTag("Feather");
-            featherCount = feathers.Length;
-        }
-
-        // Check all special items on the level.
-        private void CheckSpecialItemsPresent()
-        {
-            GameObject[] items = GameObject.FindGameObjectsWithTag("Item");
-            foreach (GameObject item in items)
-            {
-                if (item.name.Contains("Key"))
-                {
-                    specialItemPresent[0] = true;
-                }
-
-                else if (item.name.Contains("Sunflower seed"))
-                {
-                    specialItemPresent[3] = true;
-                }
-
-                else if (item.name.Contains("Chocolatine"))
-                {
-                    specialItemPresent[2] = true;
-                }
-                
-            }
-
-            // Raisin bread is available for all level. it is unlocked if the player collect all feathers.
-            specialItemPresent[1] = true;
         }
 
         #endregion
@@ -266,7 +227,7 @@ namespace KekeDreamLand
             levelOutroMgr.DisplayStepByStep();
             
             // Automatic save.
-            GameManager.instance.ValidateCurrentNode(featherPickedUp, specialItemFound);
+            GameManager.instance.SaveLevelProgress(featherPickedUp, specialItemFound);
 
             isDisplayLevelOutro = false; // user can switch to world map.
         }
@@ -382,6 +343,50 @@ namespace KekeDreamLand
         private void RefreshFeatherCount()
         {
             hudMgr.UpdateFeatherPickedUp(featherPickedUp, featherCount);
+        }
+
+        #endregion
+
+        #region Utility methods
+
+        // Utility methods for setup level data.
+
+        // Count all feathers on the level and check for special items.
+        public int CountFeathersInCurrentLevel()
+        {
+            GameObject[] feathers = GameObject.FindGameObjectsWithTag("Feather");
+            return feathers.Length;
+        }
+
+        // Check all special items on the level.
+        public bool[] CheckSpecialItemsPresent()
+        {
+            GameObject[] items = GameObject.FindGameObjectsWithTag("Item");
+            bool[] specialItems = new bool[4];
+
+            foreach (GameObject item in items)
+            {
+                if (item.name.Contains("Key"))
+                {
+                    specialItems[0] = true;
+                }
+
+                else if (item.name.Contains("Sunflower seed"))
+                {
+                    specialItems[3] = true;
+                }
+
+                else if (item.name.Contains("Chocolatine"))
+                {
+                    specialItems[2] = true;
+                }
+
+            }
+
+            // Raisin bread is available for all level. it is unlocked if the player collect all feathers.
+            specialItems[1] = true;
+
+            return specialItems;
         }
 
         #endregion

@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using System.Collections;
 using UnityEditor;
 
 using KekeDreamLand;
@@ -9,6 +8,12 @@ public class KekeDreamlandToolEditor : Editor
 {
     private bool gridsDisplayed = false;
     private bool bordersDisplayed = false;
+
+    [MenuItem("KekeDreamLand/Select Boing")]
+    public static void SelectBoing()
+    {
+        Selection.activeGameObject = GameObject.FindGameObjectWithTag("Player");
+    }
 
     public override void OnInspectorGUI()
     {
@@ -49,10 +54,5 @@ public class KekeDreamlandToolEditor : Editor
         EditorGUILayout.Space();
 
         EditorGUILayout.HelpBox("Need a new button ? Ask to Bib' !", MessageType.Info);
-    }
-
-    private void SelectBoing()
-    {
-        Selection.activeGameObject = GameObject.FindGameObjectWithTag("Player");
     }
 }

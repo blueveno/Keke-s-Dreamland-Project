@@ -16,6 +16,9 @@ namespace KekeDreamLand
         public int mainMenuIndex = 0;
         public int worldMapIndex = 1;
 
+        [Header("Only for test")]
+        public bool skipIntro = false;
+
         #endregion
 
         #region Game Manager attributes
@@ -29,8 +32,9 @@ namespace KekeDreamLand
         /// Level manager. Ready only.
         /// </summary>
         public LevelManager CurrentLevel { get; private set; }
-        private bool isReset = false;
-        public int currentLevelIndex;
+
+        // Store the current level index to simplify save.
+        private int currentLevelIndex;
 
         // Animation transition script.
         private GameObject ui;
@@ -121,9 +125,9 @@ namespace KekeDreamLand
                 if (levelManager)
                 {
                     CurrentLevel = levelManager.GetComponent<LevelManager>();
-                    CurrentLevel.StartCoroutine(CurrentLevel.DisplayLevelIntro(arg0.name, isReset));
-
-                    isReset = false;
+                    CurrentLevel.StartCoroutine(CurrentLevel.DisplayLevelIntro(arg0.name, skipIntro));
+                    
+                    skipIntro = false;
                 }
             }
         }
@@ -152,7 +156,7 @@ namespace KekeDreamLand
         /// </summary>
         /// <param name="feathersCollected"></param>
         /// <param name="itemsFound"></param>
-        public void ValidateCurrentNode(int feathersCollected, bool[] itemsFound)
+        public void SaveLevelProgress(int feathersCollected, bool[] itemsFound)
         {
             // Create key for the dictionnary.
             string key = playerProgress.currentWorldIndex + "-" + currentLevelIndex;
@@ -164,6 +168,8 @@ namespace KekeDreamLand
             // Create and add the new entry.
             LevelProgress levelProgress = new LevelProgress(feathersCollected, itemsFound);
             playerProgress.finishedLevels.Add(key, levelProgress);
+
+            // TODO update world progress.
 
             // Save.
             SaveLoadManager.SavePlayerProgress(playerProgress);
@@ -186,8 +192,6 @@ namespace KekeDreamLand
         /// </summary>
         public void LoadWorldMap()
         {
-            currentLevelIndex = -1;
-
             SceneManager.LoadScene(worldMapIndex);
         }
 
@@ -311,7 +315,7 @@ namespace KekeDreamLand
                 else
                 {
                     ResetCurrentScene();
-                    isReset = true;
+                    skipIntro = true;
                 }
             }
 
