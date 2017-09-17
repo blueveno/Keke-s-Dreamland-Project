@@ -52,17 +52,7 @@ namespace KekeDreamLand
                 // Boing is healing.
                 if (value > lifePoints)
                 {
-                    // Heal
-                    if(lifePoints < maxLifePoints)
-                    {
-                        lifePoints = value;
-                    }
-
-                    // Overheal.
-                    else
-                    {
-                        lifePoints = maxLifePoints;
-                    }
+                    lifePoints = Mathf.Max(value, maxLifePoints);
                 }
 
                 // Boing is taking damage.
