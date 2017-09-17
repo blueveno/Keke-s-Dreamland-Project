@@ -9,8 +9,11 @@ TagManager:
   - Wall
   - OutOfBound
   - Item
-  - Ennemy
   - LevelManager
+  - Feather
+  - SpecialTiles
+  - Enemy
+  - Node
   layers:
   - Default
   - TransparentFX

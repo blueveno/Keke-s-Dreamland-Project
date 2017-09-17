@@ -48,6 +48,9 @@ namespace KekeDreamLand
         private float cameraMinY;
         private float cameraMaxY;
 
+        private bool lockVertical;
+        private bool lockHorizontal;
+
         #endregion
 
         #region Unity methods
@@ -97,6 +100,20 @@ namespace KekeDreamLand
 
             cameraMinY = currentArea.transform.position.y + cameraSizeY;
             cameraMaxY = currentArea.transform.position.y + currentArea.area.raw - cameraSizeY;
+
+            // Place camera.
+            Vector3 newPos = Vector3.zero;
+            newPos.x = Mathf.Clamp(target.position.x, cameraMinX, cameraMaxX);
+            newPos.y = Mathf.Clamp(target.position.y, cameraMinY, cameraMaxY);
+            newPos.z = target.position.z + m_OffsetZ;
+            transform.position = newPos;
+
+            // Lock an axis if area is too small (verticaly or/and horizontaly).
+            if (cameraSizeX * 2 > currentArea.area.column)
+                lockHorizontal = true;
+
+            if (cameraSizeY * 2 > currentArea.area.raw)
+                lockVertical = true;
         }
 
         // Center the camera on the player gameobject but restrict his position in the boundaries of the current area.
@@ -105,8 +122,16 @@ namespace KekeDreamLand
             Vector3 newPos = Vector3.zero;
 
             // Limit the camera.
-            newPos.x = Mathf.Clamp(target.position.x, cameraMinX, cameraMaxX);
-            newPos.y = Mathf.Clamp(target.position.y, cameraMinY, cameraMaxY);
+            if (!lockHorizontal)
+                newPos.x = Mathf.Clamp(target.position.x, cameraMinX, cameraMaxX);
+            else
+                newPos.x = transform.position.x;
+
+            if (!lockVertical)
+                newPos.y = Mathf.Clamp(target.position.y, cameraMinY, cameraMaxY);
+            else
+                newPos.y = transform.position.y;
+
             newPos.z = target.position.z + m_OffsetZ;
 
             transform.position = newPos;

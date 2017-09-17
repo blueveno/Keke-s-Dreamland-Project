@@ -42,32 +42,51 @@ namespace KekeDreamLand
         private InteractableGameobject interactableGoInRange;
 
         /// <summary>
-        /// LifePoints of Boing. Set value to damage it. Example LifePoints-- or -= 2.
+        /// Current life points of Boing. Set value to damage it or heal it. Example LifePoints-- or -= 2.
         /// </summary>
         public int LifePoints
         {
             get { return lifePoints; }
 
             set {
-                lifePoints = value;
-
-                if(lifePoints <= 0)
+                // Boing is healing.
+                if (value > lifePoints)
                 {
-                    lifePoints = 0;
-                    Die();
+                    lifePoints = Mathf.Max(value, maxLifePoints);
                 }
 
-                else if (lifePoints > maxLifePoints)
-                    lifePoints = maxLifePoints;
+                // Boing is taking damage.
+                else
+                {
+                    // No taking damage while Boing is invulnerable.
+                    if (isInvulnerable)
+                        return;
 
+                    // Boing is damaged and no lifepoints remind.
+                    if (value <= 0)
+                    {
+                        lifePoints = 0;
+                        Die();
+                    }
+
+                    // Boing is damaged but alive.
+                    else
+                    {
+                        // Trigger temporary invulnerability if Boing has taken a damage.
+                        StartCoroutine(Invulnerability());
+
+                        lifePoints = value;
+                    }
+                }
+                
                 // Update HUD.
                 GameManager.instance.CurrentLevel.UpdateLifePoints(lifePoints);
-
-                // TODO temprorary invulnerability.
             }
         }
-        private int lifePoints; // max 3
-        
+        private int lifePoints; // current life points.
+
+        private bool isInvulnerable = false;
+
         /// <summary>
         /// Return true if Boing is actually bouncing.
         /// </summary>
@@ -90,7 +109,7 @@ namespace KekeDreamLand
             noteEmitter = GetComponentInChildren<ParticleSystem>();
 
             interactableGoInRange = null;
-
+            
             lifePoints = maxLifePoints;
         }
 
@@ -193,6 +212,34 @@ namespace KekeDreamLand
             }
         }
 
+        // Shake the sprite.
+        private IEnumerator Invulnerability()
+        {
+            isInvulnerable = true;
+
+            int i = 0;
+            int blinkCount = 12;
+
+            SpriteRenderer sprite = GetComponent<SpriteRenderer>();
+
+            while (i < blinkCount)
+            {
+                // Change color of Boing.
+                if(i % 2 == 0)
+                    sprite.color = Color.grey;
+                else
+                    sprite.color = Color.white;
+
+                yield return new WaitForSeconds(invulnerabilityDuration / blinkCount);
+                i++;
+            }
+
+            isInvulnerable = false;
+
+            // Reset color of the sprite.
+            sprite.color = Color.white;
+        }
+
         private void Die()
         {
             // TODO animation, sound, ...
@@ -200,7 +247,7 @@ namespace KekeDreamLand
             GameManager.instance.TriggerFadeIn();
 
             // Stop Boing velocity.
-            GetComponent<Platformer2DUserControl>().StopBoing();
+            GetComponent<InputManager>().StopBoing();
         }
 
         #endregion

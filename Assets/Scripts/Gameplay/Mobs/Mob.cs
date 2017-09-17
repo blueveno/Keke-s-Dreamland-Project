@@ -4,8 +4,7 @@ using UnityEngine;
 
 namespace KekeDreamLand
 {
-    // TODO Feedback when the mob is hit by Player
-    // TODO Feedback when the mob dies ?
+    // TODO feedback when the mob dies ?
 
     /// <summary>
     /// Attach this to any enemy in the game. Inherit if the mob need a specialized behaviour.
@@ -24,6 +23,7 @@ namespace KekeDreamLand
         [Header("Bounce behaviour")]
         public bool canBounce = false;
         public float BounceEffectDuration = 2.0f;
+        
         #endregion
 
         #region Private attributes
@@ -45,7 +45,11 @@ namespace KekeDreamLand
             {
                 // No taking damage if invincible.
                 if (invincible)
+                {
+                    Debug.LogWarning(name + " is invincible !");
                     return;
+                }
+                    
 
                 lifePoints = value;
 
@@ -53,11 +57,14 @@ namespace KekeDreamLand
                 {
                     lifePoints = 0;
                     Die();
+                    return;
                 }
 
-                // Can be heal ?
-                else if (lifePoints > mobLifePoints)
-                    lifePoints = mobLifePoints;
+                // A mob can be healed by another ???
+                lifePoints = Mathf.Max(value, mobLifePoints);
+
+                // Shake sprite when mob is damaged but don't die.
+                StartCoroutine(ShakeSprite());
             }
         }
         private int lifePoints;
@@ -76,7 +83,7 @@ namespace KekeDreamLand
             lifePoints = mobLifePoints;
         }
 
-        private void OnTriggerEnter2D(Collider2D collision)
+        protected void OnTriggerEnter2D(Collider2D collision)
         {
             // Damage player if enter in collision with. Only if the mob is not bouncing.
             if (!isBouncing && collision.gameObject.tag == "Player")
@@ -106,7 +113,7 @@ namespace KekeDreamLand
 
         #region Private methods
 
-        private void DealDamageToPlayer(GameObject player)
+        protected void DealDamageToPlayer(GameObject player)
         {
             player.GetComponent<BoingManager>().LifePoints -= mobDamage;
         }
@@ -167,10 +174,44 @@ namespace KekeDreamLand
             {
                 ai.enabled = enabled;
 
-                Debug.Log(ai.name + " : " + enabled);
+                // Debug ai activation or desactivation.
+                //Debug.Log(ai.name + " : " + enabled);
             }
         }
+        
+        // Shake the sprite.
+        private IEnumerator ShakeSprite()
+        {
+            GameObject sprite = transform.Find("Sprite").gameObject;
+            
+            Vector3 shakingPos = Vector3.zero;
 
+            int shakingCount = 10;
+            float shakeDuration = 0.1f / shakingCount;
+
+            int i = 0;
+            while (i < shakingCount)
+            {
+                shakingPos = Random.insideUnitCircle * 0.05f;
+
+                // Change local position to simulate shake.
+                sprite.transform.localPosition = shakingPos;
+
+                yield return new WaitForSeconds(shakeDuration);
+                i++;
+            }
+
+            // Reset position of the sprite.
+            sprite.transform.localPosition = Vector3.zero;
+        }
+
+        #endregion
+
+        #region Public methods
+
+        /// <summary>
+        /// Flip the sprite verticaly.
+        /// </summary>
         public void FlipSprite()
         {
             // Multiply the mob's x local scale by -1.

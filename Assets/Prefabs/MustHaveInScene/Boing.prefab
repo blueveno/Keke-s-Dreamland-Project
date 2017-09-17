@@ -182,7 +182,6 @@ MonoBehaviour:
   m_maxYSpeed: 7.5
   m_MaxSpeed: 3
   m_JumpForce: 400
-  m_CrouchSpeed: 0.25
   m_AirControl: 1
   m_WhatIsGround:
     serializedVersion: 2
@@ -332,7 +331,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 512
   timeBetweenAttack: 0.5
-  attackBox: {x: 0.6, y: 0.25}
+  attackBox: {x: 0.6, y: 0.4}
 --- !u!198 &198838159415641174
 ParticleSystem:
   m_ObjectHideFlags: 1

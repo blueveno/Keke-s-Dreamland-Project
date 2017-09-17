@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using UnityEngine;
 
 namespace KekeDreamLand
 {
@@ -7,14 +8,26 @@ namespace KekeDreamLand
     /// </summary>
     public class LevelManager : MonoBehaviour
     {
+        #region Inspector Attributes
+
+        [Header("Level intro")]
+        
+        public float levelIntroDuration = 3.0f;
+
+        public LevelData data;
+
+        #endregion
+
         #region LevelManager Attributes
 
         // Boing
         private GameObject boing;
         private BoingManager boingScript;
 
-        // HUD
-        private HUDManager hudManager;
+        // UI
+        private LevelHUDManager hudMgr;
+        private LevelIntroManager levelIntroMgr;
+        private LevelOutroManager levelOutroMgr;
 
         // Camera
         private CustomCamera2DFollow cameraFollow;
@@ -23,7 +36,7 @@ namespace KekeDreamLand
         private GameObject nextArea; // next area where Boing will go.
         private Vector3 nextPosition; // next position on this area where Boing will spawn.
 
-        // Game manager attributes.
+        // Level manager attributes.
 
         /// <summary>
         /// Return true if the level is finished.
@@ -46,9 +59,17 @@ namespace KekeDreamLand
 
         public bool IsTransition
         {
-            get { return isLevelFinished || isInternalTransition; }
+            get { return isLevelFinished || isInternalTransition || isDisplayLevelIntro || isDisplayLevelOutro; }
         }
 
+        // Ennemies
+        GameObject[] ennemies;
+
+        // Items
+
+        /// <summary>
+        /// Return number of feathers collected.
+        /// </summary>
         public int FeatherPickedUp
         {
             get { return featherPickedUp; }
@@ -60,19 +81,56 @@ namespace KekeDreamLand
         }
         private int featherPickedUp = 0;
         private int featherCount = 0;
+        
+        private bool[] specialItemPresent = new bool[4];
+        private bool[] specialItemFound = new bool[4];
+
+        // True if level intro is currently displayed.
+        private bool isDisplayLevelIntro = false;
+
+        // True if level outro is currently displayed.
+        public bool IsDisplayLevelOutro
+        {
+            get { return isDisplayLevelOutro; }
+            set { isDisplayLevelOutro = value; }
+        }
+        private bool isDisplayLevelOutro = false;
 
         #endregion
 
         #region Unity methods
-        
+
         private void Awake()
         {
+            SetupEnnemies();
+
             SetupLevel();
         }
 
         #endregion
 
         #region Private methods
+
+        private void SetupEnnemies()
+        {
+            EnableAllEnnemies(false);
+
+            Debug.Log(ennemies.Length + " enemies on the level");
+        }
+
+        private void EnableAllEnnemies(bool enabled)
+        {
+            // Get all alive ennemies.
+            ennemies = GameObject.FindGameObjectsWithTag("Enemy");
+            
+            foreach (GameObject enemy in ennemies)
+            {
+                foreach (AIBehaviour ai in enemy.GetComponents<AIBehaviour>())
+                {
+                    ai.enabled = enabled;
+                }
+            }
+        }
 
         // Setup all components and variables of the gamemanager.
         private void SetupLevel()
@@ -85,31 +143,104 @@ namespace KekeDreamLand
             // Setup Ui.
             GameObject ui = GameObject.FindGameObjectWithTag("UI");
             if (ui)
-                hudManager = ui.transform.Find("HUD").GetComponent<HUDManager>();
-
-            // Count all collectables on the level.
-            CountFeathersInCurrentLevel();
-
-            // Update level HUD.
-            UpdateLifePoints(boingScript.maxLifePoints);
-            RefreshFeatherCount();
-        }
-
-        private void CountFeathersInCurrentLevel()
-        {
-            GameObject[] items = GameObject.FindGameObjectsWithTag("Item");
-            foreach (GameObject g in items)
             {
-                if (g.name.Contains("Feather"))
-                {
-                    featherCount++;
-                }
+                hudMgr = ui.transform.Find("HUD").GetComponent<LevelHUDManager>();
+                levelIntroMgr = ui.transform.Find("LevelIntro").GetComponent<LevelIntroManager>();
+                levelOutroMgr = ui.transform.Find("LevelOutro").GetComponent<LevelOutroManager>();
+            }
+
+            // Retrieve informations about the level.
+            featherCount = data.totalFeathers;
+            specialItemPresent = data.itemsPresent;
+
+            // Update level HUD and level outro.
+            UpdateLifePoints(boingScript.maxLifePoints);
+            hudMgr.SetupFeatherIndicators(featherCount);
+            
+            for (int i = 0; i < specialItemPresent.Length; i++)
+            {
+                hudMgr.SetupSpecificItem(i, specialItemPresent[i]);
+                levelOutroMgr.SetupSpecificItem(i, specialItemPresent[i]);
             }
         }
 
         #endregion
 
-        #region Level management
+        #region Level transitions methods
+
+        /// <summary>
+        /// Display level name at the start of the level. Or skip it.
+        /// </summary>
+        /// <param name="levelNumber"></param>
+        /// <param name="skipIntro">Skip directly the level intro.</param>
+        /// <returns></returns>
+        public IEnumerator DisplayLevelIntro(string levelNumber, bool skipIntro)
+        {
+            // Skip intro.
+            if (skipIntro)
+            {
+                StartLevel();
+                yield break;
+            }
+            
+            isDisplayLevelIntro = true;
+
+            // Configurate level name and world/level number.
+            levelIntroMgr.SetupLevelIntro(levelNumber, data.levelName);
+            levelOutroMgr.SetupLevelName(levelNumber, data.levelName);
+            levelIntroMgr.TriggerDisplay();
+
+            yield return new WaitForSeconds(levelIntroDuration);
+
+            isDisplayLevelIntro = false;
+
+            StartLevel();
+        }
+
+        private void StartLevel()
+        {
+            levelIntroMgr.gameObject.SetActive(false);
+            GameManager.instance.ActivateAnimator();
+            EnableAllEnnemies(true);
+        }
+
+        /// <summary>
+        /// Display level outro and automatic save.
+        /// </summary>
+        public void LevelOutro()
+        {
+            // Stop all ennemies.
+            EnableAllEnnemies(false);
+
+            // Update stats before display them.
+            levelOutroMgr.UpdateFeatherPickedUp(featherPickedUp, featherCount);
+            
+            for (int i = 0; i < specialItemFound.Length; i++)
+            {
+                if (specialItemPresent[i])
+                    levelOutroMgr.UpdateSpecialItems(i, specialItemFound[i]);
+            }
+
+            // And Update comment and boing special anim.
+            levelOutroMgr.UpdateLevelOutro();
+            
+            levelOutroMgr.DisplayStepByStep();
+            
+            // Automatic save.
+            GameManager.instance.SaveLevelProgress(featherPickedUp, specialItemFound);
+
+            isDisplayLevelOutro = false; // user can switch to world map.
+        }
+
+        /// <summary>
+        /// Display all components directly.
+        /// </summary>
+        public void SkipOutro()
+        {
+            levelOutroMgr.DisplayDirectly();
+
+            isDisplayLevelOutro = false; // user can switch to world map.
+        }
 
         /// <summary>
         /// Trigger an internal transition (Switch to an another area in the same scene).
@@ -127,6 +258,8 @@ namespace KekeDreamLand
             GameManager.instance.TriggerFadeIn();
         }
 
+        #endregion
+
         /// <summary>
         /// Move boing and camera to the prepared area and position.
         /// </summary>
@@ -139,10 +272,55 @@ namespace KekeDreamLand
             
             nextArea = null;
         }
+        
+        #region Items methods
+
+        /// <summary>
+        /// Indicates to the level that the specified special item has been picked up.
+        /// </summary>
+        /// <param name="specialItemIndex"></param>
+        public void PickSpecialItem(int specialItemIndex)
+        {
+            specialItemFound[specialItemIndex] = true;
+
+            hudMgr.UnlockSpecialItem(specialItemIndex);
+        }
+
+        /// <summary>
+        /// Pick a croissant and heal Boing.
+        /// </summary>
+        public void PickCroissant()
+        {
+            boingScript.LifePoints++;
+        }
+
+        /// <summary>
+        /// Return true if all feathers has been collected.
+        /// </summary>
+        /// <returns></returns>
+        public bool HasCollectAllFeathers()
+        {
+            return featherPickedUp == featherCount;
+        }
+
+        /// <summary>
+        /// Return true if all special items have been collected.
+        /// </summary>
+        /// <returns></returns>
+        public bool HasCollectAllItems()
+        {
+            bool allFound = true;
+
+            for (int i = 0; i < specialItemFound.Length && allFound; i++)
+            {
+                if (specialItemPresent[i])
+                    allFound = specialItemFound[i];
+            }
+
+            return allFound;
+        }
 
         #endregion
-
-        // TODO move also HUD ?
 
         #region HUD management
 
@@ -151,7 +329,7 @@ namespace KekeDreamLand
         /// </summary>
         public void ToggleHUD()
         {
-            hudManager.ToggleHUD();
+            hudMgr.ToggleHUD();
         }
 
         /// <summary>
@@ -159,12 +337,56 @@ namespace KekeDreamLand
         /// </summary>
         public void UpdateLifePoints(int lifePoints)
         {
-            hudManager.UpdateLifePoints(lifePoints);
+            hudMgr.UpdateLifePoints(lifePoints);
         }
 
         private void RefreshFeatherCount()
         {
-            hudManager.UpdateFeatherPickedUp(featherPickedUp, featherCount);
+            hudMgr.UpdateFeatherPickedUp(featherPickedUp, featherCount);
+        }
+
+        #endregion
+
+        #region Utility methods
+
+        // Utility methods for setup level data.
+
+        // Count all feathers on the level and check for special items.
+        public int CountFeathersInCurrentLevel()
+        {
+            GameObject[] feathers = GameObject.FindGameObjectsWithTag("Feather");
+            return feathers.Length;
+        }
+
+        // Check all special items on the level.
+        public bool[] CheckSpecialItemsPresent()
+        {
+            GameObject[] items = GameObject.FindGameObjectsWithTag("Item");
+            bool[] specialItems = new bool[4];
+
+            foreach (GameObject item in items)
+            {
+                if (item.name.Contains("Key"))
+                {
+                    specialItems[0] = true;
+                }
+
+                else if (item.name.Contains("Sunflower seed"))
+                {
+                    specialItems[3] = true;
+                }
+
+                else if (item.name.Contains("Chocolatine"))
+                {
+                    specialItems[2] = true;
+                }
+
+            }
+
+            // Raisin bread is available for all level. it is unlocked if the player collect all feathers.
+            specialItems[1] = true;
+
+            return specialItems;
         }
 
         #endregion

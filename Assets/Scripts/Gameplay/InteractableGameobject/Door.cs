@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace KekeDreamLand
 {
-    // TODO : feedback "Press button" - Sound - animation of Boing when he pass a door...
+    // TODO Display a feedback "Press button" - Sound - animation of Boing when he pass a door...
 
     /// <summary>
     /// Door behaviour. Player can use it when he is in front of it to reach an another area.

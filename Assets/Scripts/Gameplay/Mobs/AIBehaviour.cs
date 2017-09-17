@@ -2,6 +2,9 @@
 
 namespace KekeDreamLand
 {
+    /// <summary>
+    /// AI to override for any mob AI.
+    /// </summary>
     public abstract class AIBehaviour : MonoBehaviour
     {
         #region Inspector attributes
@@ -17,7 +20,7 @@ namespace KekeDreamLand
         #endregion
 
         #region Public methods
-
+        
         #endregion
 
         #region Private methods 

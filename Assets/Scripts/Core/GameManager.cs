@@ -16,8 +16,8 @@ namespace KekeDreamLand
         public int mainMenuIndex = 0;
         public int worldMapIndex = 1;
 
-        // TODO player progress class.
-        // See Trello !
+        [Header("Only for test")]
+        public bool skipIntro = false;
 
         #endregion
 
@@ -33,12 +33,27 @@ namespace KekeDreamLand
         /// </summary>
         public LevelManager CurrentLevel { get; private set; }
 
+        // Store the current level index to simplify save.
+        private int currentLevelIndex;
+
         // Animation transition script.
         private GameObject ui;
         private TransitionManager transitionManager;
 
+        /// <summary>
+        /// Return true if the current screen is the world map.
+        /// </summary>
+        public bool IsWorldMapScreen
+        {
+            get { return isWorldMap; }
+        }
         private bool isWorldMap = false;
         private WorldMapManager worldmap;
+
+        // TODO add is Saving or useless ?
+
+        // Load/Save system.
+        private PlayerProgress playerProgress;
 
         #endregion
 
@@ -47,6 +62,13 @@ namespace KekeDreamLand
         private void Awake()
         {
             SingletonThis();
+
+            // Load data
+            playerProgress = SaveLoadManager.LoadPlayerProgress();
+
+            // Reset
+            //playerProgress = new PlayerProgress();
+            //SaveLoadManager.SavePlayerProgress(playerProgress);
         }
 
         private void OnEnable()
@@ -87,11 +109,12 @@ namespace KekeDreamLand
             // Load world map :
             else if (arg0.buildIndex == worldMapIndex)
             {
-                isWorldMap = true;
-                worldmap = GameObject.Find("WorldMap").GetComponent<WorldMapManager>();
+                // Here we can move on the world map and enter in a level or access to an another world.
 
-                // Here we can move on the world map and enter in a level.
-                // TODO Don't display map until the player data are correcly loaded.
+                isWorldMap = true;
+                
+                worldmap = GameObject.Find("WorldMap").GetComponent<WorldMapManager>();
+                worldmap.SetupMap(playerProgress);
             }
 
             // Load a level :
@@ -102,6 +125,9 @@ namespace KekeDreamLand
                 if (levelManager)
                 {
                     CurrentLevel = levelManager.GetComponent<LevelManager>();
+                    CurrentLevel.StartCoroutine(CurrentLevel.DisplayLevelIntro(arg0.name, skipIntro));
+                    
+                    skipIntro = false;
                 }
             }
         }
@@ -120,10 +146,34 @@ namespace KekeDreamLand
 
             DontDestroyOnLoad(gameObject);
         }
-
+        
         #endregion
 
         #region Load and Save System
+        
+        /// <summary>
+        /// Store all level progress and save them.
+        /// </summary>
+        /// <param name="feathersCollected"></param>
+        /// <param name="itemsFound"></param>
+        public void SaveLevelProgress(int feathersCollected, bool[] itemsFound)
+        {
+            // Create key for the dictionnary.
+            string key = playerProgress.currentWorldIndex + "-" + currentLevelIndex;
+            
+            // Remove old entry to avoid duplicate entries.
+            if (playerProgress.finishedLevels.ContainsKey(key))
+                playerProgress.finishedLevels.Remove(key);
+
+            // Create and add the new entry.
+            LevelProgress levelProgress = new LevelProgress(feathersCollected, itemsFound);
+            playerProgress.finishedLevels.Add(key, levelProgress);
+
+            // TODO update world progress.
+
+            // Save.
+            SaveLoadManager.SavePlayerProgress(playerProgress);
+        }
 
         #endregion
 
@@ -132,7 +182,7 @@ namespace KekeDreamLand
         /// <summary>
         /// Switch to the main menu scene.
         /// </summary>
-        public void SwitchToMainMenu()
+        public void LoadMainMenu()
         {
             SceneManager.LoadScene(mainMenuIndex);
         }
@@ -140,7 +190,7 @@ namespace KekeDreamLand
         /// <summary>
         /// Switch to the world map scene.
         /// </summary>
-        public void SwitchToWorldMap()
+        public void LoadWorldMap()
         {
             SceneManager.LoadScene(worldMapIndex);
         }
@@ -150,9 +200,12 @@ namespace KekeDreamLand
         /// </summary>
         /// <param name="world">world index</param>
         /// <param name="level">level index of this world</param>
-        public void SwitchToNewLevel(int world, int level)
+        public void LoadNewLevel(int world, int level)
         {
-            SceneManager.LoadScene("Level " + world + "-" + level);
+            // Update current level index.
+            currentLevelIndex = worldmap.GetLevelIndex(playerProgress.currentNodeIndex);
+
+            SceneManager.LoadScene("Level " + (world + 1) + "-" + (level + 1));
         }
 
         /// <summary>
@@ -172,17 +225,51 @@ namespace KekeDreamLand
         /// </summary>
         public void FinishCurrentLevel()
         {
-            CurrentLevel.IsLevelFinished = true;
+            CurrentLevel.IsDisplayLevelOutro = true;
 
-            // TODO for levelFinished : display a "Level finished" panel where the player can see what he has found and chose to go to the world map, go to main menu or quit.
-
-            // TODO fadeIn when the player has chose a button.
+            if(CurrentLevel.HasCollectAllFeathers())
+            {
+                Debug.Log("All feathers have been collected.");
+                CurrentLevel.PickSpecialItem(1);
+            }
+            
             transitionManager.FadeIn();
         }
 
         #endregion
 
+        #region World map management
+
+        public void InteractWithCurrentNode()
+        {
+            worldmap.InteractWithCurrentNode(playerProgress);
+        }
+
+        public void MoveOnWorldMap(InputDirection directionPressed)
+        {
+            worldmap.TryToMove(playerProgress, directionPressed);
+        }
+
+        /// <summary>
+        /// Update the current position of Boing on the current world.
+        /// </summary>
+        /// <param name="nodeIndex"></param>
+        public void UpdateCurrentNodeOnWorld(int nodeIndex)
+        {
+            playerProgress.currentNodeIndex = nodeIndex;
+        }
+
+        #endregion
+
         #region Transition management
+
+        /// <summary>
+        /// Activate transition animator.
+        /// </summary>
+        public void ActivateAnimator()
+        {
+            transitionManager.ActivateAnimator();
+        }
 
         /// <summary>
         /// Use this when you want to fade in and reload the current scene.
@@ -192,7 +279,12 @@ namespace KekeDreamLand
             transitionManager.FadeIn();
         }
 
-        // TODO use delegate to easily done what we want when fadeIn is finished.
+        public void TriggerFadeOut()
+        {
+            transitionManager.FadeOut();
+        }
+
+        // TODO use delegate to easily done what we want when fadeIn is finished ?
 
         /// <summary>
         /// Event triggered when a fadeIn transition animation finished.
@@ -203,8 +295,11 @@ namespace KekeDreamLand
             if(CurrentLevel)
             {
                 // Case of an end of level.
-                if (CurrentLevel.IsLevelFinished)
-                    SwitchToWorldMap();
+                if (CurrentLevel.IsDisplayLevelOutro)
+                {
+                    CurrentLevel.LevelOutro();
+                    return;
+                }
 
                 // Case of an internal transition.
                 else if (CurrentLevel.IsInternalTransition)
@@ -218,20 +313,22 @@ namespace KekeDreamLand
 
                 // Case of a restart of the level.
                 else
+                {
                     ResetCurrentScene();
-
-                CurrentLevel = null;
-                return;
+                    skipIntro = true;
+                }
             }
 
+            // Case of the world map.
             else if(isWorldMap)
             {
-                worldmap.SwitchToNewLevel();
+                // TODO FadeOut when change the world.
             }
             
+            // Case of the main menu.
             else
             {
-                SwitchToWorldMap();
+                LoadMainMenu();
             }
         }
 

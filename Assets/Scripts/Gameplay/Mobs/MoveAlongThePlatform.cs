@@ -1,7 +1,5 @@
 ﻿using UnityEngine;
 
-// TODO Check sides of the mob (and then add a boolean to collide with other mobs).
-
 namespace KekeDreamLand
 {
     /// <summary>

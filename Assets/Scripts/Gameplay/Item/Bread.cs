@@ -9,14 +9,9 @@ namespace KekeDreamLand
     {
         protected override void DoActionWhenPick()
         {
-            TriggerEnd();
-
             // FEEDBACK -> sound, particles...
-        }
 
-        // Trigger the end of the level.
-        private void TriggerEnd()
-        {
+            // Trigger the end of the level.
             GameManager.instance.FinishCurrentLevel();
         }
     }
