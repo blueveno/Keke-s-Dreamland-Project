@@ -46,7 +46,7 @@ namespace KekeDreamLand
                 // No taking damage if invincible.
                 if (invincible)
                 {
-                    Debug.LogWarning(name + " is invicible !");
+                    Debug.LogWarning(name + " is invincible !");
                     return;
                 }
                     
@@ -59,10 +59,9 @@ namespace KekeDreamLand
                     Die();
                     return;
                 }
-                
-                // Can be heal ?
-                else if (lifePoints > mobLifePoints)
-                    lifePoints = mobLifePoints;
+
+                // A mob can be healed by another ???
+                lifePoints = Mathf.Max(value, mobLifePoints);
 
                 // Shake sprite when mob is damaged but don't die.
                 StartCoroutine(ShakeSprite());

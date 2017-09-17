@@ -319,14 +319,16 @@ namespace KekeDreamLand
                 }
             }
 
+            // Case of the world map.
             else if(isWorldMap)
             {
-                
+                // TODO FadeOut when change the world.
             }
             
+            // Case of the main menu.
             else
             {
-                LoadWorldMap();
+                LoadMainMenu();
             }
         }
 

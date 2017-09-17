@@ -80,7 +80,7 @@ namespace KekeDreamLand
             // Remove sprites from the lifepoints HUD.
             if (lifePoints < lifePointsSprites.Count)
             {
-                for(int i = 0; i < spriteDiff; i++)
+                for (int i = 0; i < spriteDiff; i++)
                 {
                     //GameObject spriteRemoved = lifePointsSprites[0];
                     // TODO trigger animation ?
@@ -99,6 +99,7 @@ namespace KekeDreamLand
                     lifePointsSprites.Add(sprite);
                 }
             }
+
             // TODO add animation or effect.
         }
 
