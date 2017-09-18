@@ -145,7 +145,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4858238792555252, guid: 878db88c79e9eea4e96891507527279e, type: 2}
       propertyPath: m_RootOrder
-      value: 4
+      value: 3
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 878db88c79e9eea4e96891507527279e, type: 2}
@@ -195,7 +195,7 @@ Prefab:
     - target: {fileID: 224437568457525560, guid: f397f911359dda5478d96a1261988470,
         type: 2}
       propertyPath: m_RootOrder
-      value: 3
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 224437568457525560, guid: f397f911359dda5478d96a1261988470,
         type: 2}
@@ -247,6 +247,21 @@ Prefab:
       propertyPath: m_Pivot.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 114686481100255888, guid: f397f911359dda5478d96a1261988470,
+        type: 2}
+      propertyPath: m_havePropertiesChanged
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114686481100255888, guid: f397f911359dda5478d96a1261988470,
+        type: 2}
+      propertyPath: m_isInputParsingRequired
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114686481100255888, guid: f397f911359dda5478d96a1261988470,
+        type: 2}
+      propertyPath: m_sharedMaterial
+      value: 
+      objectReference: {fileID: 2100000, guid: bac6ab894356f6e4099f69e7c1bbe284, type: 2}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: f397f911359dda5478d96a1261988470, type: 2}
   m_IsPrefabParent: 0

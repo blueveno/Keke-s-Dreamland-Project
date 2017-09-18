@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 namespace KekeDreamLand {
 
@@ -9,14 +10,15 @@ namespace KekeDreamLand {
     {
         #region Inspector attributes
 
+        [Header("Node preview")]
         public Text nodeName;
         public Text nodeName2;
 
-        public Text feathers;
-
+        [Header("Level preview")]
         public GameObject levelPreview;
-
-        [Header("Special items")]
+        [Space]
+        public TextMeshProUGUI feathers;
+        [Space]
         public GameObject specialItemParent;
         public Color notFoundColor;
 
@@ -59,12 +61,29 @@ namespace KekeDreamLand {
                 int i = 0;
                 foreach(Transform child in specialItemParent.transform)
                 {
+                    // Check if the special item is present on the level.
                     if (levelData.itemsPresent[i])
                     {
                         Image img = child.gameObject.GetComponent<Image>();
-                        if (levelProgress != null && levelProgress.specialItemsFound[i])
-                            img.color = Color.white;
+
+                        // Save exist 
+                        if (levelProgress != null)
+                        {
+                            // Item found.
+                            if (levelProgress.specialItemsFound[i])
+                                img.color = Color.white;
+
+                            // Item not found.
+                            else
+                                img.color = notFoundColor;
+                        }
+
+                        // No save.
+                        else
+                            img.color = notFoundColor;
                     }
+
+                    // Else hide it on hud.
                     else
                         child.gameObject.SetActive(false);
 

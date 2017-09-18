@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 using System.Collections.Generic;
 
@@ -19,7 +20,7 @@ namespace KekeDreamLand
 
         [Header("Collectables :")]
         public GameObject featherParent;
-        public Text featherText;
+        public TextMeshProUGUI featherText;
 
         [Space]
 

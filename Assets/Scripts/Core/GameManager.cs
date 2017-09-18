@@ -35,6 +35,7 @@ namespace KekeDreamLand
 
         // Store the current level index to simplify save.
         private int currentLevelIndex;
+        private int currentWorldIndex;
 
         // Animation transition script.
         private GameObject ui;
@@ -50,10 +51,10 @@ namespace KekeDreamLand
         private bool isWorldMap = false;
         private WorldMapManager worldmap;
 
-        // TODO add is Saving or useless ?
-
-        // Load/Save system.
+        // Load/Save system
         private PlayerProgress playerProgress;
+
+        // TODO add is Saving or useless ?
 
         #endregion
 
@@ -112,7 +113,9 @@ namespace KekeDreamLand
                 // Here we can move on the world map and enter in a level or access to an another world.
 
                 isWorldMap = true;
-                
+
+                currentWorldIndex = playerProgress.currentWorldIndex;
+
                 worldmap = GameObject.Find("WorldMap").GetComponent<WorldMapManager>();
                 worldmap.SetupMap(playerProgress);
             }
@@ -159,17 +162,32 @@ namespace KekeDreamLand
         public void SaveLevelProgress(int feathersCollected, bool[] itemsFound)
         {
             // Create key for the dictionnary.
-            string key = playerProgress.currentWorldIndex + "-" + currentLevelIndex;
+            string key = currentWorldIndex + "-" + currentLevelIndex;
+
+            Debug.Log("Key for save : " + key);
+
+            LevelProgress levelProgress = null;
             
-            // Remove old entry to avoid duplicate entries.
-            if (playerProgress.finishedLevels.ContainsKey(key))
-                playerProgress.finishedLevels.Remove(key);
+            // Save found. Update for the best values.
+            if (playerProgress.finishedLevels.TryGetValue(key, out levelProgress))
+            {
+                levelProgress.feathersCollected = Mathf.Max(feathersCollected, levelProgress.feathersCollected);
+                for (int i = 0; i < levelProgress.specialItemsFound.Length; i++)
+                {
+                    // Modify only if item found.
+                    if (itemsFound[i])
+                        levelProgress.specialItemsFound[i] = true;
+                }
+            }
 
-            // Create and add the new entry.
-            LevelProgress levelProgress = new LevelProgress(feathersCollected, itemsFound);
-            playerProgress.finishedLevels.Add(key, levelProgress);
+            // level finished for the first time, create and add new entry.
+            else
+            {
+                levelProgress = new LevelProgress(feathersCollected, itemsFound);
+                playerProgress.finishedLevels.Add(key, levelProgress);
+            }
 
-            // TODO update world progress.
+            // TODO save too world progress / gameprogress.
 
             // Save.
             SaveLoadManager.SavePlayerProgress(playerProgress);

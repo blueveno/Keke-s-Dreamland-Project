@@ -1,8 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
-namespace KekeDreamLand
+﻿namespace KekeDreamLand
 {
     /// <summary>
     /// A special item is a rare and unique collectable item.

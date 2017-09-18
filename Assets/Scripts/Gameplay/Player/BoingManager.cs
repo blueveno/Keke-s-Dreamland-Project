@@ -16,13 +16,16 @@ namespace KekeDreamLand
 
         public float invulnerabilityDuration = 2.0f;
 
-        [Header("Bouncing")]
+        [Header("Bouncing system")]
         public float bouncingEffectRadius = 2.5f;
         [SerializeField] private LayerMask whatIsMobs;
 
-        [Header("Attack")]
+        [Header("Attack system")]
         public float timeBetweenAttack = 0.5f;
-        public Vector2 attackBox;
+        public Vector2 attackHitbox;
+        [Space]
+        public bool debugAttackHitbox = true;
+        public Color attackHitboxColor;
 
         #endregion
 
@@ -120,9 +123,13 @@ namespace KekeDreamLand
             Gizmos.DrawWireSphere(transform.position, bouncingEffectRadius);
 
             // Debug attack hitbox.
-            Gizmos.color = Color.red;
-            Vector2 pos = new Vector2(transform.position.x + transform.localScale.x * 0.5f, transform.position.y + 0.05f);
-            Gizmos.DrawCube(pos, attackBox);
+            if (debugAttackHitbox)
+            {
+                Gizmos.color = attackHitboxColor;
+                // Attack hitbox is in front of Boing and depends from its orientation.
+                Vector2 pos = new Vector2(transform.position.x + transform.localScale.x * (attackHitbox.x / 2), transform.position.y + 0.05f);
+                Gizmos.DrawCube(pos, attackHitbox);
+            }
         }
 
         #endregion
@@ -170,8 +177,8 @@ namespace KekeDreamLand
             yield return new WaitForSeconds(0.25f);
 
             // Positionnate and create attack hitbox.
-            Vector2 pos = new Vector2(transform.position.x + transform.localScale.x * 0.5f, transform.position.y + 0.05f);
-            Collider2D[] hits = Physics2D.OverlapBoxAll(pos, attackBox, 0.0f, whatIsMobs);
+            Vector2 pos = new Vector2(transform.position.x + transform.localScale.x * (attackHitbox.x / 2), transform.position.y + 0.05f);
+            Collider2D[] hits = Physics2D.OverlapBoxAll(pos, attackHitbox, 0.0f, whatIsMobs);
 
             // Attack concerns all mob touch by the ray.
             foreach (Collider2D hit in hits)
