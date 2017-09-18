@@ -1331,7 +1331,7 @@ MonoBehaviour:
     path: {fileID: 114539421204675132}
   positionOnMap: {x: 0, y: 0}
   worldIndex: 0
-  levelIndex: 4
+  levelIndex: 3
   data: {fileID: 11400000, guid: 3e41376e20fe51441a88b17376c9389e, type: 2}
 --- !u!114 &114085544508151444
 MonoBehaviour:
@@ -1383,6 +1383,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   unlocked: 0
+  secretLevel: 0
 --- !u!114 &114213022128149796
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1395,6 +1396,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   unlocked: 0
+  secretLevel: 0
 --- !u!114 &114222279354141758
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1433,6 +1435,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   unlocked: 0
+  secretLevel: 0
 --- !u!114 &114369175746272714
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1445,6 +1448,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   unlocked: 0
+  secretLevel: 0
 --- !u!114 &114382702425900716
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1457,6 +1461,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   unlocked: 0
+  secretLevel: 0
 --- !u!114 &114539421204675132
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1469,6 +1474,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   unlocked: 0
+  secretLevel: 0
 --- !u!114 &114724808150699332
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1481,6 +1487,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   unlocked: 0
+  secretLevel: 0
 --- !u!114 &114800596033941060
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1522,7 +1529,7 @@ MonoBehaviour:
     path: {fileID: 114993189814032398}
   positionOnMap: {x: 0, y: 0}
   worldIndex: 0
-  levelIndex: 6
+  levelIndex: 5
   data: {fileID: 11400000, guid: 23539883d2989354bad72ac742666bb1, type: 2}
 --- !u!114 &114832978092465492
 MonoBehaviour:
@@ -1545,7 +1552,7 @@ MonoBehaviour:
     path: {fileID: 114993189814032398}
   positionOnMap: {x: 0, y: 0}
   worldIndex: 0
-  levelIndex: 5
+  levelIndex: 4
   data: {fileID: 11400000, guid: 8c53a49e7f63dc742ac8ea34fac790c5, type: 2}
 --- !u!114 &114859513950206928
 MonoBehaviour:
@@ -1579,6 +1586,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   unlocked: 0
+  secretLevel: 0
 --- !u!212 &212037573087414380
 SpriteRenderer:
   m_ObjectHideFlags: 1

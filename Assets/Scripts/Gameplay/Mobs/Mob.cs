@@ -60,8 +60,8 @@ namespace KekeDreamLand
                     return;
                 }
 
-                // A mob can be healed by another ???
-                lifePoints = Mathf.Max(value, mobLifePoints);
+                // A mob can be healed by an another ???
+                lifePoints = Mathf.Min(value, mobLifePoints);
 
                 // Shake sprite when mob is damaged but don't die.
                 StartCoroutine(ShakeSprite());

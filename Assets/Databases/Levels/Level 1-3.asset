@@ -13,5 +13,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   levelName: Highest leaves
   isSecretLevel: 0
-  totalFeathers: 0
+  totalFeathers: 24
   itemsPresent: 00010000

@@ -111,9 +111,13 @@ namespace KekeDreamLand
             // Lock an axis if area is too small (verticaly or/and horizontaly).
             if (cameraSizeX * 2 > currentArea.area.column)
                 lockHorizontal = true;
+            else
+                lockHorizontal = false;
 
             if (cameraSizeY * 2 > currentArea.area.raw)
                 lockVertical = true;
+            else
+                lockVertical = false;
         }
 
         // Center the camera on the player gameobject but restrict his position in the boundaries of the current area.
