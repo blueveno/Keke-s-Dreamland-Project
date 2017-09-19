@@ -391,6 +391,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4595951458397972}
+  - component: {fileID: 114907380858902940}
   m_Layer: 0
   m_Name: World1
   m_TagString: Untagged
@@ -1351,6 +1352,7 @@ MonoBehaviour:
     path: {fileID: 114724808150699332}
   positionOnMap: {x: 0, y: 0}
   worldIndex: 1
+  worldDataTarget: {fileID: 11400000, guid: c4623800a14c961429cb94626040b5ff, type: 2}
 --- !u!114 &114159009204417668
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1574,6 +1576,18 @@ MonoBehaviour:
   worldIndex: 0
   levelIndex: -1
   data: {fileID: 11400000, guid: e968fd92affa2a34cb27aa72fd6eb8bc, type: 2}
+--- !u!114 &114907380858902940
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1609346904865416}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 67385b7825b7543459e1c35d41ef483f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  data: {fileID: 11400000, guid: 36302644896400140a4c4d7b0d9a2a7e, type: 2}
 --- !u!114 &114993189814032398
 MonoBehaviour:
   m_ObjectHideFlags: 1

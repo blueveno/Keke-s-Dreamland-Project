@@ -22,7 +22,7 @@ GameObject:
   - component: {fileID: 222475470111360640}
   - component: {fileID: 114558697549343266}
   m_Layer: 5
-  m_Name: LifePointsSprite
+  m_Name: LevelHUD_Lifepoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

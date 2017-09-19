@@ -37,18 +37,33 @@ namespace KekeDreamLand
 
         private void Awake()
         {
-            m_Character = GetComponent<PlatformerCharacter2D>();
-            
-            boing = GetComponent<BoingManager>();
-            
             IdentifyGamepadIfConnected();
+        }
+
+        private void Start()
+        {
+            if (GameManager.instance.CurrentLevel)
+            {
+                m_Character = GetComponent<PlatformerCharacter2D>();
+                boing = GetComponent<BoingManager>();
+            }
         }
 
         private void Update()
         {
+            // Quit with escape.
+            if (CrossPlatformInputManager.GetButtonDown("Cancel"))
+            {
+                Application.Quit();
+                return;
+            }
+
             // Case of a level
             if (GameManager.instance.CurrentLevel)
                 HandleLevelInteraction();
+
+            else if (GameManager.instance.IsMainMenuScreen)
+                HandleMainMenuInteraction();
 
             // Case of the world map.
             else if (GameManager.instance.IsWorldMapScreen)
@@ -134,6 +149,18 @@ namespace KekeDreamLand
                 }
                 else
                     yAxisUsed = false;
+            }
+        }
+
+        #endregion
+
+        #region Main Menu interaction
+
+        private void HandleMainMenuInteraction()
+        {
+            if(Input.anyKey)
+            {
+                GameManager.instance.LoadWorldMap();
             }
         }
 
@@ -317,8 +344,6 @@ namespace KekeDreamLand
         // TODO pause action
 
         #endregion
-
-        // Other
 
         #region Input manager utilities
 

@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 namespace KekeDreamLand
 {
@@ -8,7 +9,7 @@ namespace KekeDreamLand
     /// </summary>
     public class LevelIntroManager : MonoBehaviour
     {
-        private Text levelName;
+        private TextMeshProUGUI levelName;
         private Text levelNumber;
 
         private Animator anim;
@@ -16,7 +17,7 @@ namespace KekeDreamLand
         private void Awake()
         {
             levelNumber = transform.GetChild(0).gameObject.GetComponent<Text>();
-            levelName = transform.GetChild(1).gameObject.GetComponent<Text>();
+            levelName = transform.GetChild(1).gameObject.GetComponent<TextMeshProUGUI>();
 
             anim = GetComponent<Animator>();
         }

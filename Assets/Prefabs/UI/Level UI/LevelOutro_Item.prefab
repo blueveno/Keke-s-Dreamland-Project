@@ -56,7 +56,7 @@ GameObject:
   - component: {fileID: 222422385431923360}
   - component: {fileID: 114430688960727412}
   m_Layer: 5
-  m_Name: Item
+  m_Name: LevelOutro_Item
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

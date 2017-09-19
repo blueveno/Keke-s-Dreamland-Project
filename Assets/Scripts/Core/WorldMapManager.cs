@@ -32,6 +32,8 @@ namespace KekeDreamLand
         
         private GameObject boing;
 
+        private WorldData currentWorldData = null;
+
         #endregion
         
         #region Unity methods
@@ -156,10 +158,9 @@ namespace KekeDreamLand
                 if (ln)
                 {
                     LevelProgress levelProgress;
-                    string key = ln.worldIndex + "-" + ln.levelIndex;
 
                     // Get informations about the player progress on this level.
-                    if (playerProgress.finishedLevels.TryGetValue(key, out levelProgress))
+                    if (playerProgress.worldProgress[ln.worldIndex].finishedLevels.TryGetValue(ln.levelIndex, out levelProgress))
                     {
                         // If found and level finished, unlock all paths of this node.
                         if (levelProgress.finished)
@@ -173,9 +174,12 @@ namespace KekeDreamLand
                                         t.path.DisplayPath();
                                 }
 
+                                // Case of a path which is linked to a secret level node. 
                                 else if(!t.path.unlocked && t.path.secretLevel)
                                 {
-                                    // TODO secret level unlocking.
+                                    // Unlock path if all sunflower seeds have been collected.
+                                    if(currentWorldData.sunflowerSeedNeeded == playerProgress.worldProgress[ln.worldIndex].sunFlowerSeedCollected)
+                                        t.path.StartCoroutine(t.path.UnlockPath());
                                 }
                             }
                     }
@@ -210,10 +214,11 @@ namespace KekeDreamLand
                     whatIsIt = "Level " + (ln.worldIndex + 1) + "-" + (ln.levelIndex + 1);
                 
                 // Try to get progress.
-                playerProgress.finishedLevels.TryGetValue(ln.worldIndex + "-" + ln.levelIndex, out progress);
+                playerProgress.worldProgress[ln.worldIndex].finishedLevels.TryGetValue(ln.levelIndex, out progress);
             }
             else if (wn)
-                whatIsIt = "Access to world " + (wn.worldIndex + 1);
+
+                whatIsIt = "Go to " + wn.worldDataTarget.worldname;
             
             hudMgr.UpdateLevelPreview(whatIsIt, levelData, progress);
         }
@@ -236,6 +241,9 @@ namespace KekeDreamLand
 
             GetComponent<SpriteRenderer>().sprite = worldMapSprites[worldIndex];
             currentGraph = Instantiate(worldGraphPrefabs[worldIndex], transform);
+
+            // Get data of this world.
+            currentWorldData = currentGraph.GetComponent<WorldManager>().data;
         }
 
         private void SwitchToNewWorld(WorldNode node)

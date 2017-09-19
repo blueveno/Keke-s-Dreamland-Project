@@ -9,6 +9,7 @@ namespace KekeDreamLand
     {
         [Header("World node informations :")]
         public int worldIndex;
+        public WorldData worldDataTarget;
 
         protected new void Awake()
         {

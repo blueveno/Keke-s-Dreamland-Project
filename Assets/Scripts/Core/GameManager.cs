@@ -44,6 +44,15 @@ namespace KekeDreamLand
         /// <summary>
         /// Return true if the current screen is the world map.
         /// </summary>
+        public bool IsMainMenuScreen
+        {
+            get { return isMainMenu; }
+        }
+        private bool isMainMenu = false;
+
+        /// <summary>
+        /// Return true if the current screen is the world map.
+        /// </summary>
         public bool IsWorldMapScreen
         {
             get { return isWorldMap; }
@@ -65,11 +74,14 @@ namespace KekeDreamLand
             SingletonThis();
 
             // Load data
+            // TODO move on loadProgress method. Call it in the main menu screen when a save has been loaded.
             playerProgress = SaveLoadManager.LoadPlayerProgress();
 
-            // Reset
-            //playerProgress = new PlayerProgress();
-            //SaveLoadManager.SavePlayerProgress(playerProgress);
+            // TODO erase save method.
+
+            // TODO New game method.
+            // playerProgress = new PlayerProgress();
+            // SaveLoadManager.SavePlayerProgress(playerProgress);
         }
 
         private void OnEnable()
@@ -90,11 +102,13 @@ namespace KekeDreamLand
         // Delegate method triggered when a new scene is loaded.
         private void NewSceneLoaded(Scene arg0, LoadSceneMode arg1)
         {
-            // Reset information.
-            CurrentLevel = null;
+            // Reset information avout the loaded scene.
+            isMainMenu = false;
 
             isWorldMap = false;
             worldmap = null;
+
+            CurrentLevel = null;
 
             // Setup transition manager of the current scene.
             ui = GameObject.FindGameObjectWithTag("UI");
@@ -104,7 +118,9 @@ namespace KekeDreamLand
             // Load main menu :
             if (arg0.buildIndex == mainMenuIndex)
             {
-                // Here we can change settings. Create new game or load existing game.
+                // Here we can create new game or load existing game, we can also change settings...
+                isMainMenu = true;
+                Debug.Log("TODO MAIN MENU SCREEN");
             }
 
             // Load world map :
@@ -161,22 +177,23 @@ namespace KekeDreamLand
         /// <param name="itemsFound"></param>
         public void SaveLevelProgress(int feathersCollected, bool[] itemsFound)
         {
-            // Create key for the dictionnary.
-            string key = currentWorldIndex + "-" + currentLevelIndex;
-
-            Debug.Log("Key for save : " + key);
-
             LevelProgress levelProgress = null;
             
             // Save found. Update for the best values.
-            if (playerProgress.finishedLevels.TryGetValue(key, out levelProgress))
+            if (playerProgress.worldProgress[currentWorldIndex].finishedLevels.TryGetValue(currentLevelIndex, out levelProgress))
             {
                 levelProgress.feathersCollected = Mathf.Max(feathersCollected, levelProgress.feathersCollected);
                 for (int i = 0; i < levelProgress.specialItemsFound.Length; i++)
                 {
-                    // Modify only if item found.
-                    if (itemsFound[i])
+                    // Modify only if item found and not already obtained.
+                    if (itemsFound[i] && levelProgress.specialItemsFound[i])
+                    {
                         levelProgress.specialItemsFound[i] = true;
+
+                        // Sunflower seed obtained.
+                        if (i == 3)
+                            playerProgress.worldProgress[currentWorldIndex].sunFlowerSeedCollected++;
+                    }
                 }
             }
 
@@ -184,7 +201,7 @@ namespace KekeDreamLand
             else
             {
                 levelProgress = new LevelProgress(feathersCollected, itemsFound);
-                playerProgress.finishedLevels.Add(key, levelProgress);
+                playerProgress.worldProgress[currentWorldIndex].finishedLevels.Add(currentLevelIndex, levelProgress);
             }
 
             // TODO save too world progress / gameprogress.

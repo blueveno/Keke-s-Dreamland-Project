@@ -12,7 +12,7 @@ namespace KekeDreamLand {
 
         [Header("Node preview")]
         public Text nodeName;
-        public Text nodeName2;
+        public TextMeshProUGUI nodeName2;
 
         [Header("Level preview")]
         public GameObject levelPreview;
