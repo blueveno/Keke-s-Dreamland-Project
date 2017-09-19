@@ -51,7 +51,7 @@ namespace KekeDreamLand
 
         private void Update()
         {
-            // Quit with escape.
+            // Handle quit game.
             if (CrossPlatformInputManager.GetButtonDown("Quit"))
             {
                 GameManager.instance.QuitGame();
@@ -181,6 +181,13 @@ namespace KekeDreamLand
             if (GameManager.instance.CurrentLevel.IsTransition)
             {
                 StopBoing();
+                return;
+            }
+
+            // Handle pause game.
+            if (CrossPlatformInputManager.GetButtonDown("Pause"))
+            {
+                GameManager.instance.CurrentLevel.IsLevelPaused = !GameManager.instance.CurrentLevel.IsLevelPaused;
                 return;
             }
 

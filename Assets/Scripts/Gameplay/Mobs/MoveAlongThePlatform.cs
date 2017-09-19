@@ -19,6 +19,8 @@ namespace KekeDreamLand
         [Tooltip("Check that if you want that this mob collide with other mobs.")]
         public bool collideWithOthers = false;
 
+        public LayerMask whatIsGround;
+
         #endregion
 
         #region Private attributes
@@ -53,6 +55,8 @@ namespace KekeDreamLand
         {
             CheckPlatformExtremity();
 
+            CheckWalls();
+
             Move();
         }
 
@@ -70,7 +74,7 @@ namespace KekeDreamLand
 
             rayOrigin = new Vector3(rayOriginX, hitbox.bounds.min.y - 0.01f, hitbox.bounds.min.z);
 
-            // Debug.DrawRay(rayOrigin, Vector2.down * rayLength, Color.red, 0.1f);
+            //Debug.DrawRay(rayOrigin, Vector2.down * rayLength, Color.red, 0.1f);
 
             RaycastHit2D hit = Physics2D.Raycast(rayOrigin, Vector2.down, rayLength);
 
@@ -78,7 +82,27 @@ namespace KekeDreamLand
             if (!hit || hit.collider && hit.collider.tag == "OutOfBound")
             {
                 mobScript.FlipSprite();
+                direction *= -1;
+            }
+        }
 
+        private void CheckWalls()
+        {
+            if (direction > 0)
+                rayOriginX = hitbox.bounds.max.x;
+            else
+                rayOriginX = hitbox.bounds.min.x;
+
+            rayOrigin = new Vector3(rayOriginX, hitbox.bounds.center.y, hitbox.bounds.min.z);
+
+            //Debug.DrawRay(rayOrigin, Vector2.left * rayLength * direction, Color.yellow, 0.1f);
+
+            RaycastHit2D hit = Physics2D.Raycast(rayOrigin, Vector2.left * direction, rayLength, whatIsGround);
+
+            // Change direction of the mob if it hits a wall.
+            if (hit.collider != null && hit.collider.tag != "SpecialTiles")
+            {
+                mobScript.FlipSprite();
                 direction *= -1;
             }
         }

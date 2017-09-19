@@ -26,6 +26,8 @@ namespace KekeDreamLand
 
         public Image[] specialItemSprites = new Image[4];
 
+        public GameObject pauseFeedback;
+
         #endregion
 
         #region Private attributes
@@ -147,6 +149,15 @@ namespace KekeDreamLand
         {
             // TODO trigger animation of Unlock ?
             specialItemSprites[i].color = Color.white;
+        }
+
+        /// <summary>
+        /// Display feedback of pause game.
+        /// </summary>
+        /// <param name="paused"></param>
+        public void PauseGame(bool paused)
+        {
+            pauseFeedback.SetActive(!paused);
         }
 
         #endregion
