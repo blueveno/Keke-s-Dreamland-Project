@@ -52,9 +52,9 @@ namespace KekeDreamLand
         private void Update()
         {
             // Quit with escape.
-            if (CrossPlatformInputManager.GetButtonDown("Cancel"))
+            if (CrossPlatformInputManager.GetButtonDown("Quit"))
             {
-                Application.Quit();
+                GameManager.instance.QuitGame();
                 return;
             }
 
@@ -158,9 +158,14 @@ namespace KekeDreamLand
 
         private void HandleMainMenuInteraction()
         {
-            if(Input.anyKey)
+            if (GameManager.instance.IsTitleScreen() && CrossPlatformInputManager.GetButtonDown("Submit"))
             {
-                GameManager.instance.LoadWorldMap();
+                GameManager.instance.GoToMainMenu();
+            }
+
+            else if(!GameManager.instance.IsTitleScreen() && CrossPlatformInputManager.GetButtonDown("Cancel"))
+            {
+                GameManager.instance.BackInMenu();
             }
         }
 

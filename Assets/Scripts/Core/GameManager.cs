@@ -49,6 +49,7 @@ namespace KekeDreamLand
             get { return isMainMenu; }
         }
         private bool isMainMenu = false;
+        private MainMenuManager mainMenu;
 
         /// <summary>
         /// Return true if the current screen is the world map.
@@ -63,7 +64,7 @@ namespace KekeDreamLand
         // Load/Save system
         private PlayerProgress playerProgress;
 
-        // TODO add is Saving or useless ?
+        private int saveSlotSelected = 0;
 
         #endregion
 
@@ -72,16 +73,6 @@ namespace KekeDreamLand
         private void Awake()
         {
             SingletonThis();
-
-            // Load data
-            // TODO move on loadProgress method. Call it in the main menu screen when a save has been loaded.
-            playerProgress = SaveLoadManager.LoadPlayerProgress();
-
-            // TODO erase save method.
-
-            // TODO New game method.
-            // playerProgress = new PlayerProgress();
-            // SaveLoadManager.SavePlayerProgress(playerProgress);
         }
 
         private void OnEnable()
@@ -102,8 +93,9 @@ namespace KekeDreamLand
         // Delegate method triggered when a new scene is loaded.
         private void NewSceneLoaded(Scene arg0, LoadSceneMode arg1)
         {
-            // Reset information avout the loaded scene.
+            // Reset information about the loaded scene.
             isMainMenu = false;
+            mainMenu = null;
 
             isWorldMap = false;
             worldmap = null;
@@ -120,7 +112,8 @@ namespace KekeDreamLand
             {
                 // Here we can create new game or load existing game, we can also change settings...
                 isMainMenu = true;
-                Debug.Log("TODO MAIN MENU SCREEN");
+                
+                mainMenu = GameObject.Find("MainMenuUI").GetComponent<MainMenuManager>();
             }
 
             // Load world map :
@@ -165,13 +158,58 @@ namespace KekeDreamLand
 
             DontDestroyOnLoad(gameObject);
         }
-        
+
+        public void QuitGame()
+        {
+            Application.Quit();
+        }
+
         #endregion
 
         #region Load and Save System
-        
+
         /// <summary>
-        /// Store all level progress and save them.
+        /// Create a new game in the specified slot. Display disclaimer if slot is not empty.
+        /// </summary>
+        /// <param name="selectedSlot"></param>
+        /// <param name="disclaimer"></param>
+        public void NewGame(int selectedSlot, bool disclaimer)
+        {
+            saveSlotSelected = selectedSlot;
+
+            if (!disclaimer)
+                NewGameThenStart();
+
+            else
+                StartCoroutine(ReplaceSave());
+        }
+
+        private IEnumerator ReplaceSave()
+        {
+            mainMenu.DisplayDisclaimer("Do you want to replace this save ?");
+
+            yield return new WaitWhile(() => mainMenu.AnswerChoosen == -1);
+
+            if(mainMenu.AnswerChoosen == 0)
+                NewGameThenStart();
+
+            else
+                mainMenu.AnswerChoosen = -1;
+        }
+
+        private void NewGameThenStart()
+        {
+            // Create new progression.
+            playerProgress = new PlayerProgress();
+
+            // Create or replace old save.
+            SaveLoadManager.SavePlayerProgress(playerProgress, saveSlotSelected);
+
+            LoadWorldMap();
+        }
+
+        /// <summary>
+        /// Store the current level progress and save it.
         /// </summary>
         /// <param name="feathersCollected"></param>
         /// <param name="itemsFound"></param>
@@ -207,7 +245,19 @@ namespace KekeDreamLand
             // TODO save too world progress / gameprogress.
 
             // Save.
-            SaveLoadManager.SavePlayerProgress(playerProgress);
+            SaveLoadManager.SavePlayerProgress(playerProgress, saveSlotSelected);
+        }
+
+        /// <summary>
+        /// Load save slot selected.
+        /// </summary>
+        public void LoadPlayerProgress(int selectedSlot)
+        {
+            saveSlotSelected = selectedSlot;
+
+            playerProgress = SaveLoadManager.LoadPlayerProgress(saveSlotSelected);
+
+            LoadWorldMap();
         }
 
         #endregion
@@ -292,6 +342,39 @@ namespace KekeDreamLand
         public void UpdateCurrentNodeOnWorld(int nodeIndex)
         {
             playerProgress.currentNodeIndex = nodeIndex;
+        }
+
+        #endregion
+
+        #region MainMenu management
+
+        public void GoToMainMenu()
+        {
+            mainMenu.SwitchTo(mainMenu.menuScreen);
+        }
+
+        public void GoToNewGameMenu()
+        {
+            mainMenu.GoToSlotScreen(true);
+        }
+
+        public void GoToLoadGameMenu()
+        {
+            mainMenu.GoToSlotScreen(false);
+        }
+
+        public void BackInMenu()
+        {
+            mainMenu.Back();
+        }
+
+        /// <summary>
+        /// Return true if the current screen is the title screen.
+        /// </summary>
+        /// <returns></returns>
+        public bool IsTitleScreen()
+        {
+            return mainMenu.IsSpecifiedScreen(mainMenu.titleScreen);
         }
 
         #endregion
