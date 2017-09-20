@@ -38,7 +38,7 @@ GameObject:
   - component: {fileID: 4571517509770792}
   - component: {fileID: 114187504030138024}
   m_Layer: 0
-  m_Name: FallingLeaves
+  m_Name: MovingPlatforms
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
