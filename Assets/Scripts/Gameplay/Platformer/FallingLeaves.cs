@@ -43,7 +43,7 @@ namespace KekeDreamLand
             }
         }
 
-        private void OnDrawGizmos()
+        private void OnDrawGizmosSelected()
         {
             Gizmos.color = Color.blue;
             Gizmos.DrawSphere(transform.position + destination, 0.1f);
