@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 using System.Collections.Generic;
 
@@ -19,11 +20,13 @@ namespace KekeDreamLand
 
         [Header("Collectables :")]
         public GameObject featherParent;
-        public Text featherText;
+        public TextMeshProUGUI featherText;
 
         [Space]
 
         public Image[] specialItemSprites = new Image[4];
+
+        public GameObject pauseFeedback;
 
         #endregion
 
@@ -146,6 +149,15 @@ namespace KekeDreamLand
         {
             // TODO trigger animation of Unlock ?
             specialItemSprites[i].color = Color.white;
+        }
+
+        /// <summary>
+        /// Display feedback of pause game.
+        /// </summary>
+        /// <param name="paused"></param>
+        public void PauseGame(bool paused)
+        {
+            pauseFeedback.SetActive(!paused);
         }
 
         #endregion

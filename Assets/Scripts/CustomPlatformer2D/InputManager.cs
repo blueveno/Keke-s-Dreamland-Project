@@ -37,18 +37,33 @@ namespace KekeDreamLand
 
         private void Awake()
         {
-            m_Character = GetComponent<PlatformerCharacter2D>();
-            
-            boing = GetComponent<BoingManager>();
-            
             IdentifyGamepadIfConnected();
+        }
+
+        private void Start()
+        {
+            if (GameManager.instance.CurrentLevel)
+            {
+                m_Character = GetComponent<PlatformerCharacter2D>();
+                boing = GetComponent<BoingManager>();
+            }
         }
 
         private void Update()
         {
+            // Handle quit game.
+            if (CrossPlatformInputManager.GetButtonDown("Quit"))
+            {
+                GameManager.instance.QuitGame();
+                return;
+            }
+
             // Case of a level
             if (GameManager.instance.CurrentLevel)
                 HandleLevelInteraction();
+
+            else if (GameManager.instance.IsMainMenuScreen)
+                HandleMainMenuInteraction();
 
             // Case of the world map.
             else if (GameManager.instance.IsWorldMapScreen)
@@ -139,6 +154,35 @@ namespace KekeDreamLand
 
         #endregion
 
+        #region Main Menu interaction
+
+        private void HandleMainMenuInteraction()
+        {
+            // Disable any interaction with other screen when display a disclaimer.
+            if (GameManager.instance.IsDisclaimer())
+            {
+                // Cancel disclaimer.
+                if (CrossPlatformInputManager.GetButtonDown("Cancel"))
+                    GameManager.instance.CancelDisclaimer();
+
+                return;
+            }
+
+            // Go to main menu.
+            if (GameManager.instance.IsTitleScreen() && CrossPlatformInputManager.GetButtonDown("Submit"))
+            {
+                GameManager.instance.GoToMainMenu();
+            }
+
+            // Back to main menu.
+            else if(!GameManager.instance.IsTitleScreen() && CrossPlatformInputManager.GetButtonDown("Cancel"))
+            {
+                GameManager.instance.BackInMenu();
+            }
+        }
+
+        #endregion
+
         // In a level
 
         private void HandleLevelInteraction()
@@ -149,6 +193,13 @@ namespace KekeDreamLand
             if (GameManager.instance.CurrentLevel.IsTransition)
             {
                 StopBoing();
+                return;
+            }
+
+            // Handle pause game.
+            if (CrossPlatformInputManager.GetButtonDown("Pause"))
+            {
+                GameManager.instance.CurrentLevel.IsLevelPaused = !GameManager.instance.CurrentLevel.IsLevelPaused;
                 return;
             }
 
@@ -317,8 +368,6 @@ namespace KekeDreamLand
         // TODO pause action
 
         #endregion
-
-        // Other
 
         #region Input manager utilities
 

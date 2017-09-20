@@ -38,7 +38,7 @@ GameObject:
   - component: {fileID: 4248763785130044}
   - component: {fileID: 61625571741901832}
   - component: {fileID: 114454200328527556}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Feather
   m_TagString: Feather
   m_Icon: {fileID: 2974397684917235467, guid: 0000000000000000d000000000000000, type: 0}

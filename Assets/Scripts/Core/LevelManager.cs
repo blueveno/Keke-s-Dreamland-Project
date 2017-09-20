@@ -39,6 +39,24 @@ namespace KekeDreamLand
         // Level manager attributes.
 
         /// <summary>
+        /// Return true if level is paused.
+        /// </summary>
+        public bool IsLevelPaused
+        {
+            get { return isLevelPaused; }
+
+            set {
+                Time.timeScale = value ? 1.0f : 0.0f;
+
+                // TODO feedback game paused or resume.
+                hudMgr.PauseGame(value);
+
+                isLevelPaused = value;
+            }
+        }
+        private bool isLevelPaused = false;
+
+        /// <summary>
         /// Return true if the level is finished.
         /// </summary>
         public bool IsLevelFinished

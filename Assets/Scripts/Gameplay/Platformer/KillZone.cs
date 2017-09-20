@@ -17,7 +17,7 @@ namespace KekeDreamLand
                 GameManager.instance.TriggerFadeIn();
             }
 
-            // Destroy anything else which fall out of bounds.
+            // Destroy anything else which fall out of bounds and have trigger hitbox collider.
             else
             {
                 Destroy(other.gameObject, 0.2f);

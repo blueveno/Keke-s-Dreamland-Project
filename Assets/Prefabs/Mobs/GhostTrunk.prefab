@@ -197,6 +197,9 @@ MonoBehaviour:
   speed: 0.5
   facingRight: 0
   collideWithOthers: 0
+  whatIsGround:
+    serializedVersion: 2
+    m_Bits: 1
 --- !u!198 &198582940994201826
 ParticleSystem:
   m_ObjectHideFlags: 1

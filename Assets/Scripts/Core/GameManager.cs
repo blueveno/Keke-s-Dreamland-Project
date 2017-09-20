@@ -35,10 +35,21 @@ namespace KekeDreamLand
 
         // Store the current level index to simplify save.
         private int currentLevelIndex;
+        private int currentWorldIndex;
 
         // Animation transition script.
         private GameObject ui;
         private TransitionManager transitionManager;
+
+        /// <summary>
+        /// Return true if the current screen is the world map.
+        /// </summary>
+        public bool IsMainMenuScreen
+        {
+            get { return isMainMenu; }
+        }
+        private bool isMainMenu = false;
+        private MainMenuManager mainMenu;
 
         /// <summary>
         /// Return true if the current screen is the world map.
@@ -50,10 +61,10 @@ namespace KekeDreamLand
         private bool isWorldMap = false;
         private WorldMapManager worldmap;
 
-        // TODO add is Saving or useless ?
-
-        // Load/Save system.
+        // Load/Save system
         private PlayerProgress playerProgress;
+
+        private int saveSlotSelected = 0;
 
         #endregion
 
@@ -62,13 +73,6 @@ namespace KekeDreamLand
         private void Awake()
         {
             SingletonThis();
-
-            // Load data
-            playerProgress = SaveLoadManager.LoadPlayerProgress();
-
-            // Reset
-            //playerProgress = new PlayerProgress();
-            //SaveLoadManager.SavePlayerProgress(playerProgress);
         }
 
         private void OnEnable()
@@ -89,11 +93,14 @@ namespace KekeDreamLand
         // Delegate method triggered when a new scene is loaded.
         private void NewSceneLoaded(Scene arg0, LoadSceneMode arg1)
         {
-            // Reset information.
-            CurrentLevel = null;
+            // Reset information about the loaded scene.
+            isMainMenu = false;
+            mainMenu = null;
 
             isWorldMap = false;
             worldmap = null;
+
+            CurrentLevel = null;
 
             // Setup transition manager of the current scene.
             ui = GameObject.FindGameObjectWithTag("UI");
@@ -103,7 +110,10 @@ namespace KekeDreamLand
             // Load main menu :
             if (arg0.buildIndex == mainMenuIndex)
             {
-                // Here we can change settings. Create new game or load existing game.
+                // Here we can create new game or load existing game, we can also change settings...
+                isMainMenu = true;
+                
+                mainMenu = GameObject.Find("MainMenuUI").GetComponent<MainMenuManager>();
             }
 
             // Load world map :
@@ -112,7 +122,19 @@ namespace KekeDreamLand
                 // Here we can move on the world map and enter in a level or access to an another world.
 
                 isWorldMap = true;
-                
+
+                if (playerProgress != null)
+                    currentWorldIndex = playerProgress.currentWorldIndex;
+
+                // for debug only.
+                else
+                {
+                    // Load first save.
+                    playerProgress = SaveLoadManager.LoadPlayerProgress(saveSlotSelected);
+                    currentWorldIndex = playerProgress.currentWorldIndex;
+                }
+                    
+
                 worldmap = GameObject.Find("WorldMap").GetComponent<WorldMapManager>();
                 worldmap.SetupMap(playerProgress);
             }
@@ -146,33 +168,109 @@ namespace KekeDreamLand
 
             DontDestroyOnLoad(gameObject);
         }
-        
+
+        public void QuitGame()
+        {
+            Application.Quit();
+        }
+
         #endregion
 
         #region Load and Save System
-        
+
         /// <summary>
-        /// Store all level progress and save them.
+        /// Create a new game in the specified slot. Display disclaimer if slot is not empty.
+        /// </summary>
+        /// <param name="selectedSlot"></param>
+        /// <param name="disclaimer"></param>
+        public void NewGame(int selectedSlot, bool disclaimer)
+        {
+            saveSlotSelected = selectedSlot;
+
+            if (!disclaimer)
+                NewGameThenStart();
+
+            else
+                StartCoroutine(ReplaceSave());
+        }
+
+        // TODO if usefull create delegate to generalize this method with string and success method.
+        private IEnumerator ReplaceSave()
+        {
+            mainMenu.DisplayDisclaimer("Do you want to replace this save ?");
+
+            yield return new WaitWhile(() => mainMenu.AnswerChoosen == -1);
+
+            // Validate action.
+            if(mainMenu.AnswerChoosen == 0)
+                NewGameThenStart();
+
+            // Prevent already answered for next disclaimer.
+            else
+                mainMenu.AnswerChoosen = -1;
+        }
+
+        private void NewGameThenStart()
+        {
+            // Create new progression.
+            playerProgress = new PlayerProgress();
+
+            // Create or replace old save.
+            SaveLoadManager.SavePlayerProgress(playerProgress, saveSlotSelected);
+
+            LoadWorldMap();
+        }
+
+        /// <summary>
+        /// Store the current level progress and save it.
         /// </summary>
         /// <param name="feathersCollected"></param>
         /// <param name="itemsFound"></param>
         public void SaveLevelProgress(int feathersCollected, bool[] itemsFound)
         {
-            // Create key for the dictionnary.
-            string key = playerProgress.currentWorldIndex + "-" + currentLevelIndex;
+            LevelProgress levelProgress = null;
             
-            // Remove old entry to avoid duplicate entries.
-            if (playerProgress.finishedLevels.ContainsKey(key))
-                playerProgress.finishedLevels.Remove(key);
+            // Save found. Update for the best values.
+            if (playerProgress.worldProgress[currentWorldIndex].finishedLevels.TryGetValue(currentLevelIndex, out levelProgress))
+            {
+                levelProgress.feathersCollected = Mathf.Max(feathersCollected, levelProgress.feathersCollected);
+                for (int i = 0; i < levelProgress.specialItemsFound.Length; i++)
+                {
+                    // Modify only if item found and not already obtained.
+                    if (itemsFound[i] && levelProgress.specialItemsFound[i])
+                    {
+                        levelProgress.specialItemsFound[i] = true;
 
-            // Create and add the new entry.
-            LevelProgress levelProgress = new LevelProgress(feathersCollected, itemsFound);
-            playerProgress.finishedLevels.Add(key, levelProgress);
+                        // Sunflower seed obtained.
+                        if (i == 3)
+                            playerProgress.worldProgress[currentWorldIndex].sunFlowerSeedCollected++;
+                    }
+                }
+            }
 
-            // TODO update world progress.
+            // level finished for the first time, create and add new entry.
+            else
+            {
+                levelProgress = new LevelProgress(feathersCollected, itemsFound);
+                playerProgress.worldProgress[currentWorldIndex].finishedLevels.Add(currentLevelIndex, levelProgress);
+            }
+
+            // TODO save too world progress / gameprogress.
 
             // Save.
-            SaveLoadManager.SavePlayerProgress(playerProgress);
+            SaveLoadManager.SavePlayerProgress(playerProgress, saveSlotSelected);
+        }
+
+        /// <summary>
+        /// Load save slot selected.
+        /// </summary>
+        public void LoadPlayerProgress(int selectedSlot)
+        {
+            saveSlotSelected = selectedSlot;
+
+            playerProgress = SaveLoadManager.LoadPlayerProgress(saveSlotSelected);
+
+            LoadWorldMap();
         }
 
         #endregion
@@ -257,6 +355,53 @@ namespace KekeDreamLand
         public void UpdateCurrentNodeOnWorld(int nodeIndex)
         {
             playerProgress.currentNodeIndex = nodeIndex;
+        }
+
+        #endregion
+
+        #region MainMenu management
+
+        public void GoToMainMenu()
+        {
+            mainMenu.SwitchTo(mainMenu.menuScreen);
+        }
+
+        public void GoToNewGameMenu()
+        {
+            mainMenu.GoToSlotScreen(true);
+        }
+
+        public void GoToLoadGameMenu()
+        {
+            mainMenu.GoToSlotScreen(false);
+        }
+
+        public void BackInMenu()
+        {
+            mainMenu.Back();
+        }
+
+        /// <summary>
+        /// Return true if the current screen is the title screen.
+        /// </summary>
+        /// <returns></returns>
+        public bool IsTitleScreen()
+        {
+            return mainMenu.IsSpecifiedScreen(mainMenu.titleScreen);
+        }
+
+        /// <summary>
+        /// Return true if the disclaimer is active.
+        /// </summary>
+        /// <returns></returns>
+        public bool IsDisclaimer()
+        {
+            return mainMenu.disclaimer.activeSelf;
+        }
+
+        public void CancelDisclaimer()
+        {
+            mainMenu.ChooseDisclaimerAnswer(1);
         }
 
         #endregion

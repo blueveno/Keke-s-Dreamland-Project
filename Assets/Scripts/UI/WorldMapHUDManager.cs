@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 namespace KekeDreamLand {
 
@@ -9,14 +10,15 @@ namespace KekeDreamLand {
     {
         #region Inspector attributes
 
+        [Header("Node preview")]
         public Text nodeName;
-        public Text nodeName2;
+        public TextMeshProUGUI nodeName2;
 
-        public Text feathers;
-
+        [Header("Level preview")]
         public GameObject levelPreview;
-
-        [Header("Special items")]
+        [Space]
+        public TextMeshProUGUI feathers;
+        [Space]
         public GameObject specialItemParent;
         public Color notFoundColor;
 
@@ -59,14 +61,30 @@ namespace KekeDreamLand {
                 int i = 0;
                 foreach(Transform child in specialItemParent.transform)
                 {
+                    // Display or hide depending if the item is present in the level.
+                    child.gameObject.SetActive(levelData.itemsPresent[i]);
+
+                    // Check if the special item is present on the level.
                     if (levelData.itemsPresent[i])
                     {
                         Image img = child.gameObject.GetComponent<Image>();
-                        if (levelProgress != null && levelProgress.specialItemsFound[i])
-                            img.color = Color.white;
+
+                        // Save exist 
+                        if (levelProgress != null)
+                        {
+                            // Item found, highlight it.
+                            if (levelProgress.specialItemsFound[i])
+                                img.color = Color.white;
+
+                            // Item not found, remove highlight.
+                            else
+                                img.color = notFoundColor;
+                        }
+
+                        // No save. No highlight.
+                        else
+                            img.color = notFoundColor;
                     }
-                    else
-                        child.gameObject.SetActive(false);
 
                     i++;
                 } 

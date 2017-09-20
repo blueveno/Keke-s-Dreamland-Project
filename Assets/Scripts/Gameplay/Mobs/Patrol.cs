@@ -14,7 +14,7 @@ namespace KekeDreamLand
         // Teleport to the first patrol point when it reach the end.
         WARP
     }
-
+    
     public class Patrol : AIBehaviour
     {
         #region Inspector attributes
@@ -22,7 +22,7 @@ namespace KekeDreamLand
         public float patrolSpeed = 1.0f;
         public bool displayPatrolPath = true;
         public PatrolType patrolType;
-        public List<Vector3> patrolPoints;
+        public List<Vector3> patrolPoints = new List<Vector3>();
 
         #endregion
 
@@ -30,8 +30,8 @@ namespace KekeDreamLand
 
         private Mob mobScript;
 
-        private Vector3 initialPosition;
-        private Vector3 nextPatrolPoint;
+        protected Vector3 initialPosition;
+        protected Vector3 nextPatrolPoint;
         private int nextPatrolPointIndex;
 
         private bool reverseDirection = false;
@@ -41,10 +41,8 @@ namespace KekeDreamLand
         #region Unity methods
 
         // Use this for initialization
-        void Awake()
+        protected void Awake()
         {
-            mobScript = GetComponent<Mob>();
-
             initialPosition = transform.position;
             nextPatrolPointIndex = 1;
 
@@ -52,7 +50,7 @@ namespace KekeDreamLand
         }
 
         // Update is called once per frame
-        void Update()
+        protected void Update()
         {
             float distance = Vector3.Distance(transform.position, initialPosition + nextPatrolPoint);
 
@@ -68,7 +66,7 @@ namespace KekeDreamLand
         #region Patrol methods
 
         // Determine the next patrol point to reach depending the type of patrol choosen.
-        private void DetermineNextPatrolPoint()
+        protected void DetermineNextPatrolPoint()
         {
             switch(patrolType)
             {
@@ -85,22 +83,18 @@ namespace KekeDreamLand
                     WarpPatrol(); break;
             }
         }
-        
-        private void GoingAndComingPatrol()
+
+        protected void GoingAndComingPatrol()
         {
             if (nextPatrolPointIndex == patrolPoints.Count)
             {
                 reverseDirection = true;
                 nextPatrolPointIndex = patrolPoints.Count - 1;
-
-                mobScript.FlipSprite();
             }
             else if (nextPatrolPointIndex == -1)
             {
                 reverseDirection = false;
                 nextPatrolPointIndex = 1;
-
-                mobScript.FlipSprite();
             }
 
             if (reverseDirection)
@@ -108,8 +102,8 @@ namespace KekeDreamLand
             else
                 nextPatrolPoint = patrolPoints[nextPatrolPointIndex++];
         }
-        
-        private void CyclicPatrol()
+
+        protected void CyclicPatrol()
         {
             if (nextPatrolPointIndex == patrolPoints.Count)
             {
@@ -119,7 +113,7 @@ namespace KekeDreamLand
             nextPatrolPoint = patrolPoints[nextPatrolPointIndex++];
         }
 
-        private void WarpPatrol()
+        protected void WarpPatrol()
         {
             if (nextPatrolPointIndex == patrolPoints.Count)
             {
@@ -134,7 +128,7 @@ namespace KekeDreamLand
 
         #region Level design help
 
-        private void OnDrawGizmosSelected()
+        protected void OnDrawGizmosSelected()
         {
             if (displayPatrolPath)
             {
@@ -142,7 +136,7 @@ namespace KekeDreamLand
             }
         }
 
-        private void DisplayPatrolPath()
+        protected void DisplayPatrolPath()
         {
             Gizmos.color = Color.blue;
 
