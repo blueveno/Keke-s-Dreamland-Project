@@ -194,15 +194,18 @@ namespace KekeDreamLand
                 StartCoroutine(ReplaceSave());
         }
 
+        // TODO if usefull create delegate to generalize this method with string and success method.
         private IEnumerator ReplaceSave()
         {
             mainMenu.DisplayDisclaimer("Do you want to replace this save ?");
 
             yield return new WaitWhile(() => mainMenu.AnswerChoosen == -1);
 
+            // Validate action.
             if(mainMenu.AnswerChoosen == 0)
                 NewGameThenStart();
 
+            // Prevent already answered for next disclaimer.
             else
                 mainMenu.AnswerChoosen = -1;
         }
@@ -385,6 +388,20 @@ namespace KekeDreamLand
         public bool IsTitleScreen()
         {
             return mainMenu.IsSpecifiedScreen(mainMenu.titleScreen);
+        }
+
+        /// <summary>
+        /// Return true if the disclaimer is active.
+        /// </summary>
+        /// <returns></returns>
+        public bool IsDisclaimer()
+        {
+            return mainMenu.disclaimer.activeSelf;
+        }
+
+        public void CancelDisclaimer()
+        {
+            mainMenu.ChooseDisclaimerAnswer(1);
         }
 
         #endregion

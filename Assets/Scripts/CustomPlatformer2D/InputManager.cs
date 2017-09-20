@@ -158,11 +158,23 @@ namespace KekeDreamLand
 
         private void HandleMainMenuInteraction()
         {
+            // Disable any interaction with other screen when display a disclaimer.
+            if (GameManager.instance.IsDisclaimer())
+            {
+                // Cancel disclaimer.
+                if (CrossPlatformInputManager.GetButtonDown("Cancel"))
+                    GameManager.instance.CancelDisclaimer();
+
+                return;
+            }
+
+            // Go to main menu.
             if (GameManager.instance.IsTitleScreen() && CrossPlatformInputManager.GetButtonDown("Submit"))
             {
                 GameManager.instance.GoToMainMenu();
             }
 
+            // Back to main menu.
             else if(!GameManager.instance.IsTitleScreen() && CrossPlatformInputManager.GetButtonDown("Cancel"))
             {
                 GameManager.instance.BackInMenu();

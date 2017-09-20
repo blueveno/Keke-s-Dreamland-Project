@@ -89,6 +89,10 @@ namespace KekeDreamLand
             Reselect();
         }
 
+        /// <summary>
+        /// Switch to the slot screen and adapt actions depending if the player want to create or load a save.
+        /// </summary>
+        /// <param name="isNewGame"></param>
         public void GoToSlotScreen(bool isNewGame)
         {
             SetupActionInSlotMenu(isNewGame);
@@ -165,7 +169,7 @@ namespace KekeDreamLand
             disclaimerTitle.text = question;
 
             disclaimer.SetActive(true);
-            eventSystem.SetSelectedGameObject(disclaimerButtons[0].gameObject);
+            disclaimerButtons[0].Select();
         }
 
         public void ChooseDisclaimerAnswer(int answerChoosen)
@@ -178,11 +182,17 @@ namespace KekeDreamLand
 
         private void Reselect()
         {
-            // Select the first active and selectable gameobject.
+            Transform buttons = currentScreen.transform.Find("Buttons");
+
+            // Reselect first button if exists.
+            if (buttons && buttons.childCount > 0)
+                buttons.GetChild(0).gameObject.GetComponent<Button>().Select();
+
+            // Dont work well beacause list has random order.
+            /* // Select the first active and selectable gameobject.
             if (Selectable.allSelectables.Count > 0)
-            {
                 eventSystem.SetSelectedGameObject(Selectable.allSelectables[0].gameObject);
-            }  
+            */
         }
     }
 
