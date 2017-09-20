@@ -1,13 +1,12 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.EventSystems;
+﻿using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
 namespace KekeDreamLand
 {
-
+    /// <summary>
+    /// Manage the main menu.
+    /// </summary>
     public class MainMenuManager : MonoBehaviour
     {
         [Header("Screens")]
@@ -29,8 +28,6 @@ namespace KekeDreamLand
 
         private GameObject currentScreen;
 
-        private EventSystem eventSystem;
-
         public int AnswerChoosen
         {
             get { return answerChoosen; }
@@ -41,7 +38,6 @@ namespace KekeDreamLand
         private void Awake()
         {
             currentScreen = titleScreen;
-            eventSystem = GameObject.Find("EventSystem").GetComponent<EventSystem>();
 
             SetupSaveSlotScreen();
         }
@@ -164,14 +160,24 @@ namespace KekeDreamLand
             return currentScreen == screen;
         }
 
+        /// <summary>
+        /// Display the disclaimer to the user.
+        /// </summary>
+        /// <param name="question"></param>
         public void DisplayDisclaimer(string question)
         {
             disclaimerTitle.text = question;
 
             disclaimer.SetActive(true);
+
+            // Preselect "yes".
             disclaimerButtons[0].Select();
         }
 
+        /// <summary>
+        /// Choose the answer of the current disclaimer.
+        /// </summary>
+        /// <param name="answerChoosen"></param>
         public void ChooseDisclaimerAnswer(int answerChoosen)
         {
             this.answerChoosen = answerChoosen;

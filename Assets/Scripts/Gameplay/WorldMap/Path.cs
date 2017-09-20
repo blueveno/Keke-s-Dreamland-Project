@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using UnityEngine;
+using System.Collections.Generic;
 
 namespace KekeDreamLand
 {
@@ -10,6 +11,8 @@ namespace KekeDreamLand
     {
         public bool unlocked = false;
         public bool secretLevel = false;
+
+        public List<Vector2> waypoints;
 
         /// <summary>
         /// Unlock the path and display it immediatly.
@@ -36,6 +39,15 @@ namespace KekeDreamLand
             }
 
             unlocked = true;
+        }
+
+        private void OnDrawGizmosSelected()
+        {
+            Gizmos.color = Color.cyan;
+            foreach(Vector3 point in waypoints)
+            {
+                Gizmos.DrawSphere(point, 0.05f);
+            }
         }
     }
 }
