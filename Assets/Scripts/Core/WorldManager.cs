@@ -27,7 +27,7 @@ namespace KekeDreamLand {
                     sunflowerSeedNeeded++;
             }
 
-            return Mathf.Max(sunflowerSeedNeeded - 1, 0);
+            return sunflowerSeedNeeded;
         }
     }
 

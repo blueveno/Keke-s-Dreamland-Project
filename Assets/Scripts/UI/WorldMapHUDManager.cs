@@ -61,6 +61,9 @@ namespace KekeDreamLand {
                 int i = 0;
                 foreach(Transform child in specialItemParent.transform)
                 {
+                    // Display or hide depending if the item is present in the level.
+                    child.gameObject.SetActive(levelData.itemsPresent[i]);
+
                     // Check if the special item is present on the level.
                     if (levelData.itemsPresent[i])
                     {
@@ -69,23 +72,19 @@ namespace KekeDreamLand {
                         // Save exist 
                         if (levelProgress != null)
                         {
-                            // Item found.
+                            // Item found, highlight it.
                             if (levelProgress.specialItemsFound[i])
                                 img.color = Color.white;
 
-                            // Item not found.
+                            // Item not found, remove highlight.
                             else
                                 img.color = notFoundColor;
                         }
 
-                        // No save.
+                        // No save. No highlight.
                         else
                             img.color = notFoundColor;
                     }
-
-                    // Else hide it on hud.
-                    else
-                        child.gameObject.SetActive(false);
 
                     i++;
                 } 

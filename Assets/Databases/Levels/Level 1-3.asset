@@ -14,4 +14,4 @@ MonoBehaviour:
   levelName: Highest leaves
   isSecretLevel: 0
   totalFeathers: 24
-  itemsPresent: 00010000
+  itemsPresent: 00010001

@@ -123,7 +123,17 @@ namespace KekeDreamLand
 
                 isWorldMap = true;
 
-                currentWorldIndex = playerProgress.currentWorldIndex;
+                if (playerProgress != null)
+                    currentWorldIndex = playerProgress.currentWorldIndex;
+
+                // for debug only.
+                else
+                {
+                    // Load first save.
+                    playerProgress = SaveLoadManager.LoadPlayerProgress(saveSlotSelected);
+                    currentWorldIndex = playerProgress.currentWorldIndex;
+                }
+                    
 
                 worldmap = GameObject.Find("WorldMap").GetComponent<WorldMapManager>();
                 worldmap.SetupMap(playerProgress);

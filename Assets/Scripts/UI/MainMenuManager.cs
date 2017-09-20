@@ -180,7 +180,9 @@ namespace KekeDreamLand
         {
             // Select the first active and selectable gameobject.
             if (Selectable.allSelectables.Count > 0)
+            {
                 eventSystem.SetSelectedGameObject(Selectable.allSelectables[0].gameObject);
+            }  
         }
     }
 
