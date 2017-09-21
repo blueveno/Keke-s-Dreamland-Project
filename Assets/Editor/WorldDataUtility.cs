@@ -5,33 +5,36 @@ using KekeDreamLand;
 
 using UnityEngine.SceneManagement;
 using UnityEditor.SceneManagement;
+using System;
 
 public class WorldDatautility
 {
     [MenuItem("KekeDreamLand/WorldData/Create for this world")]
     public static void CreateAsset()
     {
-        string worldName = GetCurrentWorldName();
+        GameObject world = GetCurrentWorld();
 
-        if (worldName == null)
+        if (world == null)
         {
             Debug.LogWarning("No world loaded in the scene.");
             return;
-        } 
+        }
 
-        ScriptableObjectUtility.CreateAsset<WorldData>("/Databases/Worlds", worldName);
+        ScriptableObjectUtility.CreateAsset<WorldData>("/Databases/Worlds", world.name);
     }
     
     [MenuItem("KekeDreamLand/WorldData/Update this world")]
     public static void UpdateLevelData()
     {
-        string worldName = GetCurrentWorldName();
+        GameObject world = GetCurrentWorld();
 
-        if (worldName == null)
+        if (world == null)
         {
-            Debug.LogWarning("No world loaded in the scene.");
+            Debug.LogWarning("Place the world you want to update in Worldmap");
             return;
         }
+
+        string worldName = world.name;
 
         Selection.activeObject = AssetDatabase.LoadMainAssetAtPath("Assets/Databases/Worlds/" + worldName + ".asset");
         WorldData worldData = Selection.activeObject as WorldData;
@@ -43,34 +46,37 @@ public class WorldDatautility
             CreateAsset();
             return;
         }
+        
+        WorldManager worldMgr = world.GetComponent<WorldManager>();
 
-        // In any case : Assign the updated leveldata to the gamemanager.
-        GameObject worldGameobject = GameObject.Find("WorldMap").transform.GetChild(0).gameObject;
-        if (worldGameobject)
-        {
-            WorldManager worldMgr = worldGameobject.GetComponent<WorldManager>();
+        // TODO update sunflowerseed needed.
+        worldData.sunflowerSeedNeeded = worldMgr.CountSunflowerSeedNeeded();
 
-            // TODO update sunflowerseed needed.
-            worldData.sunflowerSeedNeeded = worldMgr.CountSunflowerSeedNeeded();
+        // Make the asset savable.
+        EditorUtility.SetDirty(worldData);
 
-            // Make the asset savable.
-            EditorUtility.SetDirty(worldData);
+        worldMgr.data = worldData;
+        // Make the level manager savable.
+        EditorUtility.SetDirty(worldMgr);
 
-            worldMgr.data = worldData;
-            // Make the level manager savable.
-            EditorUtility.SetDirty(worldMgr);
-
-            Debug.Log("The world data \"" + worldData.name + "\" has been correctly updated.\nPlease save the project. =)");
+        Debug.Log("The world data \"" + worldData.name + "\" has been correctly updated.\nPlease save the project. =)");
         }
-    }
 
-    private static string GetCurrentWorldName()
+    private static GameObject GetCurrentWorld()
     {
         GameObject worldMap = GameObject.Find("WorldMap");
-        
-        if (worldMap == null || worldMap.transform.childCount <= 0)
+
+        if (worldMap == null || worldMap.transform.childCount < 0)
             return null;
 
-        return worldMap.transform.GetChild(0).name;
-    } 
+        GameObject world = null;
+
+        foreach (Transform t in worldMap.transform)
+        {
+            if (t.name.Contains("World"))
+                world = t.gameObject;
+        }
+
+        return world;
+    }
 }

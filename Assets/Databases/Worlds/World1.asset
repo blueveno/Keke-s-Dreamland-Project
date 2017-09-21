@@ -12,4 +12,4 @@ MonoBehaviour:
   m_Name: World1
   m_EditorClassIdentifier: 
   worldname: Hazelnut Forest
-  sunflowerSeedNeeded: 3
+  sunflowerSeedNeeded: 4
