@@ -93,6 +93,9 @@ namespace KekeDreamLand
         // Delegate method triggered when a new scene is loaded.
         private void NewSceneLoaded(Scene arg0, LoadSceneMode arg1)
         {
+            // Reset time scale if game was paused.
+            Time.timeScale = 1.0f;
+
             // Reset information about the loaded scene.
             isMainMenu = false;
             mainMenu = null;
@@ -364,16 +367,6 @@ namespace KekeDreamLand
         public void GoToMainMenu()
         {
             mainMenu.SwitchTo(mainMenu.menuScreen);
-        }
-
-        public void GoToNewGameMenu()
-        {
-            mainMenu.GoToSlotScreen(true);
-        }
-
-        public void GoToLoadGameMenu()
-        {
-            mainMenu.GoToSlotScreen(false);
         }
 
         public void BackInMenu()

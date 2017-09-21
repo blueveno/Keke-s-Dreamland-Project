@@ -406,12 +406,12 @@ Prefab:
       propertyPath: m_Pivot.y
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 114299194712397746, guid: 32bc88f74159b654aa770b3176ec348d,
+    - target: {fileID: 114142600575495688, guid: 32bc88f74159b654aa770b3176ec348d,
         type: 2}
       propertyPath: m_havePropertiesChanged
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 114299194712397746, guid: 32bc88f74159b654aa770b3176ec348d,
+    - target: {fileID: 114142600575495688, guid: 32bc88f74159b654aa770b3176ec348d,
         type: 2}
       propertyPath: m_isInputParsingRequired
       value: 1
@@ -426,40 +426,19 @@ Prefab:
       propertyPath: m_isInputParsingRequired
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 114720623325927740, guid: 32bc88f74159b654aa770b3176ec348d,
-        type: 2}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
-      value: 
-      objectReference: {fileID: 1549567576}
-    - target: {fileID: 114913845997597064, guid: 32bc88f74159b654aa770b3176ec348d,
-        type: 2}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
-      value: 
-      objectReference: {fileID: 1549567576}
-    - target: {fileID: 114142600575495688, guid: 32bc88f74159b654aa770b3176ec348d,
+    - target: {fileID: 114299194712397746, guid: 32bc88f74159b654aa770b3176ec348d,
         type: 2}
       propertyPath: m_havePropertiesChanged
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 114142600575495688, guid: 32bc88f74159b654aa770b3176ec348d,
+    - target: {fileID: 114299194712397746, guid: 32bc88f74159b654aa770b3176ec348d,
         type: 2}
       propertyPath: m_isInputParsingRequired
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 114998089383804644, guid: 32bc88f74159b654aa770b3176ec348d,
-        type: 2}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
-      value: 
-      objectReference: {fileID: 1549567576}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 32bc88f74159b654aa770b3176ec348d, type: 2}
   m_IsPrefabParent: 0
---- !u!114 &1549567576 stripped
-MonoBehaviour:
-  m_PrefabParentObject: {fileID: 114678058835846942, guid: b144e7bf79035344da05f77d4c6f0904,
-    type: 2}
-  m_PrefabInternal: {fileID: 458801877}
-  m_Script: {fileID: 11500000, guid: ae8f64cb2103c6b48ab44609bf57b86c, type: 3}
 --- !u!1 &1637792373
 GameObject:
   m_ObjectHideFlags: 0

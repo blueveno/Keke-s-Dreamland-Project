@@ -253,8 +253,6 @@ namespace KekeDreamLand
             // Check gamepad and one sided platform.
             if (m_Jump && gamepadUsed != GamepadType.NONE)
             {
-                Debug.Log(CrossPlatformInputManager.GetAxis("Vertical"));
-
                 // If jump has been pressed and joystick is down, try to pass through the one sided platform.
                 if (CrossPlatformInputManager.GetAxis("Vertical") < -0.1f)
                 {
