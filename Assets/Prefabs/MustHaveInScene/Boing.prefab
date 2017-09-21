@@ -58,7 +58,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 100002}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.75, y: 1, z: 0}
+  m_LocalPosition: {x: 1, y: 1, z: 4}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4873416285873656}
@@ -140,24 +140,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c3d7b34a3bb2d4e4b926e7e729d3d410, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  jump:
-  - Jump
-  - JumpPS
-  bounce:
-  - Bounce
-  - BouncePS
-  toggleHUD:
-  - ToggleHUD
-  - ToggleHUDPS
-  submit:
-  - Submit
-  - SubmitPS
-  pause:
-  - Pause
-  - PausePS
-  quit:
-  - Quit
-  - QuitPS
 --- !u!114 &11400002
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -175,7 +157,7 @@ MonoBehaviour:
   m_AirControl: 1
   m_WhatIsGround:
     serializedVersion: 2
-    m_Bits: 4294966783
+    m_Bits: 4294965449
 --- !u!212 &21200000
 SpriteRenderer:
   m_ObjectHideFlags: 1
@@ -465,7 +447,7 @@ ParticleSystem:
   moveWithTransform: 1
   moveWithCustomTransform: {fileID: 0}
   scalingMode: 1
-  randomSeed: -706717177
+  randomSeed: -1563136003
   InitialModule:
     serializedVersion: 3
     enabled: 1

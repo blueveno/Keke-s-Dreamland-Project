@@ -154,10 +154,10 @@ namespace KekeDreamLand
         /// <summary>
         /// Display feedback of pause game.
         /// </summary>
-        /// <param name="paused"></param>
-        public void PauseGame(bool paused)
+        /// <param name="isGamePaused"></param>
+        public void PauseGame(bool isGamePaused)
         {
-            pauseFeedback.SetActive(!paused);
+            pauseFeedback.SetActive(isGamePaused);
         }
 
         #endregion

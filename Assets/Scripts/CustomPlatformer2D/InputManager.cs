@@ -31,9 +31,6 @@ namespace KekeDreamLand
         private List<IObserver> observers = new List<IObserver>();
 
         private GamepadType gamepadUsed;
-        private int inputIndex; // 0 for keyboard or xbox gamepad and 1 for ps gamepad.
-
-        private StandaloneInputModule inputModule;
 
         #endregion
 
@@ -42,13 +39,6 @@ namespace KekeDreamLand
         private void Awake()
         {
             IdentifyGamepadIfConnected();
-
-            GameObject eventSystem = GameObject.Find("EventSystem");
-
-            if (eventSystem)
-                inputModule = eventSystem.GetComponent<StandaloneInputModule>();
-
-            UpdateInputModule();
         }
 
         private void Start()
@@ -245,11 +235,10 @@ namespace KekeDreamLand
         // Jump when button is pressed.
         private void HandleJump()
         {
-            // Can't jump if Boing is bouncing.
             if (!m_Jump)
             {
                 // Read the jump input in Update so button presses aren't missed.
-                m_Jump = CrossPlatformInputManager.GetButtonDown("jump");
+                m_Jump = CrossPlatformInputManager.GetButtonDown("Jump");
 
                 HandleOneSidedPlatform();
 
@@ -264,18 +253,21 @@ namespace KekeDreamLand
             // Check gamepad and one sided platform.
             if (m_Jump && gamepadUsed != GamepadType.NONE)
             {
-                // If jump has been pressed and joystick is down, pass through the one sided platform.
-                if (CrossPlatformInputManager.GetAxis("Vertical") < 0)
+                Debug.Log(CrossPlatformInputManager.GetAxis("Vertical"));
+
+                // If jump has been pressed and joystick is down, try to pass through the one sided platform.
+                if (CrossPlatformInputManager.GetAxis("Vertical") < -0.1f)
                 {
-                    m_Character.MoveDown();
-                    m_Jump = false;
+                    if(m_Character.MoveDown())
+                        // Cancel jump when a platforom is above and Boing pass trough.
+                        m_Jump = false;
                 }
             }
             
             // If player plays with keyboard, use other control :
             if (CrossPlatformInputManager.GetButtonDown("Vertical"))
             {
-                bool moveDown = CrossPlatformInputManager.GetAxis("Vertical") < 0;
+                bool moveDown = CrossPlatformInputManager.GetAxis("Vertical") < -0.1f;
 
                 if(moveDown)
                     m_Character.MoveDown();
@@ -305,10 +297,12 @@ namespace KekeDreamLand
         {
             // Can't bounce when Boing isn't grounded.
             if (!m_Character.IsGrounded && m_Character.VSpeed != 0)
+            {
                 return;
+            }
 
             // Start bouncing when button is pressed.
-            if (CrossPlatformInputManager.GetButtonDown("Bounce") && !boing.IsBouncing && m_Character.VSpeed == 0)
+            if (CrossPlatformInputManager.GetButtonDown("Bounce") && !boing.IsBouncing && m_Character.IsGrounded)
             {
                 boing.Bounce();
 
@@ -371,11 +365,11 @@ namespace KekeDreamLand
         // Check if a gamepad is connected. If yes, identify it.
         private void IdentifyGamepadIfConnected()
         {
+            // TODO analytics ?
+
             gamepadUsed = GamepadType.NONE;
 
             string[] devices = Input.GetJoystickNames();
-
-            inputIndex = 0; // default for keyboard or xbox gamepad.
 
             if (devices.Length == 0)
                 return;
@@ -389,16 +383,9 @@ namespace KekeDreamLand
 
                 else
                 {
-                    inputIndex = 1;
                     gamepadUsed = GamepadType.OTHER;
                 }
             }
-        }
-
-
-        private void UpdateInputModule()
-        {
-            inputIndex = 1;
         }
 
         #endregion
