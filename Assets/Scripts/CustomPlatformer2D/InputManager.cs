@@ -19,16 +19,6 @@ namespace KekeDreamLand
     /// </summary>
     public class InputManager : MonoBehaviour
     {
-        [Header("Boing actions")]
-        public string[] jump = new string[2];
-        public string[] bounce = new string[2];
-        public string[] toggleHUD = new string[2];
-
-        [Header("Other actions")]
-        public string[] submit = new string[2];
-        public string[] pause = new string[2];
-        public string[] quit = new string[2];
-
         #region Private attributes
 
         private PlatformerCharacter2D m_Character;
@@ -73,7 +63,7 @@ namespace KekeDreamLand
         private void Update()
         {
             // Handle quit game.
-            if (CrossPlatformInputManager.GetButtonDown(quit[inputIndex]))
+            if (CrossPlatformInputManager.GetButtonDown("Quit"))
             {
                 GameManager.instance.QuitGame();
                 return;
@@ -122,7 +112,7 @@ namespace KekeDreamLand
         private void HandleWorldMapInteraction()
         {
             // Interact with node.
-            if (Input.GetButtonDown(submit[inputIndex]))
+            if (Input.GetButtonDown("Submit"))
             {
                 GameManager.instance.InteractWithCurrentNode();
             }
@@ -190,7 +180,7 @@ namespace KekeDreamLand
             }
 
             // Go to main menu.
-            if (GameManager.instance.IsTitleScreen() && CrossPlatformInputManager.GetButtonDown(submit[inputIndex]))
+            if (GameManager.instance.IsTitleScreen() && CrossPlatformInputManager.GetButtonDown("Submit"))
             {
                 GameManager.instance.GoToMainMenu();
             }
@@ -218,7 +208,7 @@ namespace KekeDreamLand
             }
 
             // Handle pause game.
-            if (CrossPlatformInputManager.GetButtonDown(pause[inputIndex]))
+            if (CrossPlatformInputManager.GetButtonDown("Pause"))
             {
                 GameManager.instance.CurrentLevel.IsLevelPaused = !GameManager.instance.CurrentLevel.IsLevelPaused;
                 return;
@@ -259,7 +249,7 @@ namespace KekeDreamLand
             if (!m_Jump)
             {
                 // Read the jump input in Update so button presses aren't missed.
-                m_Jump = CrossPlatformInputManager.GetButtonDown(jump[inputIndex]);
+                m_Jump = CrossPlatformInputManager.GetButtonDown("jump");
 
                 HandleOneSidedPlatform();
 
@@ -318,7 +308,7 @@ namespace KekeDreamLand
                 return;
 
             // Start bouncing when button is pressed.
-            if (CrossPlatformInputManager.GetButtonDown(bounce[inputIndex]) && !boing.IsBouncing && m_Character.VSpeed == 0)
+            if (CrossPlatformInputManager.GetButtonDown("Bounce") && !boing.IsBouncing && m_Character.VSpeed == 0)
             {
                 boing.Bounce();
 
@@ -326,7 +316,7 @@ namespace KekeDreamLand
             }
 
             // Stop bouncing when button is released if Boing was bouncing.
-            if(CrossPlatformInputManager.GetButtonUp(bounce[inputIndex]) && boing.IsBouncing)
+            if(CrossPlatformInputManager.GetButtonUp("Bounce") && boing.IsBouncing)
             {
                 boing.StopBounce();
             }
@@ -368,7 +358,7 @@ namespace KekeDreamLand
         // Display or undisplay HUD.
         private void ToggleHUD()
         {
-            if (CrossPlatformInputManager.GetButtonDown(toggleHUD[inputIndex]))
+            if (CrossPlatformInputManager.GetButtonDown("ToggleHUD"))
             {
                 GameManager.instance.CurrentLevel.ToggleHUD();
             }
@@ -409,8 +399,8 @@ namespace KekeDreamLand
         private void UpdateInputModule()
         {
             inputIndex = 1;
-            inputModule.submitButton = submit[inputIndex];
         }
+
         #endregion
 
         #region Observer patern
