@@ -12,6 +12,8 @@ namespace KekeDreamLand
     {
         #region Inspector attributes
 
+        public GameObject boingPrefab;
+
         [Header("Build indexes :")]
         public int mainMenuIndex = 0;
         public int worldMapIndex = 1;
@@ -449,11 +451,19 @@ namespace KekeDreamLand
                     return;
                 }
 
-                // Case of a restart of the level.
+                // Case of a death of Boing.
                 else
                 {
-                    ResetCurrentScene();
-                    skipIntro = true;
+                    // Respawn to checkpoint.
+                    if (CurrentLevel.LastCheckPoint != null)
+                        CurrentLevel.RespawnAtCheckpoint();
+
+                    // Reset scene if no checkpoint reached.
+                    else
+                    {
+                        ResetCurrentScene();
+                        skipIntro = true;
+                    }
                 }
             }
 
