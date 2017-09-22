@@ -346,7 +346,7 @@ namespace KekeDreamLand
             worldmap.InteractWithCurrentNode(playerProgress);
         }
 
-        public void MoveOnWorldMap(InputDirection directionPressed)
+        public void MoveOnWorldMap(Direction directionPressed)
         {
             worldmap.TryToMove(playerProgress, directionPressed);
         }

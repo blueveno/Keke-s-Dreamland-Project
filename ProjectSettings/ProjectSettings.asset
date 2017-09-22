@@ -597,9 +597,9 @@ PlayerSettings:
     UNet: 1
   facebookSdkVersion: 7.9.4
   apiCompatibilityLevel: 2
-  cloudProjectId: 9e9547dd-932d-435a-a635-59afd354948b
-  projectName: Keke Dream Land
-  organizationId: nozip
+  cloudProjectId: 5e72bc54-d7d9-4e9b-aa24-38972697c175
+  projectName: KekeDreamLand
+  organizationId: keke-dev-team
   cloudEnabled: 0
   enableNativePlatformBackendsForNewInputSystem: 0
   disableOldInputManagerSupport: 0

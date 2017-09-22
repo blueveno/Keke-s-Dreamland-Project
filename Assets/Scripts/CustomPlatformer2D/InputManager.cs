@@ -122,9 +122,9 @@ namespace KekeDreamLand
                     xAxisUsed = true;
 
                     if (horizontal > 0.0f)
-                        GameManager.instance.MoveOnWorldMap(InputDirection.RIGHT);
+                        GameManager.instance.MoveOnWorldMap(Direction.RIGHT);
                     else if (horizontal < 0.0f)
-                        GameManager.instance.MoveOnWorldMap(InputDirection.LEFT);
+                        GameManager.instance.MoveOnWorldMap(Direction.LEFT);
 
                     return;
                 }
@@ -143,9 +143,9 @@ namespace KekeDreamLand
                         yAxisUsed = true;
 
                         if (vertical > 0.0f)
-                            GameManager.instance.MoveOnWorldMap(InputDirection.UP);
+                            GameManager.instance.MoveOnWorldMap(Direction.UP);
                         else if (vertical < 0.0f)
-                            GameManager.instance.MoveOnWorldMap(InputDirection.DOWN);
+                            GameManager.instance.MoveOnWorldMap(Direction.DOWN);
                     }
                 }
                 else

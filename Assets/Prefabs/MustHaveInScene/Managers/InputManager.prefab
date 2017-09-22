@@ -51,21 +51,3 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c3d7b34a3bb2d4e4b926e7e729d3d410, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  jump:
-  - Jump
-  - JumpPS
-  bounce:
-  - Bounce
-  - BouncePS
-  toggleHUD:
-  - ToggleHUD
-  - ToggleHUDPS
-  submit:
-  - Submit
-  - SubmitPS
-  pause:
-  - Pause
-  - PausePS
-  quit:
-  - Quit
-  - QuitPS

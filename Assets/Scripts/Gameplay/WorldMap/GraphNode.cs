@@ -23,18 +23,13 @@ namespace KekeDreamLand
     [System.Serializable]
     public class GraphTransition
     {
-        public InputDirection inputNeeded;
+        public Direction inputNeeded;
         public int targetNodeindex;
         public Path path;
 
         public GraphTransition() {
-            inputNeeded = InputDirection.DOWN;
+            inputNeeded = Direction.DOWN;
             targetNodeindex = -1;
         }
-    }
-
-    public enum InputDirection
-    {
-        UP, DOWN, LEFT, RIGHT
     }
 }
