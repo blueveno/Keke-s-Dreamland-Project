@@ -46,12 +46,11 @@ namespace KekeDreamLand
             get { return isLevelPaused; }
 
             set {
-                Time.timeScale = value ? 1.0f : 0.0f;
-
-                // TODO feedback game paused or resume.
-                hudMgr.PauseGame(value);
-
                 isLevelPaused = value;
+                
+                Time.timeScale = isLevelPaused ? 0.0f : 1.0f;
+                
+                hudMgr.PauseGame(isLevelPaused);
             }
         }
         private bool isLevelPaused = false;

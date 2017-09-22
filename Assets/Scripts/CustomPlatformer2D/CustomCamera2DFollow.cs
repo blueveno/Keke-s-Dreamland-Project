@@ -2,27 +2,31 @@ using UnityEngine;
 
 namespace KekeDreamLand
 {
+    public enum CameraBehaviour
+    {
+        // Follow Boing.
+        FOLLOW,
+
+        // Camera is forced to scroll along the area.
+        FORCED_SCROLLING
+    }
+
     public class CustomCamera2DFollow : MonoBehaviour
     {
-        #region Initial attributes
+        #region Inspector attributes
+
         public Transform target;
 
-        /*
-        public float damping = 1;
-        public float lookAheadFactor = 3;
-        public float lookAheadReturnSpeed = 0.5f;
-        public float lookAheadMoveThreshold = 0.1f;
-
-        private Vector3 m_LastTargetPosition;
-        private Vector3 m_CurrentVelocity;
-        private Vector3 m_LookAheadPos;
-        */
-
-        private float m_OffsetZ;
         #endregion
 
-        #region Camera follow restriction
-        
+        #region Private attributes
+
+        // Camera behaviour.
+        private CameraBehaviour cameraBehaviour;
+
+        // Offset with the target.
+        private float m_OffsetZ;
+
         // Current area where Boing is.
         public AreaEditor CurrentArea
         {
@@ -34,13 +38,41 @@ namespace KekeDreamLand
             set
             {
                 currentArea = value;
+                // Check if the area is a forced scrolling area.
+                forcedScrollingArea = currentArea as ForcedScrollingArea;
 
                 // Change limit and repositionate camera.
                 SetupCameraLimit();
                 FollowPlayer();
+
+                // Setup camera as forced scrolling camera.
+                if (forcedScrollingArea)
+                {
+                    forcedScrollingArea.ScrollOn = false;
+
+                    cameraBehaviour = CameraBehaviour.FORCED_SCROLLING;
+                    SetupForcedScrollingCamera();
+
+                    forcedScrollingArea.StartCoroutine(forcedScrollingArea.StartForcedScrollingWithDelay());
+                }
+
+                // Setup as follow target camera.
+                else
+                {
+                    cameraBehaviour = CameraBehaviour.FOLLOW;
+                    forcedScrollingArea = null;
+                }
             }
         }
-        private AreaEditor currentArea;
+        private AreaEditor currentArea = null;
+        
+        #endregion
+
+        #region Camera follow attributes
+
+        // Width and height covered by the camera.
+        private float cameraScreenWidth;
+        private float cameraScreenHeight;
 
         // Camera limit X and Y.
         private float cameraMinX;
@@ -48,8 +80,19 @@ namespace KekeDreamLand
         private float cameraMinY;
         private float cameraMaxY;
 
+        // Locking if area is too small for the camera.
         private bool lockVertical;
         private bool lockHorizontal;
+
+        #endregion
+
+        #region Camera forced-scrolling attributes
+
+        // Forced scrolling area.
+        private ForcedScrollingArea forcedScrollingArea = null;
+
+        // Forced scrolling destination.
+        private Vector3 forcedScrollingDestination;
 
         #endregion
 
@@ -67,27 +110,28 @@ namespace KekeDreamLand
                 return;
             }
 
-            // m_LastTargetPosition = target.position; // Used for smooth follow.
-
-            m_OffsetZ = (transform.position - target.position).z;
-            transform.parent = null;
+            m_OffsetZ = transform.position.z;
             
             // Recover current area.
             CurrentArea = target.transform.parent.parent.parent.GetComponent<AreaEditor>();
         }
         
-        // Update is called once per frame
+        // Update camera position at the end of each frame.
         private void LateUpdate()
         {
             if (target == null)
                 return;
 
-            FollowPlayer();
+            if (cameraBehaviour == CameraBehaviour.FOLLOW)
+                FollowPlayer();
+            else
+                if(forcedScrollingArea.ScrollOn)
+                    ForceScrolling();
         }
 
         #endregion
 
-        #region Camera follow player and is restricted by area boundaries.
+        #region Camera follow methods
 
         // Setup camera follow limit.
         private void SetupCameraLimit()
@@ -105,16 +149,19 @@ namespace KekeDreamLand
             Vector3 newPos = Vector3.zero;
             newPos.x = Mathf.Clamp(target.position.x, cameraMinX, cameraMaxX);
             newPos.y = Mathf.Clamp(target.position.y, cameraMinY, cameraMaxY);
-            newPos.z = target.position.z + m_OffsetZ;
+            newPos.z = m_OffsetZ;
             transform.position = newPos;
 
+            cameraScreenWidth = cameraSizeX * 2;
+            cameraScreenHeight = cameraSizeY * 2;
+
             // Lock an axis if area is too small (verticaly or/and horizontaly).
-            if (cameraSizeX * 2 > currentArea.area.column)
+            if (cameraScreenWidth > currentArea.area.column)
                 lockHorizontal = true;
             else
                 lockHorizontal = false;
 
-            if (cameraSizeY * 2 > currentArea.area.raw)
+            if (cameraScreenHeight > currentArea.area.raw)
                 lockVertical = true;
             else
                 lockVertical = false;
@@ -123,52 +170,56 @@ namespace KekeDreamLand
         // Center the camera on the player gameobject but restrict his position in the boundaries of the current area.
         private void FollowPlayer()
         {
-            Vector3 newPos = Vector3.zero;
+            Vector3 limitedPos = Vector3.zero;
 
             // Limit the camera.
             if (!lockHorizontal)
-                newPos.x = Mathf.Clamp(target.position.x, cameraMinX, cameraMaxX);
+                limitedPos.x = Mathf.Clamp(target.position.x, cameraMinX, cameraMaxX);
             else
-                newPos.x = transform.position.x;
+                limitedPos.x = transform.position.x;
 
             if (!lockVertical)
-                newPos.y = Mathf.Clamp(target.position.y, cameraMinY, cameraMaxY);
+                limitedPos.y = Mathf.Clamp(target.position.y, cameraMinY, cameraMaxY);
             else
-                newPos.y = transform.position.y;
+                limitedPos.y = transform.position.y;
 
-            newPos.z = target.position.z + m_OffsetZ;
+            limitedPos.z = m_OffsetZ;
 
-            transform.position = newPos;
+            transform.position = limitedPos;
         }
 
         #endregion
 
-        // Original code. Smooth follow, align view with what the player look ahead.
-        private void OriginalCameraScript()
+        #region Camera forced scrolling methods
+        
+        // Setup all gameobject linked to the scrolling.
+        private void SetupForcedScrollingCamera()
         {
-            /*
-            // Only update lookahead pos if accelerating or changed direction
-            float xMoveDelta = (target.position - m_LastTargetPosition).x;
+            // Setup moving walls.
+            forcedScrollingArea.SetupMovingWalls(transform.position, cameraScreenWidth, cameraScreenHeight);
             
-            bool updateLookAheadTarget = Mathf.Abs(xMoveDelta) > lookAheadMoveThreshold; // Always true with our parameter.
+            // Determine forced scrolling destination
+            forcedScrollingDestination = transform.position + DirectionUtility.DirectionToVector(forcedScrollingArea.scrollingDirection) * forcedScrollingArea.GetDestinationDistance(cameraScreenWidth, cameraScreenHeight);
+        }
 
-            if (updateLookAheadTarget)
+        private void ForceScrolling()
+        {
+            float distance = Vector3.Distance(transform.position, forcedScrollingDestination);
+
+            if(distance >= Mathf.Epsilon)
             {
-                m_LookAheadPos = lookAheadFactor * Vector3.right * Mathf.Sign(xMoveDelta); // always 0 with our parameter.
+                Vector3 newPos = Vector3.MoveTowards(transform.position, forcedScrollingDestination, Time.deltaTime * forcedScrollingArea.scrollingSpeed);
+
+                // Moves the camera, the killing zone and the blocking wall.
+                transform.position = newPos;
+                
+                forcedScrollingArea.MoveWalls(newPos);
             }
 
             else
-            {
-                m_LookAheadPos = Vector3.MoveTowards(m_LookAheadPos, Vector3.zero, Time.deltaTime * lookAheadReturnSpeed); // Never pass here.
-            }
-
-            Vector3 aheadTargetPos = target.position + m_LookAheadPos + Vector3.forward * m_OffsetZ;
-            Vector3 newPos = Vector3.SmoothDamp(transform.position, aheadTargetPos, ref m_CurrentVelocity, damping);
-
-            transform.position = newPos;
-            
-            m_LastTargetPosition = target.position;
-            */
+                forcedScrollingArea.ScrollOn = false;
         }
+
+        #endregion
     }
 }

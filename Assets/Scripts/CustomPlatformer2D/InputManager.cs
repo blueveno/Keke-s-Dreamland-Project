@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityStandardAssets.CrossPlatformInput;
 
 namespace KekeDreamLand
@@ -101,7 +102,7 @@ namespace KekeDreamLand
         private void HandleWorldMapInteraction()
         {
             // Interact with node.
-            if (Input.GetButtonDown("Jump"))
+            if (Input.GetButtonDown("Submit"))
             {
                 GameManager.instance.InteractWithCurrentNode();
             }
@@ -121,9 +122,9 @@ namespace KekeDreamLand
                     xAxisUsed = true;
 
                     if (horizontal > 0.0f)
-                        GameManager.instance.MoveOnWorldMap(InputDirection.RIGHT);
+                        GameManager.instance.MoveOnWorldMap(Direction.RIGHT);
                     else if (horizontal < 0.0f)
-                        GameManager.instance.MoveOnWorldMap(InputDirection.LEFT);
+                        GameManager.instance.MoveOnWorldMap(Direction.LEFT);
 
                     return;
                 }
@@ -142,9 +143,9 @@ namespace KekeDreamLand
                         yAxisUsed = true;
 
                         if (vertical > 0.0f)
-                            GameManager.instance.MoveOnWorldMap(InputDirection.UP);
+                            GameManager.instance.MoveOnWorldMap(Direction.UP);
                         else if (vertical < 0.0f)
-                            GameManager.instance.MoveOnWorldMap(InputDirection.DOWN);
+                            GameManager.instance.MoveOnWorldMap(Direction.DOWN);
                     }
                 }
                 else
@@ -234,7 +235,6 @@ namespace KekeDreamLand
         // Jump when button is pressed.
         private void HandleJump()
         {
-            // Can't jump if Boing is bouncing.
             if (!m_Jump)
             {
                 // Read the jump input in Update so button presses aren't missed.
@@ -253,18 +253,19 @@ namespace KekeDreamLand
             // Check gamepad and one sided platform.
             if (m_Jump && gamepadUsed != GamepadType.NONE)
             {
-                // If jump has been pressed and joystick is down, pass through the one sided platform.
-                if (CrossPlatformInputManager.GetAxis("Vertical") < 0)
+                // If jump has been pressed and joystick is down, try to pass through the one sided platform.
+                if (CrossPlatformInputManager.GetAxis("Vertical") < -0.1f)
                 {
-                    m_Character.MoveDown();
-                    m_Jump = false;
+                    if(m_Character.MoveDown())
+                        // Cancel jump when a platforom is above and Boing pass trough.
+                        m_Jump = false;
                 }
             }
             
             // If player plays with keyboard, use other control :
             if (CrossPlatformInputManager.GetButtonDown("Vertical"))
             {
-                bool moveDown = CrossPlatformInputManager.GetAxis("Vertical") < 0;
+                bool moveDown = CrossPlatformInputManager.GetAxis("Vertical") < -0.1f;
 
                 if(moveDown)
                     m_Character.MoveDown();
@@ -294,10 +295,12 @@ namespace KekeDreamLand
         {
             // Can't bounce when Boing isn't grounded.
             if (!m_Character.IsGrounded && m_Character.VSpeed != 0)
+            {
                 return;
+            }
 
             // Start bouncing when button is pressed.
-            if (CrossPlatformInputManager.GetButtonDown("Bounce") && !boing.IsBouncing && m_Character.VSpeed == 0)
+            if (CrossPlatformInputManager.GetButtonDown("Bounce") && !boing.IsBouncing && m_Character.IsGrounded)
             {
                 boing.Bounce();
 
@@ -335,19 +338,7 @@ namespace KekeDreamLand
 
         private void HandleLevelFinished()
         {
-            /*
-            // Skip outro if his displaying is in progress.
-            if(GameManager.instance.CurrentLevel.IsDisplayLevelOutro)
-            {
-                if (Input.anyKeyDown)
-                {
-                    GameManager.instance.CurrentLevel.SkipOutro();
-                    return;
-                }
-            }
-            */
-
-            if (GameManager.instance.CurrentLevel.IsLevelFinished /* && !GameManager.instance.isSaving*/)
+            if (GameManager.instance.CurrentLevel.IsLevelFinished)
             {
                 if (Input.anyKeyDown)
                 {
@@ -364,9 +355,7 @@ namespace KekeDreamLand
                 GameManager.instance.CurrentLevel.ToggleHUD();
             }
         }
-
-        // TODO pause action
-
+        
         #endregion
 
         #region Input manager utilities
@@ -374,6 +363,8 @@ namespace KekeDreamLand
         // Check if a gamepad is connected. If yes, identify it.
         private void IdentifyGamepadIfConnected()
         {
+            // TODO analytics ?
+
             gamepadUsed = GamepadType.NONE;
 
             string[] devices = Input.GetJoystickNames();

@@ -22,11 +22,13 @@ namespace KekeDreamLand
         public GameObject featherParent;
         public TextMeshProUGUI featherText;
 
-        [Space]
+        [Header("Special items :")]
 
         public Image[] specialItemSprites = new Image[4];
 
-        public GameObject pauseFeedback;
+        [Space]
+
+        public GameObject pausePanel;
 
         #endregion
 
@@ -154,10 +156,64 @@ namespace KekeDreamLand
         /// <summary>
         /// Display feedback of pause game.
         /// </summary>
-        /// <param name="paused"></param>
-        public void PauseGame(bool paused)
+        /// <param name="isGamePaused"></param>
+        public void PauseGame(bool isGamePaused)
         {
-            pauseFeedback.SetActive(!paused);
+            pausePanel.SetActive(isGamePaused);
+
+            Reselect();
+        }
+
+        #endregion
+
+        #region Button events
+
+        public void OnClickSettings()
+        {
+            OpenSettings();
+        }
+
+        public void OnClickBackToWorldMap()
+        {
+            GameManager.instance.LoadWorldMap();
+        }
+
+        public void OnClickBackToMainMenu()
+        {
+            GameManager.instance.LoadMainMenu();
+        }
+
+        public void OnClickQuitGame()
+        {
+            GameManager.instance.QuitGame();
+        }
+
+        #endregion
+
+        #region Private methods
+        
+        // Reselect first button if exists.
+        private void Reselect()
+        {
+            Transform buttonsParent = pausePanel.transform.Find("Buttons");
+            if (buttonsParent)
+            {
+                Button[] buttons = buttonsParent.GetComponentsInChildren<Button>();
+
+                foreach(Button b in buttons)
+                {
+                    if (b.interactable)
+                    {
+                        b.Select();
+                        return;
+                    }
+                }
+            }
+        }
+
+        private void OpenSettings()
+        {
+            // TODO settings panel.
         }
 
         #endregion

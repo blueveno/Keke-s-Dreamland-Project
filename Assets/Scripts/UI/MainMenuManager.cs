@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using System;
 
 namespace KekeDreamLand
 {
@@ -9,6 +10,8 @@ namespace KekeDreamLand
     /// </summary>
     public class MainMenuManager : MonoBehaviour
     {
+        #region Inspector attributes
+
         [Header("Screens")]
         public GameObject titleScreen;
         public GameObject menuScreen;
@@ -26,6 +29,10 @@ namespace KekeDreamLand
         public TextMeshProUGUI disclaimerTitle;
         public Button[] disclaimerButtons;
 
+        #endregion
+
+        #region Private attributes
+
         private GameObject currentScreen;
 
         public int AnswerChoosen
@@ -35,6 +42,10 @@ namespace KekeDreamLand
         }
         private int answerChoosen = -1;
 
+        #endregion
+
+        #region unity methods
+
         private void Awake()
         {
             currentScreen = titleScreen;
@@ -42,34 +53,10 @@ namespace KekeDreamLand
             SetupSaveSlotScreen();
         }
 
-        private void SetupSaveSlotScreen()
-        {
-            for (int i = 0; i < slotTexts.Length; i++)
-            {
-                int slot = i; // to conserve the slot index in the OnClick attribute.
-                
-                if (SaveLoadManager.CheckSlot(i))
-                {
-                    // Load data of the slot.
-                    PlayerProgress progress = SaveLoadManager.LoadPlayerProgress(slot);
+        #endregion
 
-                    // Update slot information.
-                    slotTexts[i].text = "Slot " + (slot+1).ToString() + " - " + 0 + "%"; // TODO load completion percent.
-                    moreInformationTexts[i].text = "Time : 00:00"; // TODO load time played.
+        #region Public methods
 
-                    moreInformationTexts[i].gameObject.SetActive(true);
-                }
-
-                else
-                {
-                    moreInformationTexts[i].gameObject.SetActive(false);
-
-                    // Update slot information.
-                    slotTexts[i].text = "Slot " + (slot + 1).ToString() + " - empty";
-                }
-            }
-        }
-        
         /// <summary>
         /// Switch to the specified screen.
         /// </summary>
@@ -94,50 +81,6 @@ namespace KekeDreamLand
             SetupActionInSlotMenu(isNewGame);
 
             SwitchTo(slotScreen);
-        }
-
-        // Setup action of the button.
-        private void SetupActionInSlotMenu(bool isNewGame)
-        {
-            // TODO disclaimer when replace save or disable interaction if slot is empty (when load).
-
-            if (isNewGame)
-                slotMenuTitle.text = "Start new game :";
-            else
-                slotMenuTitle.text = "Load a game :";
-
-            for (int i = 0; i < slotButtons.Length; i++)
-            {
-                int slot = i;
-
-                slotButtons[i].onClick.RemoveAllListeners();
-
-                bool slotNotEmpty = SaveLoadManager.CheckSlot(i);
-
-                if (isNewGame) {
-
-                    // All slot can be used to create new game.
-                    slotButtons[i].interactable = true;
-
-                    if (slotNotEmpty)
-                        slotButtons[i].onClick.AddListener(() => GameManager.instance.NewGame(slot, true));
-                    else
-                        slotButtons[i].onClick.AddListener(() => GameManager.instance.NewGame(slot, false));
-                }
-
-                else {
-
-                    if (slotNotEmpty)
-                    {
-                        slotButtons[i].interactable = true;
-                        slotButtons[i].onClick.AddListener(() => GameManager.instance.LoadPlayerProgress(slot));
-                    }
-
-                    // An empty slot can't be loaded.
-                    else
-                        slotButtons[i].interactable = false;
-                }
-            }
         }
 
         /// <summary>
@@ -186,20 +129,129 @@ namespace KekeDreamLand
             Reselect();
         }
 
+        #endregion
+
+        #region OnClick Events
+
+        public void OnClickNewGame()
+        {
+            GoToSlotScreen(true);
+        }
+
+        public void OnClickLoadGame()
+        {
+            GoToSlotScreen(false);
+        }
+
+        public void OnClickSettings()
+        {
+            throw new NotImplementedException("Settings panel");
+        }
+
+        public void OnClickQuitGame()
+        {
+            GameManager.instance.QuitGame();
+        }
+
+        #endregion
+
+        #region Private methods
+
+        private void SetupSaveSlotScreen()
+        {
+            for (int i = 0; i < slotTexts.Length; i++)
+            {
+                int slot = i; // to conserve the slot index in the OnClick attribute.
+
+                if (SaveLoadManager.CheckSlot(i))
+                {
+                    // Load data of the slot.
+                    PlayerProgress progress = SaveLoadManager.LoadPlayerProgress(slot);
+
+                    // Update slot information.
+                    slotTexts[i].text = "Slot " + (slot + 1).ToString() + " - " + 0 + "%"; // TODO load completion percent.
+                    moreInformationTexts[i].text = "Time : 00:00"; // TODO load time played.
+
+                    moreInformationTexts[i].gameObject.SetActive(true);
+                }
+
+                else
+                {
+                    moreInformationTexts[i].gameObject.SetActive(false);
+
+                    // Update slot information.
+                    slotTexts[i].text = "Slot " + (slot + 1).ToString() + " - empty";
+                }
+            }
+        }
+
+        // Setup action of the button.
+        private void SetupActionInSlotMenu(bool isNewGame)
+        {
+            // TODO disclaimer when replace save or disable interaction if slot is empty (when load).
+
+            if (isNewGame)
+                slotMenuTitle.text = "Start new game :";
+            else
+                slotMenuTitle.text = "Load a game :";
+
+            for (int i = 0; i < slotButtons.Length; i++)
+            {
+                int slot = i;
+
+                slotButtons[i].onClick.RemoveAllListeners();
+
+                bool slotNotEmpty = SaveLoadManager.CheckSlot(i);
+
+                if (isNewGame)
+                {
+
+                    // All slot can be used to create new game.
+                    slotButtons[i].interactable = true;
+
+                    if (slotNotEmpty)
+                        slotButtons[i].onClick.AddListener(() => GameManager.instance.NewGame(slot, true));
+                    else
+                        slotButtons[i].onClick.AddListener(() => GameManager.instance.NewGame(slot, false));
+                }
+
+                else
+                {
+
+                    if (slotNotEmpty)
+                    {
+                        slotButtons[i].interactable = true;
+                        slotButtons[i].onClick.AddListener(() => GameManager.instance.LoadPlayerProgress(slot));
+                    }
+
+                    // An empty slot can't be loaded.
+                    else
+                        slotButtons[i].interactable = false;
+                }
+            }
+        }
+
+        // Reselect first interactable button if exists.
         private void Reselect()
         {
-            Transform buttons = currentScreen.transform.Find("Buttons");
+            Transform buttonsParent = currentScreen.transform.Find("Buttons");
 
-            // Reselect first button if exists.
-            if (buttons && buttons.childCount > 0)
-                buttons.GetChild(0).gameObject.GetComponent<Button>().Select();
+            if (buttonsParent)
+            {
+                Button[] buttons = buttonsParent.GetComponentsInChildren<Button>();
 
-            // Dont work well beacause list has random order.
-            /* // Select the first active and selectable gameobject.
-            if (Selectable.allSelectables.Count > 0)
-                eventSystem.SetSelectedGameObject(Selectable.allSelectables[0].gameObject);
-            */
+                foreach (Button b in buttons)
+                {
+                    if (b.interactable)
+                    {
+                        b.Select();
+                        return;
+                    }
+                }
+            }
         }
+
+        #endregion
     }
 
 }

@@ -17,10 +17,11 @@ namespace KekeDreamLand
 
         #region Private attributes
 
+        private Animator m_Anim;            // Reference to the player's animator component.
+
         private Transform m_GroundCheck;    // A position marking where to check if the player is grounded.
         const float k_GroundedRadius = .12f; // Radius of the overlap circle to determine if grounded
         private bool m_Grounded;            // Whether or not the player is grounded.
-        private Animator m_Anim;            // Reference to the player's animator component.
 
         private Rigidbody2D m_Rigidbody2D;
         private BoxCollider2D m_collider;
@@ -103,7 +104,7 @@ namespace KekeDreamLand
                 m_Anim.SetFloat("Speed", Mathf.Abs(move));
 
                 // Move the character
-                m_Rigidbody2D.velocity = new Vector2(move*m_MaxSpeed, m_Rigidbody2D.velocity.y);
+                m_Rigidbody2D.velocity = new Vector2(move * m_MaxSpeed, m_Rigidbody2D.velocity.y);
 
                 // If the input is moving the player right and the player is facing left...
                 if (move > 0 && !m_FacingRight)
@@ -120,12 +121,17 @@ namespace KekeDreamLand
             }
 
             // If the player should jump...
-            if (m_Grounded && jump && m_Anim.GetBool("Ground"))
+            if (m_Grounded && jump)
             {
                 // Add a vertical force to the player.
                 m_Grounded = false;
                 m_Anim.SetBool("Ground", false);
-                
+
+                // Reset applied force if Boing is falling too hard.
+                if(m_Rigidbody2D.velocity.y <= 1.5f)
+                    m_Rigidbody2D.velocity = new Vector2(m_Rigidbody2D.velocity.x, 0.0f);
+
+                // Add force.
                 m_Rigidbody2D.AddForce(new Vector2(0f, m_JumpForce));
 
                 m_Anim.SetTrigger("Jump");
@@ -133,29 +139,41 @@ namespace KekeDreamLand
         }
 
         /// <summary>
-        /// Try to pass through a one sided platform.
+        ///  Try to pass through a one sided platform.
         /// </summary>
-        public void MoveDown()
+        /// <returns>True if a platform was above Boing.</returns>
+        public bool MoveDown()
         {
-            Vector2 center = new Vector2((m_collider.bounds.min.x + m_collider.bounds.max.x) / 2, m_collider.bounds.min.y);
-            RaycastHit2D hit = Physics2D.Raycast(center, Vector2.down, 0.25f, m_WhatIsGround);
-            
-            if (hit)
-            {
-                GameObject g = hit.collider.gameObject;
-                
-                if (g)
-                {
-                    PlatformEffector2D platform = g.GetComponent<PlatformEffector2D>();
-                    if(platform)
-                    {
-                        Physics2D.IgnoreCollision(hit.collider, m_collider, true);
-                        Physics2D.IgnoreCollision(hit.collider, m_secondCollider, true);
+            bool platformAbove = false;
 
-                        StartCoroutine(ResetIgnoringOfCollision(hit.collider));
+            Vector2 center = new Vector2((m_collider.bounds.min.x + m_collider.bounds.max.x) / 2, m_collider.bounds.min.y);
+            RaycastHit2D[] hits = Physics2D.RaycastAll(center, Vector2.down, 0.25f, m_WhatIsGround);
+
+            foreach (RaycastHit2D hit in hits)
+            {
+                if (hit && hit.collider != null && !hit.collider.isTrigger)
+                {
+                    GameObject g = hit.collider.gameObject;
+
+                    if (g)
+                    {
+                        PlatformEffector2D platform = g.GetComponent<PlatformEffector2D>();
+
+                        // If a platform is present, ignore collision with it during a very short time.
+                        if (platform)
+                        {
+                            Physics2D.IgnoreCollision(hit.collider, m_collider, true);
+                            Physics2D.IgnoreCollision(hit.collider, m_secondCollider, true);
+
+                            StartCoroutine(ResetIgnoringOfCollision(hit.collider));
+
+                            platformAbove = true;
+                        }
                     }
                 }
             }
+
+            return platformAbove;
         }
 
         #endregion

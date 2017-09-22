@@ -27,12 +27,16 @@ namespace KekeDreamLand
         public bool debugAttackHitbox = true;
         public Color attackHitboxColor;
 
+        [Header("Audio")]
+        public AudioClip[] clips;
+
         #endregion
 
         #region Private attributes
 
         private Animator boingAnimator;
         private ParticleSystem noteEmitter;
+        private new AudioSource audio;
 
         /// <summary>
         /// Current interactable gameobject in range of Boing. null if nothing is in range.
@@ -173,6 +177,11 @@ namespace KekeDreamLand
             isAttacking = true;
 
             boingAnimator.SetTrigger("Attack");
+
+            /*
+            audio.clip = clips[0];
+            audio.Play();
+            */
 
             yield return new WaitForSeconds(0.25f);
 

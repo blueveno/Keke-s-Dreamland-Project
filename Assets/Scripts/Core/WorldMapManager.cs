@@ -83,7 +83,7 @@ namespace KekeDreamLand
         /// <summary>
         /// Try to move from the node to the specified direction.
         /// </summary>
-        public void TryToMove(PlayerProgress playerProgress, InputDirection direction)
+        public void TryToMove(PlayerProgress playerProgress, Direction direction)
         {
             GraphNode node = graph.Find(x => x.nodeIndex == playerProgress.currentNodeIndex);
 
