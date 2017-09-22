@@ -18,7 +18,7 @@ namespace KekeDreamLand
 
         #endregion
 
-        #region LevelManager Attributes
+        #region Boing, HUD and Camera.
 
         // Boing
         private GameObject boing;
@@ -32,11 +32,13 @@ namespace KekeDreamLand
         // Camera
         private CustomCamera2DFollow cameraFollow;
 
-        // internal transition attributes.
+        // Internal transition attributes.
         private GameObject nextArea; // next area where Boing will go.
         private Vector3 nextPosition; // next position on this area where Boing will spawn.
 
-        // Level manager attributes.
+        #endregion
+
+        #region Level state attributes
 
         /// <summary>
         /// Return true if level is paused.
@@ -74,34 +76,6 @@ namespace KekeDreamLand
         }
         private bool isInternalTransition = false;
 
-        public bool IsTransition
-        {
-            get { return isLevelFinished || isInternalTransition || isDisplayLevelIntro || isDisplayLevelOutro; }
-        }
-
-        // Ennemies
-        GameObject[] ennemies;
-
-        // Items
-
-        /// <summary>
-        /// Return number of feathers collected.
-        /// </summary>
-        public int FeatherPickedUp
-        {
-            get { return featherPickedUp; }
-
-            set {
-                featherPickedUp = value;
-                RefreshFeatherCount();
-            }
-        }
-        private int featherPickedUp = 0;
-        private int featherCount = 0;
-        
-        private bool[] specialItemPresent = new bool[4];
-        private bool[] specialItemFound = new bool[4];
-
         // True if level intro is currently displayed.
         private bool isDisplayLevelIntro = false;
 
@@ -112,6 +86,50 @@ namespace KekeDreamLand
             set { isDisplayLevelOutro = value; }
         }
         private bool isDisplayLevelOutro = false;
+
+        /// <summary>
+        /// Return true if a transition is in process.
+        /// </summary>
+        public bool IsTransition
+        {
+            get { return isLevelFinished || isInternalTransition || isDisplayLevelIntro || isDisplayLevelOutro; }
+        }
+
+        #endregion
+
+        #region Level content
+
+        // Ennemies
+        GameObject[] ennemies;
+
+        // Items
+        private int featherCount = 0;
+        
+        private bool[] specialItemPresent = new bool[4];
+        private bool[] specialItemFound = new bool[4];
+
+        /// <summary>
+        /// Return number of feathers collected.
+        /// </summary>
+        public int FeatherPickedUp
+        {
+            get { return featherPickedUp; }
+
+            set
+            {
+                featherPickedUp = value;
+                RefreshFeatherCount();
+            }
+        }
+        private int featherPickedUp = 0;
+
+        // Checkpoints
+        private Checkpoint lastCheckpoint = null;
+        public Checkpoint LastCheckPoint
+        {
+            get { return lastCheckpoint; }
+            set { lastCheckpoint = value; }
+        }
 
         #endregion
 
@@ -126,7 +144,7 @@ namespace KekeDreamLand
 
         #endregion
 
-        #region Private methods
+        #region Setup methods
 
         private void SetupEnnemies()
         {
@@ -217,7 +235,9 @@ namespace KekeDreamLand
         private void StartLevel()
         {
             levelIntroMgr.gameObject.SetActive(false);
+
             GameManager.instance.ActivateAnimator();
+
             EnableAllEnnemies(true);
         }
 
@@ -275,8 +295,6 @@ namespace KekeDreamLand
             GameManager.instance.TriggerFadeIn();
         }
 
-        #endregion
-
         /// <summary>
         /// Move boing and camera to the prepared area and position.
         /// </summary>
@@ -286,10 +304,12 @@ namespace KekeDreamLand
 
             boing.transform.position = nextPosition;
             cameraFollow.CurrentArea = nextArea.GetComponent<AreaEditor>();
-            
+
             nextArea = null;
         }
-        
+
+        #endregion
+
         #region Items methods
 
         /// <summary>
@@ -339,7 +359,7 @@ namespace KekeDreamLand
 
         #endregion
 
-        #region HUD management
+        #region HUD methods
 
         /// <summary>
         /// Request HUD to be toggled.
@@ -360,6 +380,28 @@ namespace KekeDreamLand
         private void RefreshFeatherCount()
         {
             hudMgr.UpdateFeatherPickedUp(featherPickedUp, featherCount);
+        }
+
+        #endregion
+
+        #region Checkpoint methods
+
+        public void RespawnAtCheckpoint()
+        {
+            nextArea = lastCheckpoint.transform.parent.parent.parent.parent.gameObject;
+            Transform parentInArea = nextArea.transform.Find("Level/Character");
+
+            if(boing == null)
+                boing = Instantiate(GameManager.instance.boingPrefab, parentInArea);
+
+            Vector3 newPos = lastCheckpoint.gameObject.transform.position;
+            newPos.z = 0.0f;
+
+            nextPosition = newPos;
+
+            MoveBoingToNewArea();
+
+            GameManager.instance.TriggerFadeOut();
         }
 
         #endregion

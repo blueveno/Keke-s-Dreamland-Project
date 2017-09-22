@@ -136,6 +136,8 @@ namespace KekeDreamLand
         // Setup camera follow limit.
         private void SetupCameraLimit()
         {
+            target = GameObject.FindGameObjectWithTag("Player").transform;
+
             float cameraSizeY = Camera.main.orthographicSize;
             float cameraSizeX = cameraSizeY * Screen.width / Screen.height;
 
@@ -197,7 +199,7 @@ namespace KekeDreamLand
         {
             // Setup moving walls.
             forcedScrollingArea.SetupMovingWalls(transform.position, cameraScreenWidth, cameraScreenHeight);
-            
+
             // Determine forced scrolling destination
             forcedScrollingDestination = transform.position + DirectionUtility.DirectionToVector(forcedScrollingArea.scrollingDirection) * forcedScrollingArea.GetDestinationDistance(cameraScreenWidth, cameraScreenHeight);
         }

@@ -93,9 +93,9 @@ namespace KekeDreamLand
             float destinationDistance = 0.0f;
 
             if (scrollingDirection == Direction.UP || scrollingDirection == Direction.DOWN)
-                destinationDistance = area.raw - cameraWidth;
+                destinationDistance = area.raw - cameraHeight;
             else
-                destinationDistance = area.column - cameraHeight;
+                destinationDistance = area.column - cameraWidth;
 
             return destinationDistance;
         }
