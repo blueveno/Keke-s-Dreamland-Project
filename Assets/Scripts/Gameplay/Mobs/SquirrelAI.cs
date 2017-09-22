@@ -32,9 +32,6 @@ namespace KekeDreamLand
 
         private void Awake()
         {
-            // Track player.
-            target = GameObject.FindGameObjectWithTag("Player");
-            
             throwingStartPoint = transform.GetChild(0).gameObject;
         }
 
@@ -48,6 +45,8 @@ namespace KekeDreamLand
         /// </summary>
         public void ThrowProjectile()
         {
+            target = GameObject.FindGameObjectWithTag("Player");
+
             if (!enabled || target == null)
                 return;
 

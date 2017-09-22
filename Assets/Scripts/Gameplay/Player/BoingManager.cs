@@ -73,7 +73,9 @@ namespace KekeDreamLand
                     if (value <= 0)
                     {
                         lifePoints = 0;
-                        Die();
+                        
+                        // Destroy Boing immediatly. TODO trigger particle effect but disble sprite then destroy it.
+                        Die(0);
                     }
 
                     // Boing is damaged but alive.
@@ -91,7 +93,15 @@ namespace KekeDreamLand
             }
         }
         private int lifePoints; // current life points.
-
+        
+        /// <summary>
+        /// Set boing invulenrable or check if he's invulnerable.
+        /// </summary>
+        public bool IsInvulnerable
+        {
+            get { return isInvulnerable; }
+            set { isInvulnerable = value; }
+        }
         private bool isInvulnerable = false;
 
         /// <summary>
@@ -106,6 +116,9 @@ namespace KekeDreamLand
         // Attack attributes
         private bool isAttacking;
 
+        // items on Boing.
+        private List<Item> itemStored = new List<Item>();
+
         #endregion
 
         #region Unity methods
@@ -116,8 +129,11 @@ namespace KekeDreamLand
             noteEmitter = GetComponentInChildren<ParticleSystem>();
 
             interactableGoInRange = null;
-            
-            lifePoints = maxLifePoints;
+        }
+
+        private void Start()
+        {
+            LifePoints = maxLifePoints;
         }
 
         private void OnDrawGizmosSelected()
@@ -224,7 +240,8 @@ namespace KekeDreamLand
                     continue;
 
                 Mob mob = c.gameObject.GetComponent<Mob>();
-                mob.TriggerBounce();
+                if(mob)
+                    mob.TriggerBounce();
             }
         }
 
@@ -249,21 +266,32 @@ namespace KekeDreamLand
                 yield return new WaitForSeconds(invulnerabilityDuration / blinkCount);
                 i++;
             }
-
-            isInvulnerable = false;
+            
+            if (!GameManager.instance.CurrentLevel.IsInternalTransition)
+                isInvulnerable = false;
 
             // Reset color of the sprite.
             sprite.color = Color.white;
         }
 
-        private void Die()
+        /// <summary>
+        /// Trigger Boing Death. Feedback then destroy and respawn/reload.
+        /// </summary>
+        /// <param name="destroyDelay"></param>
+        public void Die(float destroyDelay)
         {
-            // TODO animation, sound, ...
-
-            GameManager.instance.TriggerFadeIn();
-
+            // TODO animation, sound, particle effect, ...
+            
             // Stop Boing velocity.
             GetComponent<InputManager>().StopBoing();
+            
+            // Destroy Boing.
+            Destroy(gameObject, destroyDelay);
+
+            // TODO foreach item of the list, restore it on the level, remove it from HUD and clear items list.
+
+            // Reload scene or respawn.
+            GameManager.instance.TriggerFadeIn();
         }
 
         #endregion

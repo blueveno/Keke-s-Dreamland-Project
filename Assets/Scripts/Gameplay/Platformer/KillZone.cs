@@ -7,20 +7,24 @@ namespace KekeDreamLand
     /// </summary>
     public class KillZone : MonoBehaviour
     {
+        public bool isMovingKillzone = false;
+        public float deathDelay = 0.2f;
+
         private void OnTriggerEnter2D(Collider2D other)
         {
             if (other.tag == "Player")
             {
-                // Dont show the destruction to the player.
-                Destroy(other.gameObject, 0.2f);
+                BoingManager boing = other.gameObject.GetComponent<BoingManager>();
 
-                GameManager.instance.TriggerFadeIn();
+                // Kill boing after a delay.
+                boing.Die(deathDelay);
             }
 
-            // Destroy anything else which fall out of bounds and have trigger hitbox collider.
+            // Destroy anything else which enter in this killzone. Except if it's the killzone of a forced scrolling area.
             else
             {
-                Destroy(other.gameObject, 0.2f);
+                if(!isMovingKillzone)
+                    Destroy(other.gameObject, deathDelay);
             }
         }
     }

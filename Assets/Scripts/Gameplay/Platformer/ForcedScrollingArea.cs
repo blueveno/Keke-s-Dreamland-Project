@@ -75,10 +75,10 @@ namespace KekeDreamLand
 
             forcedScrollingOffset = new Vector2(offsetX, offsetY);
 
-            forcedScrollingKillZone.transform.position = forcedScrollingOffset + cameraPos;
+            forcedScrollingKillZone.transform.position = (forcedScrollingOffset * 0.92f) + cameraPos;
             forcedScrollingKillZone.GetComponent<BoxCollider2D>().size = wallSize;
             
-            forcedScrollingBlockingWall.transform.position = -forcedScrollingOffset + cameraPos;
+            forcedScrollingBlockingWall.transform.position = -(forcedScrollingOffset * 1.05f) + cameraPos;
             forcedScrollingBlockingWall.GetComponent<BoxCollider2D>().size = wallSize;
         }
 
@@ -102,7 +102,7 @@ namespace KekeDreamLand
 
         public void MoveWalls(Vector2 newPos)
         {
-            forcedScrollingKillZone.transform.position = newPos + forcedScrollingOffset;
+            forcedScrollingKillZone.transform.position = newPos + (forcedScrollingOffset * 0.92f);
             forcedScrollingBlockingWall.transform.position = newPos - (forcedScrollingOffset * 1.05f);
         }
 

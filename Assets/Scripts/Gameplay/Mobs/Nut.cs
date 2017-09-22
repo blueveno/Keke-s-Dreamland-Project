@@ -9,21 +9,20 @@ namespace KekeDreamLand
     {
         protected new void OnTriggerEnter2D(Collider2D collision)
         {
-            bool destroy = false;
+            bool destroyed = false;
 
             // Damage player if enter in collision with. Only if the mob is not bouncing.
             if (collision.gameObject.tag == "Player")
             {
                 DealDamageToPlayer(collision.gameObject);
-                destroy = true;
+                destroyed = true;
             }
-
-            destroy |= collision.gameObject.tag == "OutOfBound"
-                || collision.gameObject.tag == "Untagged"; // tiles are untagged - special tiles not.
+            
+            destroyed |= collision.gameObject.tag == "OutOfBound" || collision.gameObject.tag == "Untagged";
 
             // The nut is destroyed when it hits the player, ground or reaches a bound of bound wall.
-            if (destroy)
-                Destroy(gameObject);
+            if (destroyed)
+                Destroy(gameObject, 0.02f);
         }
     }
 

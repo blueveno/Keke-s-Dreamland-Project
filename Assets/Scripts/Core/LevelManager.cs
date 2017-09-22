@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace KekeDreamLand
@@ -128,7 +129,10 @@ namespace KekeDreamLand
         public Checkpoint LastCheckPoint
         {
             get { return lastCheckpoint; }
-            set { lastCheckpoint = value; }
+            set {
+                lastCheckpoint = value;
+                // TODO clear list of stored item of Boing and destroy them from level.
+            }
         }
 
         #endregion
@@ -288,6 +292,9 @@ namespace KekeDreamLand
         {
             isInternalTransition = true;
 
+            // Set Boing invulnerable when he use a door.
+            boingScript.IsInvulnerable = true;
+
             nextArea = newArea;
             nextPosition = newPosition;
             nextPosition.z = boing.transform.position.z;
@@ -300,12 +307,15 @@ namespace KekeDreamLand
         /// </summary>
         public void MoveBoingToNewArea()
         {
-            isInternalTransition = false;
-
+            // Move boing on the new area.
             boing.transform.position = nextPosition;
             cameraFollow.CurrentArea = nextArea.GetComponent<AreaEditor>();
 
+            // Remove invulnerability when he has reached the new area.
+            boingScript.IsInvulnerable = false;
+
             nextArea = null;
+            isInternalTransition = false;
         }
 
         #endregion
@@ -386,19 +396,25 @@ namespace KekeDreamLand
 
         #region Checkpoint methods
 
+        /// <summary>
+        /// Respawn Boing at the last checkpoint reached.
+        /// </summary>
         public void RespawnAtCheckpoint()
         {
+            // Determine area of the checkpoint.
             nextArea = lastCheckpoint.transform.parent.parent.parent.parent.gameObject;
             Transform parentInArea = nextArea.transform.Find("Level/Character");
 
+            // Only one boing can exists.
             if(boing == null)
                 boing = Instantiate(GameManager.instance.boingPrefab, parentInArea);
 
+            // Set respawn position.
             Vector3 newPos = lastCheckpoint.gameObject.transform.position;
             newPos.z = 0.0f;
-
+            
+            // Move Boing and camera then fade out.
             nextPosition = newPos;
-
             MoveBoingToNewArea();
 
             GameManager.instance.TriggerFadeOut();
