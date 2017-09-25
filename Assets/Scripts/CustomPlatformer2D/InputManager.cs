@@ -251,24 +251,29 @@ namespace KekeDreamLand
         private void HandleOneSidedPlatform()
         {
             // Check gamepad and one sided platform.
-            if (m_Jump && gamepadUsed != GamepadType.NONE)
+            if (m_Jump)
             {
-                // If jump has been pressed and joystick is down, try to pass through the one sided platform.
-                if (CrossPlatformInputManager.GetAxis("Vertical") < -0.1f)
+                if (gamepadUsed != GamepadType.NONE)
                 {
-                    if(m_Character.MoveDown())
-                        // Cancel jump when a platforom is above and Boing pass trough.
-                        m_Jump = false;
-                }
-            }
-            
-            // If player plays with keyboard, use other control :
-            if (CrossPlatformInputManager.GetButtonDown("Vertical"))
-            {
-                bool moveDown = CrossPlatformInputManager.GetAxis("Vertical") < -0.1f;
+                    // If jump has been pressed and joystick is down, try to pass through the one sided platform.
+                    if (CrossPlatformInputManager.GetAxis("Vertical") < -0.1f)
+                    {
+                        if (m_Character.MoveDown())
+                            // Cancel jump when a platforom is above and Boing pass trough.
+                            m_Jump = false;
+                    }
 
-                if(moveDown)
-                    m_Character.MoveDown();
+                    return;
+                }
+
+                // If player plays with keyboard, use other control :
+                if (CrossPlatformInputManager.GetButtonDown("Vertical"))
+                {
+                    bool moveDown = CrossPlatformInputManager.GetAxis("Vertical") < -0.1f;
+
+                    if (moveDown)
+                        m_Character.MoveDown();
+                }
             }
         }
 
@@ -319,9 +324,23 @@ namespace KekeDreamLand
         {
             if (boing.InteractableGoInRange && m_Character.IsGrounded)
             {
-                if (CrossPlatformInputManager.GetAxis("Vertical") > 0.1f)
+                // Gamepad interaction :
+                if(gamepadUsed != GamepadType.NONE)
                 {
-                    boing.InteractableGoInRange.DoActionWhenUse();
+                    if (CrossPlatformInputManager.GetAxis("Vertical") > 0.1f)
+                    {
+                        boing.InteractableGoInRange.Interact();
+                    }
+                    return;
+                }
+
+                // Keyboard interaction :
+                if (CrossPlatformInputManager.GetButtonDown("Vertical"))
+                {
+                    bool moveUp = CrossPlatformInputManager.GetAxisRaw("Vertical") > 0.1f;
+
+                    if (moveUp)
+                        boing.InteractableGoInRange.Interact();
                 }
             }
         }
@@ -374,6 +393,9 @@ namespace KekeDreamLand
 
             foreach(string s in devices)
             {
+                if (s.Equals(""))
+                    continue;
+
                 if(s.Contains("XBOX"))
                 {
                     gamepadUsed = GamepadType.XBOX;

@@ -47,13 +47,8 @@ namespace KekeDreamLand
         /// <summary>
         /// Use door if possible.
         /// </summary>
-        public override void DoActionWhenUse()
+        protected override void DoActionWhenUse()
         {
-            if (!canUseDoor)
-            {
-                return;
-            }
-
             UseDoor();
         }
 
@@ -65,34 +60,8 @@ namespace KekeDreamLand
                 Debug.Log("Destination door is not associated to this door (" + gameObject.name +")");
                 return;
             }
-            
-            // TODO remove these preventions ?
-            PreventUseDoor();
-            doorLinked.PreventUseDoor();
 
             GameManager.instance.CurrentLevel.PrepareInternalTransition(doorLinked.currentArea, doorLinked.transform.position);
-        }
-
-        // TODO in another way ? Stop time and input interaction during animation ?
-        /// <summary>
-        /// Anti spam.
-        /// </summary>
-        public void PreventUseDoor()
-        {
-            canUseDoor = false;
-
-            StartCoroutine(CoolDownDoor());
-        }
-
-        /// <summary>
-        /// Run cooldown to permit to the player to reuse the door after time.
-        /// </summary>
-        /// <returns></returns>
-        public IEnumerator CoolDownDoor()
-        {
-            yield return new WaitForSeconds(0.5f);
-
-            canUseDoor = true;
         }
 
         #endregion

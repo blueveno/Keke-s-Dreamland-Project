@@ -8,10 +8,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 06cc3fdc80489e0498c36aed4b81f084, type: 3}
-  m_Name: Level Dev
+  m_Script: {fileID: 11500000, guid: 09d9a6ffc21866948ae4da0ec7ec2c6b, type: 3}
+  m_Name: Apple
   m_EditorClassIdentifier: 
-  levelName: Keke Dev Land
-  isSecretLevel: 0
-  totalFeathers: 3
-  itemsPresent: 01010001
+  treasureName: Default name
+  sprite: {fileID: 21300012, guid: 1f7bd9e96ce202a47b79e6b2d08e7d2b, type: 3}

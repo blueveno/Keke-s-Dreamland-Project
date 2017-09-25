@@ -18,7 +18,7 @@ namespace KekeDreamLand
 
         [Header("Life system")]
         public bool invincible;
-        public int mobLifePoints = 1;
+        public int maxLifePoints = 1;
 
         [Header("Bounce behaviour")]
         public bool canBounce = false;
@@ -49,25 +49,31 @@ namespace KekeDreamLand
                     Debug.LogWarning(name + " is invincible !");
                     return;
                 }
-                    
 
-                lifePoints = value;
-
-                if (lifePoints <= 0)
+                // Mob dies.
+                if (value <= 0)
                 {
                     lifePoints = 0;
                     Die();
                     return;
                 }
 
-                // A mob can be healed by an another ???
-                lifePoints = Mathf.Min(value, mobLifePoints);
+                // Heal the mob.
+                if (value > lifePoints)
+                    lifePoints = Mathf.Min(value, maxLifePoints);
 
                 // Shake sprite when mob is damaged but don't die.
-                StartCoroutine(ShakeSprite());
+                else
+                {
+                    lifePoints = value;
+                    StartCoroutine(ShakeSprite());
+                }
             }
         }
         private int lifePoints;
+
+        private Vector2 initialPosition;
+
         #endregion
 
         #region Unity methods
@@ -79,8 +85,27 @@ namespace KekeDreamLand
             if(canBounce)
                 noteEmitter = transform.Find("NoteEmitter").gameObject;
 
-            // Setup mob.
-            lifePoints = mobLifePoints;
+            initialPosition = transform.position;
+
+            SetupMob();
+        }
+
+        public void SetupMob()
+        {
+            // Reset initial position.
+            transform.position = initialPosition;
+            // Full heal.
+            lifePoints = maxLifePoints;
+
+            // interrupt bouncing.
+            if (isBouncing)
+            {
+                StopAllCoroutines();
+                StopBouncing();
+            }
+
+            // Reset AI.
+            ToggleAIBehaviours(true);
         }
 
         protected void OnTriggerEnter2D(Collider2D collision)
@@ -122,7 +147,12 @@ namespace KekeDreamLand
         {
             // TODO feedback. trigger die animation, ...
 
-            Destroy(gameObject);
+            // Disable temporary him.
+            gameObject.SetActive(false);
+
+            StopAllCoroutines();
+
+            GameManager.instance.CurrentLevel.AddMob(this);
         }
 
         private void Bounce()
@@ -156,11 +186,18 @@ namespace KekeDreamLand
                 yield return new WaitForSeconds(0.5f);
                 timer -= 0.5f;
             }
+            
+            StopBouncing();
+        }
 
+        // Stop bouncing effect.
+        private void StopBouncing()
+        {
             isBouncing = false;
 
-            // Stop bouncing effect.
+            if(enabled)
             animator.SetBool("Bouncing", isBouncing);
+
             noteEmitter.SetActive(isBouncing);
             ToggleAIBehaviours(true);
         }

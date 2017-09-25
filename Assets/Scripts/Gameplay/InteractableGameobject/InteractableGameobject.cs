@@ -1,10 +1,13 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using UnityEngine;
 
 namespace KekeDreamLand
 {
 
     public abstract class InteractableGameobject : MonoBehaviour
     {
+        private bool canInteract = true;
+        private float spamDelay = 0.5f;
 
         // Indicates to Boing that he enters in range of this interactable gameobject.
         private void OnTriggerEnter2D(Collider2D other)
@@ -34,8 +37,10 @@ namespace KekeDreamLand
                 player.GetComponent<BoingManager>().InteractableGoInRange = this;
 
                 // TODO display feedback "Press button" ?
+
+                // Get center.x and max.y of boxcollider2D to always display 1 unit at top of the interactable gameobject.
             }
-            
+
         }
 
         // Indicates to Boing that he is no longer in range of this interactable gameobject.
@@ -49,8 +54,24 @@ namespace KekeDreamLand
             }
         }
 
+        public void Interact()
+        {
+            if (!canInteract)
+                return;
+
+            canInteract = false;
+            StartCoroutine(InteractDelay());
+            DoActionWhenUse();
+        }
+
         // Action opered when the interactable gameobject is used.
-        public abstract void DoActionWhenUse();
+        protected abstract void DoActionWhenUse();
+
+        private IEnumerator InteractDelay()
+        {
+            yield return new WaitForSeconds(spamDelay);
+            canInteract = true;
+        }
     }
 
 }

@@ -2681,6 +2681,7 @@ MonoBehaviour:
   - {fileID: 114251648386875806}
   - {fileID: 114174381325150388}
   - {fileID: 114858996375433802}
+  notFoundColor: {r: 0.15686275, g: 0.15686275, b: 0.15686275, a: 0.5}
   pausePanel: {fileID: 1146730784696796}
 --- !u!114 &114819311668678768
 MonoBehaviour:

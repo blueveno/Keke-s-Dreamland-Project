@@ -208,18 +208,22 @@ namespace KekeDreamLand
         {
             float distance = Vector3.Distance(transform.position, forcedScrollingDestination);
 
+            // Moves camera while it hasn't reached the destination.
             if(distance >= Mathf.Epsilon)
             {
-                Vector3 newPos = Vector3.MoveTowards(transform.position, forcedScrollingDestination, Time.deltaTime * forcedScrollingArea.scrollingSpeed);
-
-                // Moves the camera, the killing zone and the blocking wall.
-                transform.position = newPos;
-                
-                forcedScrollingArea.MoveWalls(newPos);
+                transform.position = Vector3.MoveTowards(transform.position, forcedScrollingDestination, Time.deltaTime * forcedScrollingArea.scrollingSpeed);
             }
 
             else
                 forcedScrollingArea.ScrollOn = false;
+        }
+
+        public void RemoveWallsFromCamera()
+        {
+            if(forcedScrollingArea)
+            {
+                forcedScrollingArea.AttachWallsTo(forcedScrollingArea.transform);
+            }
         }
 
         #endregion

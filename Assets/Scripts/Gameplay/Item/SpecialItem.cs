@@ -19,7 +19,7 @@
             // FEEDBACK -> sound, particles...
 
             // Notify that the item has been pick on the current level and update HUD.
-            GameManager.instance.CurrentLevel.PickSpecialItem(specialItemIndex);
+            GameManager.instance.CurrentLevel.PickSpecialItem(specialItemIndex, true);
         }
     }
 

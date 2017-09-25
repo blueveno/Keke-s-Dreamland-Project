@@ -9,7 +9,7 @@
         {
             // FEEDBACK -> sound, particles...
 
-            GameManager.instance.CurrentLevel.FeatherPickedUp++;
+            GameManager.instance.CurrentLevel.FeatherCollected++;
         }
     }
 }

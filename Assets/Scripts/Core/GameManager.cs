@@ -323,6 +323,11 @@ namespace KekeDreamLand
 
         #region Level management
 
+        public void BoingDie()
+        {
+            TriggerFadeIn();
+        }
+
         /// <summary>
         /// Use this when you want to finish the current level.
         /// </summary>
@@ -333,10 +338,10 @@ namespace KekeDreamLand
             if(CurrentLevel.HasCollectAllFeathers())
             {
                 Debug.Log("All feathers have been collected.");
-                CurrentLevel.PickSpecialItem(1);
+                CurrentLevel.PickSpecialItem(1, true);
             }
-            
-            transitionManager.FadeIn();
+
+            TriggerFadeIn();
         }
 
         #endregion
@@ -454,6 +459,10 @@ namespace KekeDreamLand
                 // Case of a death of Boing.
                 else
                 {
+                    // Reactivate all items collected and mobs killed from the last checkpoint.
+                    CurrentLevel.ReactivateAllItems();
+                    CurrentLevel.ReactivateAllMobs();
+
                     // Respawn to checkpoint.
                     if (CurrentLevel.LastCheckPoint != null)
                         CurrentLevel.RespawnAtCheckpoint();

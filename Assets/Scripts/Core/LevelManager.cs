@@ -112,17 +112,23 @@ namespace KekeDreamLand
         /// <summary>
         /// Return number of feathers collected.
         /// </summary>
-        public int FeatherPickedUp
+        public int FeatherCollected
         {
-            get { return featherPickedUp; }
+            get { return featherCollected; }
 
             set
             {
-                featherPickedUp = value;
+                featherCollected = value;
                 RefreshFeatherCount();
             }
         }
-        private int featherPickedUp = 0;
+        private int featherCollected = 0;
+
+        // items on Boing.
+        private List<Item> itemCollected = new List<Item>();
+
+        // mobs killed.
+        private List<Mob> mobsKilled = new List<Mob>();
 
         // Checkpoints
         private Checkpoint lastCheckpoint = null;
@@ -131,7 +137,9 @@ namespace KekeDreamLand
             get { return lastCheckpoint; }
             set {
                 lastCheckpoint = value;
-                // TODO clear list of stored item of Boing and destroy them from level.
+
+                ValidateAllItems();
+                DestroyMobs();
             }
         }
 
@@ -254,7 +262,7 @@ namespace KekeDreamLand
             EnableAllEnnemies(false);
 
             // Update stats before display them.
-            levelOutroMgr.UpdateFeatherPickedUp(featherPickedUp, featherCount);
+            levelOutroMgr.UpdateFeatherPickedUp(featherCollected, featherCount);
             
             for (int i = 0; i < specialItemFound.Length; i++)
             {
@@ -268,7 +276,7 @@ namespace KekeDreamLand
             levelOutroMgr.DisplayStepByStep();
             
             // Automatic save.
-            GameManager.instance.SaveLevelProgress(featherPickedUp, specialItemFound);
+            GameManager.instance.SaveLevelProgress(featherCollected, specialItemFound);
 
             isDisplayLevelOutro = false; // user can switch to world map.
         }
@@ -307,8 +315,12 @@ namespace KekeDreamLand
         /// </summary>
         public void MoveBoingToNewArea()
         {
-            // Move boing on the new area.
+            // Remove walls from camera if exists.
+            cameraFollow.RemoveWallsFromCamera();
+
+            // Move boing in the new area.
             boing.transform.position = nextPosition;
+            // Update camera depending the new area.
             cameraFollow.CurrentArea = nextArea.GetComponent<AreaEditor>();
 
             // Remove invulnerability when he has reached the new area.
@@ -323,14 +335,69 @@ namespace KekeDreamLand
         #region Items methods
 
         /// <summary>
+        /// Add a collected item to the list.
+        /// </summary>
+        /// <param name="item"></param>
+        public void AddItem(Item item)
+        {
+            itemCollected.Add(item);
+        }
+
+        /// <summary>
+        /// Destroy all items collected by Boing from level. Boing no longer loses these items when he dies.
+        /// </summary>
+        public void ValidateAllItems()
+        {
+            // Destroy definitively all item of the level.
+            for (int i = 0; i < itemCollected.Count; i++)
+            {
+                Destroy(itemCollected[i].gameObject);
+            }
+
+            itemCollected.Clear();
+        }
+
+        /// <summary>
+        /// Reactivate all items collected by Boing in the level. Boing loses all these items when he dies.
+        /// </summary>
+        public void ReactivateAllItems()
+        {
+            int featherRemoved = 0;
+
+            // Reset these items in level and in HUD !
+            for (int i = 0; i < itemCollected.Count; i++)
+            {
+                itemCollected[i].gameObject.SetActive(true);
+
+                // Check if item was a feather.
+                Feather feather = itemCollected[i] as Feather;
+                if (feather)
+                {
+                    featherRemoved++;
+                    continue;
+                }
+
+                SpecialItem specialItem = itemCollected[i] as SpecialItem;
+                if (specialItem)
+                {
+                    PickSpecialItem(specialItem.specialItemIndex, false);
+                }
+            }
+
+            // Reset HUD.
+            FeatherCollected -= featherRemoved;
+
+            itemCollected.Clear();
+        }
+
+        /// <summary>
         /// Indicates to the level that the specified special item has been picked up.
         /// </summary>
         /// <param name="specialItemIndex"></param>
-        public void PickSpecialItem(int specialItemIndex)
+        public void PickSpecialItem(int specialItemIndex, bool found)
         {
-            specialItemFound[specialItemIndex] = true;
-
-            hudMgr.UnlockSpecialItem(specialItemIndex);
+            specialItemFound[specialItemIndex] = found;
+            hudMgr.UnlockSpecialItem(specialItemIndex, found);
         }
 
         /// <summary>
@@ -347,7 +414,7 @@ namespace KekeDreamLand
         /// <returns></returns>
         public bool HasCollectAllFeathers()
         {
-            return featherPickedUp == featherCount;
+            return featherCollected == featherCount;
         }
 
         /// <summary>
@@ -365,6 +432,53 @@ namespace KekeDreamLand
             }
 
             return allFound;
+        }
+
+        public bool HasTheKey()
+        {
+            return specialItemFound[0];
+        }
+
+        #endregion
+
+        #region Mob methods
+
+        /// <summary>
+        /// Add a collected item to the list.
+        /// </summary>
+        /// <param name="mob"></param>
+        public void AddMob(Mob mob)
+        {
+            mobsKilled.Add(mob);
+        }
+
+        /// <summary>
+        /// Destroy all items collected by Boing from level. Boing no longer loses these items when he dies.
+        /// </summary>
+        public void DestroyMobs()
+        {
+            // Destroy definitively all item of the level.
+            for (int i = 0; i < mobsKilled.Count; i++)
+            {
+                Destroy(mobsKilled[i].gameObject);
+            }
+
+            mobsKilled.Clear();
+        }
+
+        /// <summary>
+        /// Reactivate all items collected by Boing in the level. Boing loses all these items when he dies.
+        /// </summary>
+        public void ReactivateAllMobs()
+        {
+            // Reset these mobs in the level !
+            for (int i = 0; i < mobsKilled.Count; i++)
+            {
+                mobsKilled[i].SetupMob();
+                mobsKilled[i].gameObject.SetActive(true);
+            }
+
+            mobsKilled.Clear();
         }
 
         #endregion
@@ -389,7 +503,7 @@ namespace KekeDreamLand
 
         private void RefreshFeatherCount()
         {
-            hudMgr.UpdateFeatherPickedUp(featherPickedUp, featherCount);
+            hudMgr.UpdateFeatherPickedUp(featherCollected, featherCount);
         }
 
         #endregion

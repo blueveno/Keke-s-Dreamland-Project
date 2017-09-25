@@ -18,7 +18,9 @@ namespace KekeDreamLand
             {
                 DoActionWhenPick();
 
-                Destroy(gameObject);
+                // Item is disable and store into the items collected.
+                gameObject.SetActive(false);
+                GameManager.instance.CurrentLevel.AddItem(this);
             }
         }
 

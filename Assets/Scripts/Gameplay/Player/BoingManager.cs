@@ -41,12 +41,7 @@ namespace KekeDreamLand
         /// <summary>
         /// Current interactable gameobject in range of Boing. null if nothing is in range.
         /// </summary>
-        public InteractableGameobject InteractableGoInRange
-        {
-            get { return interactableGoInRange; }
-            set { interactableGoInRange = value; }
-        }
-        private InteractableGameobject interactableGoInRange;
+        public InteractableGameobject InteractableGoInRange { get; set; }
 
         /// <summary>
         /// Current life points of Boing. Set value to damage it or heal it. Example LifePoints-- or -= 2.
@@ -116,9 +111,6 @@ namespace KekeDreamLand
         // Attack attributes
         private bool isAttacking;
 
-        // items on Boing.
-        private List<Item> itemStored = new List<Item>();
-
         #endregion
 
         #region Unity methods
@@ -128,7 +120,7 @@ namespace KekeDreamLand
             boingAnimator = GetComponent<Animator>();
             noteEmitter = GetComponentInChildren<ParticleSystem>();
 
-            interactableGoInRange = null;
+            InteractableGoInRange = null;
         }
 
         private void Start()
@@ -291,7 +283,7 @@ namespace KekeDreamLand
             // TODO foreach item of the list, restore it on the level, remove it from HUD and clear items list.
 
             // Reload scene or respawn.
-            GameManager.instance.TriggerFadeIn();
+            GameManager.instance.BoingDie();
         }
 
         #endregion

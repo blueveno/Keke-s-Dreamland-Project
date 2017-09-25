@@ -13,6 +13,8 @@ namespace KekeDreamLand
 
             // Trigger the end of the level.
             GameManager.instance.FinishCurrentLevel();
+
+            Destroy(gameObject);
         }
     }
 }

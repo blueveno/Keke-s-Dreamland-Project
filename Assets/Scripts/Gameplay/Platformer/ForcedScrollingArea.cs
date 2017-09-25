@@ -11,7 +11,6 @@ namespace KekeDreamLand
         #region Inspector attributes
         
         [Header("Forced Scrolling Area")]
-        public bool forceScrolling = false;
         public GameObject forcedScrollingKillZone;
         public GameObject forcedScrollingBlockingWall;
         public float delayBeforeScrolling;
@@ -22,7 +21,7 @@ namespace KekeDreamLand
 
         #region Private attributes
 
-        private Vector2 forcedScrollingOffset;
+        private Vector2 cameraOffset;
         private bool scrollOn;
         public bool ScrollOn
         {
@@ -46,13 +45,11 @@ namespace KekeDreamLand
         /// <param name="size"></param>
         public void SetupMovingWalls(Vector2 cameraPos, float cameraWidth, float cameraHeight)
         {
-            // Moving killzone/Wall offset and size.
-            float offsetX = 0.0f;
-            float offsetY = 0.0f;
-            float sizeX = 1.0f;
-            float sizeY = 1.0f;
+            // Moving killzone/blokcing walls offset and size.
+            float offsetX = 0.0f, offsetY = 0.0f;
+            float sizeX = 1.0f, sizeY = 1.0f;
 
-            // Check destination distance and modify offset of the moving killzone depending the scrolling direction.
+            // Determine size and offset of walls depending the scrolling direction.
             if (scrollingDirection == Direction.UP || scrollingDirection == Direction.DOWN)
             {
                 offsetY = -cameraHeight / 2 - 0.5f;
@@ -70,16 +67,19 @@ namespace KekeDreamLand
 
                 sizeY = cameraHeight;
             }
-
+            
+            // Modify walls.
+            Vector2 cameraOffset = new Vector2(offsetX, offsetY);
             Vector2 wallSize = new Vector2(sizeX, sizeY);
 
-            forcedScrollingOffset = new Vector2(offsetX, offsetY);
-
-            forcedScrollingKillZone.transform.position = (forcedScrollingOffset * 0.92f) + cameraPos;
+            forcedScrollingKillZone.transform.position = (cameraOffset * 0.92f) + cameraPos;
             forcedScrollingKillZone.GetComponent<BoxCollider2D>().size = wallSize;
             
-            forcedScrollingBlockingWall.transform.position = -(forcedScrollingOffset * 1.05f) + cameraPos;
+            forcedScrollingBlockingWall.transform.position = -(cameraOffset * 1.05f) + cameraPos;
             forcedScrollingBlockingWall.GetComponent<BoxCollider2D>().size = wallSize;
+
+            // Attach walls to the main camera.
+            AttachWallsTo(Camera.main.transform);
         }
 
         /// <summary>
@@ -100,17 +100,21 @@ namespace KekeDreamLand
             return destinationDistance;
         }
 
-        public void MoveWalls(Vector2 newPos)
-        {
-            forcedScrollingKillZone.transform.position = newPos + (forcedScrollingOffset * 0.92f);
-            forcedScrollingBlockingWall.transform.position = newPos - (forcedScrollingOffset * 1.05f);
-        }
-
         // Start forced scrolling after a certain delay.
         public IEnumerator StartForcedScrollingWithDelay()
         {
             yield return new WaitForSeconds(delayBeforeScrolling);
             scrollOn = true;
+        }
+
+        /// <summary>
+        /// Attach the forced scrolling walls to the specified transform.
+        /// </summary>
+        /// <param name="t"></param>
+        public void AttachWallsTo(Transform t)
+        {
+            forcedScrollingKillZone.transform.parent = t;
+            forcedScrollingBlockingWall.transform.parent = t;
         }
 
         #endregion

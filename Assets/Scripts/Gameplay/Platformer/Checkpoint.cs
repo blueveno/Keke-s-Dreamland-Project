@@ -17,10 +17,20 @@ namespace KekeDreamLand
                 {
                     GameManager.instance.CurrentLevel.LastCheckPoint = this;
 
-                    Debug.Log("Checkpoint reached.");
-
                     validated = true;
                 }
+        }
+
+        private void OnDrawGizmos()
+        {
+            if (validated) {
+                Color green = Color.green;
+                green.a = 0.2f;
+                Gizmos.color = green;
+
+                BoxCollider2D b = GetComponent<BoxCollider2D>();
+                Gizmos.DrawCube(b.transform.position, b.size);
+            }
         }
     }
 }

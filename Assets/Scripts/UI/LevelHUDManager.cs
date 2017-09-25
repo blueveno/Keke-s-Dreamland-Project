@@ -25,6 +25,7 @@ namespace KekeDreamLand
         [Header("Special items :")]
 
         public Image[] specialItemSprites = new Image[4];
+        public Color notFoundColor;
 
         [Space]
 
@@ -147,10 +148,14 @@ namespace KekeDreamLand
         /// Unlock a specific item.
         /// </summary>
         /// <param name="specialItem"></param>
-        public void UnlockSpecialItem(int i)
+        public void UnlockSpecialItem(int i, bool unlocked)
         {
             // TODO trigger animation of Unlock ?
-            specialItemSprites[i].color = Color.white;
+
+            if(unlocked)
+                specialItemSprites[i].color = Color.white;
+            else
+                specialItemSprites[i].color = notFoundColor;
         }
 
         /// <summary>
