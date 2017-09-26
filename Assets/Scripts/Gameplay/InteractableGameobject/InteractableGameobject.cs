@@ -6,8 +6,9 @@ namespace KekeDreamLand
 
     public abstract class InteractableGameobject : MonoBehaviour
     {
+        public float useCooldown = 0.5f;
+
         private bool canInteract = true;
-        private float spamDelay = 0.5f;
 
         // Indicates to Boing that he enters in range of this interactable gameobject.
         private void OnTriggerEnter2D(Collider2D other)
@@ -69,7 +70,7 @@ namespace KekeDreamLand
 
         private IEnumerator InteractDelay()
         {
-            yield return new WaitForSeconds(spamDelay);
+            yield return new WaitForSeconds(useCooldown);
             canInteract = true;
         }
     }

@@ -137,6 +137,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 90c61e46d7c3416488f14aafc16d6f37, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  useCooldown: 1
   doorLinked: {fileID: 0}
   displayTransition: 1
 --- !u!212 &212281982358467914

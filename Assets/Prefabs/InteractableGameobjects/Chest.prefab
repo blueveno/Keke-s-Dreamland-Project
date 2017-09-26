@@ -185,6 +185,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2f9fa229f535d7548b97e10b2af7a04c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  useCooldown: 0.5
   treasure: {fileID: 11400000, guid: 33b790ec0a0b7e8429a92f213afbdc0a, type: 2}
 --- !u!212 &212281982358467914
 SpriteRenderer:

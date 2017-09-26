@@ -159,8 +159,6 @@ namespace KekeDreamLand
 
             SetupLevel();
 
-            Debug.Log(boing.transform);
-
             // Spawn a checkpoint at the start of the level.
             GameObject checkPoint = Instantiate(checkpointPrefab, boing.transform.parent.parent.Find("Midground/InteractableGameobjects"));
             lastCheckpoint = checkPoint.GetComponent<Checkpoint>();
