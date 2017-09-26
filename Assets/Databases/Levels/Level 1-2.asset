@@ -17,3 +17,4 @@ MonoBehaviour:
   totalFeathers: 20
   itemsPresent: 01010101
   treasureToFound: {fileID: 11400000, guid: 33b790ec0a0b7e8429a92f213afbdc0a, type: 2}
+  levelMusic: {fileID: 8300000, guid: fdfe9a95f2f399648965751a62e0a4ee, type: 3}

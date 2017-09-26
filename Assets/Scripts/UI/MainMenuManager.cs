@@ -30,6 +30,10 @@ namespace KekeDreamLand
         public TextMeshProUGUI disclaimerTitle;
         public Button[] disclaimerButtons;
 
+        [Header("Settings screen components")]
+        public Slider musicVolume;
+        public Slider soundVolume;
+
         #endregion
 
         #region Private attributes
@@ -45,13 +49,22 @@ namespace KekeDreamLand
 
         #endregion
 
-        #region unity methods
+        #region Unity methods
 
         private void Awake()
         {
             currentScreen = titleScreen;
 
             SetupSaveSlotScreen();
+        }
+
+        private void Start()
+        {
+            SetupSettingsScreen();
+
+            // Setup volume.
+            OnMusicVolumeChange();
+            OnSoundVolumeChange();
         }
 
         #endregion
@@ -132,7 +145,7 @@ namespace KekeDreamLand
 
         #endregion
 
-        #region OnClick Events
+        #region UI Events
 
         public void OnClickNewGame()
         {
@@ -146,12 +159,34 @@ namespace KekeDreamLand
 
         public void OnClickSettings()
         {
-            throw new NotImplementedException("Settings panel");
+            SwitchTo(settingsScreen);
+
+            // Select first interactable slider.
+            Slider[] sliders = GetComponentsInChildren<Slider>();
+
+            foreach (Slider s in sliders)
+            {
+                if (s.interactable)
+                {
+                    s.Select();
+                    return;
+                }
+            }
         }
 
         public void OnClickQuitGame()
         {
             GameManager.instance.QuitGame();
+        }
+
+        public void OnMusicVolumeChange()
+        {
+            UpdateVolume(musicVolume, "MusicVolume");
+        }
+
+        public void OnSoundVolumeChange()
+        {
+            UpdateVolume(soundVolume, "SoundVolume");
         }
 
         #endregion
@@ -253,6 +288,36 @@ namespace KekeDreamLand
                     }
                 }
             }
+        }
+
+        private void SetupSettingsScreen()
+        {
+            if(PlayerPrefs.HasKey("MusicVolume"))
+            {
+                musicVolume.value = PlayerPrefs.GetFloat("MusicVolume");
+            }
+
+            if (PlayerPrefs.HasKey("SoundVolume"))
+            {
+                soundVolume.value = PlayerPrefs.GetFloat("SoundVolume");
+            }
+        }
+
+        private void UpdateVolume(Slider volumeSlider, string exposedParameter)
+        {
+            float volume = 0.0f;
+
+            if (volumeSlider.value == volumeSlider.minValue)
+                volume = -80.0f;
+            else
+                volume = volumeSlider.value;
+
+            // Update volume.
+            GameManager.instance.SetVolume(exposedParameter, volume);
+
+            // Save player prefs.
+            PlayerPrefs.SetFloat(exposedParameter, volume);
+
         }
 
         #endregion

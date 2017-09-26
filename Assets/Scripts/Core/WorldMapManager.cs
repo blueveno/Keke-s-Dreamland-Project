@@ -11,10 +11,12 @@ namespace KekeDreamLand
     {
         #region Inspector attributes
 
+        [Tooltip("Boing speed on world map")]
         public float boingSpeed = 10.0f;
 
         public Sprite[] worldMapSprites;
         public GameObject[] worldGraphPrefabs;
+        public AudioClip worldMapMusic;
 
         public WorldMapHUDManager hudMgr;
 

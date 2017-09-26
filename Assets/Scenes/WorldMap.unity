@@ -213,6 +213,11 @@ Prefab:
       propertyPath: boingSpeed
       value: 6
       objectReference: {fileID: 0}
+    - target: {fileID: 114923822511985238, guid: 6ef1d7bbf3562a74c8b629514171a59c,
+        type: 2}
+      propertyPath: worldMapMusic
+      value: 
+      objectReference: {fileID: 8300000, guid: dae396b5511087f4f99a6a803bbebf3f, type: 3}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 6ef1d7bbf3562a74c8b629514171a59c, type: 2}
   m_IsPrefabParent: 0

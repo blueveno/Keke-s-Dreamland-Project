@@ -53,3 +53,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   levelIntroDuration: 3
   data: {fileID: 0}
+  checkpointPrefab: {fileID: 1206153940189612, guid: e87212363fec06b4eb301491977a8e4b,
+    type: 2}

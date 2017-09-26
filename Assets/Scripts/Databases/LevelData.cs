@@ -18,5 +18,7 @@ namespace KekeDreamLand
         public bool[] itemsPresent = new bool[4];
 
         public Treasure treasureToFound;
+
+        public AudioClip levelMusic;
     }
 }

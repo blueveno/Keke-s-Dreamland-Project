@@ -68,6 +68,9 @@ namespace KekeDreamLand
 
         private int saveSlotSelected = 0;
 
+        // Music manager.
+        private MusicManager musicMgr;
+
         #endregion
 
         #region Unity methods
@@ -75,6 +78,7 @@ namespace KekeDreamLand
         private void Awake()
         {
             SingletonThis();
+            musicMgr = GetComponent<MusicManager>();
         }
 
         private void OnEnable()
@@ -139,9 +143,10 @@ namespace KekeDreamLand
                     currentWorldIndex = playerProgress.currentWorldIndex;
                 }
                     
-
                 worldmap = GameObject.Find("WorldMap").GetComponent<WorldMapManager>();
                 worldmap.SetupMap(playerProgress);
+
+                musicMgr.Play(worldmap.worldMapMusic);
             }
 
             // Load a level :
@@ -153,7 +158,9 @@ namespace KekeDreamLand
                 {
                     CurrentLevel = levelManager.GetComponent<LevelManager>();
                     CurrentLevel.StartCoroutine(CurrentLevel.DisplayLevelIntro(arg0.name, skipIntro));
-                    
+
+                    musicMgr.Play(CurrentLevel.data.levelMusic);
+
                     skipIntro = false;
                 }
             }
@@ -501,6 +508,8 @@ namespace KekeDreamLand
                     // Reset scene if no checkpoint reached.
                     else
                     {
+                        // Obsolete.
+
                         ResetCurrentScene();
                         skipIntro = true;
                     }
@@ -521,6 +530,11 @@ namespace KekeDreamLand
         }
 
         #endregion
+
+        public void SetVolume(string exposedParameter, float newVolume)
+        {
+            musicMgr.SetVolume(exposedParameter, newVolume);
+        }
     }
 
 }
