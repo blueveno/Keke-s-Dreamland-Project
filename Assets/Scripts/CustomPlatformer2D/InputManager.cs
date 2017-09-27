@@ -262,18 +262,18 @@ namespace KekeDreamLand
                             // Cancel jump when a platforom is above and Boing pass trough.
                             m_Jump = false;
                     }
-
-                    return;
                 }
+                return;
+            }
 
-                // If player plays with keyboard, use other control :
-                if (CrossPlatformInputManager.GetButtonDown("Vertical"))
-                {
-                    bool moveDown = CrossPlatformInputManager.GetAxis("Vertical") < -0.1f;
+            // If player plays with keyboard, use other control :
+            if (CrossPlatformInputManager.GetButtonDown("Vertical"))
+            {
+                // Player need to press down input.
+                bool moveDown = CrossPlatformInputManager.GetAxis("Vertical") < 0f;
 
-                    if (moveDown)
-                        m_Character.MoveDown();
-                }
+                if (moveDown)
+                    m_Character.MoveDown();
             }
         }
 
