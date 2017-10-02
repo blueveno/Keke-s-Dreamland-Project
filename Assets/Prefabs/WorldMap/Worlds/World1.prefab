@@ -1494,6 +1494,7 @@ MonoBehaviour:
     path: {fileID: 114724808150699332}
   positionOnMap: {x: 0, y: 0}
   worldIndex: 1
+  targetNodeIndex: 0
   worldDataTarget: {fileID: 11400000, guid: c4623800a14c961429cb94626040b5ff, type: 2}
 --- !u!114 &114159009204417668
 MonoBehaviour:

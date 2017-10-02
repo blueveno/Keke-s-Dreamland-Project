@@ -226,20 +226,12 @@ namespace KekeDreamLand
         #region Level transitions methods
 
         /// <summary>
-        /// Display level name at the start of the level. Or skip it.
+        /// Display level name at the start of the level.
         /// </summary>
         /// <param name="levelNumber"></param>
-        /// <param name="skipIntro">Skip directly the level intro.</param>
         /// <returns></returns>
-        public IEnumerator DisplayLevelIntro(string levelNumber, bool skipIntro)
+        public IEnumerator DisplayLevelIntro(string levelNumber)
         {
-            // Skip intro.
-            if (skipIntro)
-            {
-                StartLevel();
-                yield break;
-            }
-            
             isDisplayLevelIntro = true;
 
             // Configurate level name and world/level number.

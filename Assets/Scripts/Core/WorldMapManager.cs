@@ -64,23 +64,18 @@ namespace KekeDreamLand
         /// Setup map depending of the player progress.
         /// </summary>
         /// <param name="playerProgress"></param>
-        public void SetupMap(PlayerProgress playerProgress)
+        public IEnumerator SetupMap(PlayerProgress playerProgress)
         {
             ChangeWorldMap(playerProgress.currentWorldIndex);
+
+            yield return new WaitForEndOfFrame();
 
             SetupGraph();
             
             UnlockPaths(playerProgress);
 
-            // Search current node where Boing is on the save.
-            foreach (GraphNode g in graph)
-            {
-                if (g.nodeIndex == playerProgress.currentNodeIndex)
-                {
-                    // Place it on the world map without move along a path.
-                    StartCoroutine(UpdateBoingPosition(null, g, playerProgress));
-                }
-            }
+            GraphNode newNode = UpdateBoingPosition(playerProgress.currentNodeIndex);
+            UpdateWorldMapHUD(newNode, playerProgress);
         }
 
         /// <summary>
@@ -118,7 +113,7 @@ namespace KekeDreamLand
             if (ln)
                 SwitchToNewLevel(ln);
             else if (wn)
-                SwitchToNewWorld(wn);
+                StartCoroutine(SwitchToNewWorld(wn));
         }
 
         /// <summary>
@@ -201,6 +196,21 @@ namespace KekeDreamLand
             }
         }
         
+        // Simpler change of boing position. Return the new node reached.
+        private GraphNode UpdateBoingPosition(int targetNodeIndex)
+        {
+            // Search for the new node in the new graph.
+            GraphNode node = graph.Find(x => x.nodeIndex == targetNodeIndex);
+
+            // Find node position and adjust it to Boing.
+            Vector2 targetPosition = node.positionOnMap;
+            targetPosition.y += 0.75f;
+
+            boing.transform.position = targetPosition;
+
+            return node;
+        }
+
         private IEnumerator UpdateBoingPosition(Path path, GraphNode targetNode, PlayerProgress playerProgress)
         {
             Vector2 targetPosition = targetNode.positionOnMap;
@@ -240,6 +250,12 @@ namespace KekeDreamLand
 
             IsTravelling = false;
 
+            UpdateWorldMapHUD(targetNode, playerProgress);
+            GameManager.instance.UpdateCurrentNodeOnWorld(targetNode.nodeIndex);
+        }
+
+        private void UpdateWorldMapHUD(GraphNode targetNode, PlayerProgress playerProgress)
+        {
             // Update worldmap HUD
             LevelNode ln = targetNode as LevelNode;
             WorldNode wn = targetNode as WorldNode;
@@ -256,16 +272,14 @@ namespace KekeDreamLand
                     whatIsIt = "Secret level";
                 else
                     whatIsIt = "Level " + (ln.worldIndex + 1) + "-" + (ln.levelIndex + 1);
-                
+
                 // Try to get progress.
                 playerProgress.worldProgress[ln.worldIndex].finishedLevels.TryGetValue(ln.levelIndex, out progress);
             }
             else if (wn)
-
                 whatIsIt = "Go to " + wn.worldDataTarget.worldname;
-            
+
             hudMgr.UpdateLevelPreview(whatIsIt, levelData, progress);
-            GameManager.instance.UpdateCurrentNodeOnWorld(targetNode.nodeIndex);
         }
 
         /// <summary>
@@ -292,12 +306,19 @@ namespace KekeDreamLand
             // Update background.
             currentBackground.sprite = currentWorldData.background;
         }
-
-        private void SwitchToNewWorld(WorldNode node)
+        
+        private IEnumerator SwitchToNewWorld(WorldNode worldNode)
         {
-            ChangeWorldMap(node.worldIndex);
+            GameManager.instance.TriggerFadeIn();
+
+            yield return new WaitForSeconds(1.0f);
             
-            // GameManager.changeOfWorld => update playerProgress and setup new map.
+            // Notify gamemanager.
+            GameManager.instance.MoveToNewWorld(worldNode.worldIndex, worldNode.targetNodeIndex);
+
+            yield return new WaitForEndOfFrame();
+
+            GameManager.instance.TriggerFadeOut();
         }
 
         private void SwitchToNewLevel(LevelNode node)

@@ -9,7 +9,7 @@ namespace KekeDreamLand
     public class LevelOutroManager : MonoBehaviour
     {
         #region Inspector attributes
-
+        
         [Header("Texts")]
         public Text levelNameText;
         public Text LevelCommentText;
@@ -22,7 +22,6 @@ namespace KekeDreamLand
         [Header("Animators")]
         public Animator outroAnimator;
         public Animator boingAnim;
-        // save animator.
 
         #endregion
 
@@ -149,6 +148,15 @@ namespace KekeDreamLand
                     boingAnim.SetTrigger("FullComplete");
                 else
                     Debug.LogWarning("Level outro boing animator is not affected !");
+
+                // Play level completed sound.
+                // Cut music ? Fadeout ?
+            }
+
+            // Play level finished sound.
+            else
+            {
+
             }
             
             DisplaySaveComplete();

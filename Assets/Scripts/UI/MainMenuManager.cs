@@ -12,6 +12,8 @@ namespace KekeDreamLand
     {
         #region Inspector attributes
 
+        public AudioClip titleMusic;
+
         [Header("Screens")]
         public GameObject titleScreen;
         public GameObject menuScreen;

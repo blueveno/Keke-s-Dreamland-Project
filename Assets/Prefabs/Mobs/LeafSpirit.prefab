@@ -135,7 +135,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   mobDamage: 1
   invincible: 0
-  mobLifePoints: 1
+  maxLifePoints: 1
   canBounce: 0
   BounceEffectDuration: 2
 --- !u!212 &212776559439664396
@@ -167,9 +167,9 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: -79787979
-  m_SortingLayer: 3
-  m_SortingOrder: 0
+  m_SortingLayerID: 851500731
+  m_SortingLayer: 4
+  m_SortingOrder: 20
   m_Sprite: {fileID: 21300000, guid: 21563343d4584f140abad1d401655da1, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0

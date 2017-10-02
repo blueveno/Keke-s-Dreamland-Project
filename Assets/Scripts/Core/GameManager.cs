@@ -1,5 +1,4 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -17,9 +16,6 @@ namespace KekeDreamLand
         [Header("Build indexes :")]
         public int mainMenuIndex = 0;
         public int worldMapIndex = 1;
-
-        [Header("Only for test")]
-        public bool skipIntro = false;
 
         #endregion
 
@@ -123,6 +119,7 @@ namespace KekeDreamLand
                 isMainMenu = true;
                 
                 mainMenu = GameObject.Find("MainMenuUI").GetComponent<MainMenuManager>();
+                musicMgr.Play(mainMenu.titleMusic);
             }
 
             // Load world map :
@@ -144,7 +141,7 @@ namespace KekeDreamLand
                 }
                     
                 worldmap = GameObject.Find("WorldMap").GetComponent<WorldMapManager>();
-                worldmap.SetupMap(playerProgress);
+                StartCoroutine(worldmap.SetupMap(playerProgress));
 
                 musicMgr.Play(worldmap.worldMapMusic);
             }
@@ -157,11 +154,9 @@ namespace KekeDreamLand
                 if (levelManager)
                 {
                     CurrentLevel = levelManager.GetComponent<LevelManager>();
-                    CurrentLevel.StartCoroutine(CurrentLevel.DisplayLevelIntro(arg0.name, skipIntro));
+                    CurrentLevel.StartCoroutine(CurrentLevel.DisplayLevelIntro(arg0.name));
 
                     musicMgr.Play(CurrentLevel.data.levelMusic);
-
-                    skipIntro = false;
                 }
             }
         }
@@ -250,24 +245,13 @@ namespace KekeDreamLand
             if (playerProgress.worldProgress[currentWorldIndex].finishedLevels.TryGetValue(currentLevelIndex, out levelProgress))
             {
                 levelProgress.feathersCollected = Mathf.Max(feathersCollected, levelProgress.feathersCollected);
-                for (int i = 0; i < levelProgress.specialItemsFound.Length; i++)
-                {
-                    // Modify only if item found and not already obtained.
-                    if (itemsFound[i] && levelProgress.specialItemsFound[i])
-                    {
-                        levelProgress.specialItemsFound[i] = true;
-
-                        // Sunflower seed obtained.
-                        if (i == 3)
-                            playerProgress.worldProgress[currentWorldIndex].sunFlowerSeedCollected++;
-                    }
-                }
             }
 
             // level finished for the first time, create and add new entry.
             else
             {
-                levelProgress = new LevelProgress(feathersCollected, itemsFound);
+                levelProgress = new LevelProgress(feathersCollected);
+
                 playerProgress.worldProgress[currentWorldIndex].finishedLevels.Add(currentLevelIndex, levelProgress);
             }
 
@@ -401,6 +385,25 @@ namespace KekeDreamLand
             playerProgress.currentNodeIndex = nodeIndex;
         }
 
+        /// <summary>
+        /// Change Boing of world and update the position of Boing in this new world.
+        /// </summary>
+        /// <param name="worldIndex"></param>
+        /// <param name="nodeIndex"></param>
+        public void MoveToNewWorld(int worldIndex, int nodeIndex)
+        {
+            playerProgress.currentWorldIndex = worldIndex;
+            playerProgress.currentNodeIndex = nodeIndex;
+
+            // Setup new map.
+            StartCoroutine(worldmap.SetupMap(playerProgress));
+        }
+
+        public bool CanMoveOnWorldMap()
+        {
+            return worldmap.IsTravelling;
+        }
+
         #endregion
 
         #region MainMenu management
@@ -494,7 +497,8 @@ namespace KekeDreamLand
                 else
                 {
                     // Respawn to checkpoint.
-                    if (CurrentLevel.LastCheckPoint != null) {
+                    if (CurrentLevel.LastCheckPoint != null)
+                    {
 
                         // Reactivate all items collected and mobs killed from the last checkpoint.
                         CurrentLevel.ReactivateAllItems();
@@ -504,14 +508,10 @@ namespace KekeDreamLand
                         CurrentLevel.RespawnAtCheckpoint();
                     }
 
-                    // TODO respawn Boing to optimize ? But create default respawn position => Create a fake checkpoint at the start of the game.
-                    // Reset scene if no checkpoint reached.
+                    // Reset scene if no checkpoint in the level.
                     else
                     {
-                        // Obsolete.
-
-                        ResetCurrentScene();
-                        skipIntro = true;
+                        ResetCurrentScene(); // Obsolete. This case will probably never happens again.
                     }
                 }
             }
@@ -531,10 +531,28 @@ namespace KekeDreamLand
 
         #endregion
 
+        #region Music management
+
+        /// <summary>
+        /// Play the specified music.
+        /// </summary>
+        /// <param name="music"></param>
+        public void PlayMusic(AudioClip music)
+        {
+            musicMgr.Play(music);
+        }
+
+        /// <summary>
+        /// Update the volume of the music.
+        /// </summary>
+        /// <param name="exposedParameter"></param>
+        /// <param name="newVolume"></param>
         public void SetVolume(string exposedParameter, float newVolume)
         {
             musicMgr.SetVolume(exposedParameter, newVolume);
         }
+
+        #endregion
     }
 
 }
