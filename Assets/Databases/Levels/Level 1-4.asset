@@ -13,5 +13,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   levelName: Autumn sector
   isSecretLevel: 0
+  seedNeededToUnlock: 0
   totalFeathers: 27
-  itemsPresent: 00010001
+  itemsPresent: 00010101
+  treasureToFound: {fileID: 0}

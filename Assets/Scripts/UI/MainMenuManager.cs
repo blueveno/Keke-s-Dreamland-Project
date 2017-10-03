@@ -23,6 +23,7 @@ namespace KekeDreamLand
         public Button[] slotButtons;
         public TextMeshProUGUI[] slotTexts;
         public TextMeshProUGUI[] moreInformationTexts;
+        public GameObject[] treasuresParent;
 
         [Header("Disclaimer components")]
         public GameObject disclaimer;
@@ -168,6 +169,10 @@ namespace KekeDreamLand
                     // Load data of the slot.
                     PlayerProgress progress = SaveLoadManager.LoadPlayerProgress(slot);
 
+                    // Update treasures found.
+                    treasuresParent[i].SetActive(progress.treasuresFound.Count > 0);
+                    // foreach treasure... display it.
+
                     // Update slot information.
                     slotTexts[i].text = "Slot " + (slot + 1).ToString() + " - " + 0 + "%"; // TODO load completion percent.
                     moreInformationTexts[i].text = "Time : 00:00"; // TODO load time played.
@@ -177,6 +182,7 @@ namespace KekeDreamLand
 
                 else
                 {
+                    treasuresParent[i].SetActive(false);
                     moreInformationTexts[i].gameObject.SetActive(false);
 
                     // Update slot information.
@@ -188,8 +194,6 @@ namespace KekeDreamLand
         // Setup action of the button.
         private void SetupActionInSlotMenu(bool isNewGame)
         {
-            // TODO disclaimer when replace save or disable interaction if slot is empty (when load).
-
             if (isNewGame)
                 slotMenuTitle.text = "Start new game :";
             else

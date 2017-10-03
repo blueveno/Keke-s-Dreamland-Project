@@ -130,6 +130,10 @@ namespace KekeDreamLand
         // mobs killed.
         private List<Mob> mobsKilled = new List<Mob>();
 
+        // Treasure
+        private Chest chest;
+        private bool treasureValidated = false;
+
         // Checkpoints
         private Checkpoint lastCheckpoint = null;
         public Checkpoint LastCheckPoint
@@ -273,10 +277,14 @@ namespace KekeDreamLand
             // And Update comment and boing special anim.
             levelOutroMgr.UpdateLevelOutro();
             
-            levelOutroMgr.DisplayStepByStep();
+            // Check if a chest exists and has been opened.
+            if (!treasureValidated && chest)
+                treasureValidated = chest.Opened;
             
             // Automatic save.
-            GameManager.instance.SaveLevelProgress(featherCollected, specialItemFound);
+            GameManager.instance.SaveLevelProgress(featherCollected, specialItemFound, treasureValidated);
+
+            levelOutroMgr.DisplayStepByStep();
 
             isDisplayLevelOutro = false; // user can switch to world map.
         }
@@ -320,6 +328,7 @@ namespace KekeDreamLand
 
             // Move boing in the new area.
             boing.transform.position = nextPosition;
+
             // Update camera depending the new area.
             cameraFollow.CurrentArea = nextArea.GetComponent<AreaEditor>();
 
@@ -355,6 +364,10 @@ namespace KekeDreamLand
             }
 
             itemCollected.Clear();
+
+            // Validate treasure if chest has been opened.
+            if (chest && chest.Opened)
+                treasureValidated = true;
         }
 
         /// <summary>
@@ -388,6 +401,13 @@ namespace KekeDreamLand
             FeatherCollected -= featherRemoved;
 
             itemCollected.Clear();
+
+            // Lose treasure if chest was opened.
+            if (!treasureValidated && chest)
+            {
+                chest.Opened = false;
+                UpdateTreasureInHUD(null, false);
+            }
         }
 
         /// <summary>
@@ -425,6 +445,11 @@ namespace KekeDreamLand
         {
             bool allFound = true;
 
+            // Check for treasure first.
+            if (specialItemPresent[0] && !treasureValidated)
+                allFound = false;
+
+            // Then check all items present.
             for (int i = 0; i < specialItemFound.Length && allFound; i++)
             {
                 if (specialItemPresent[i])
@@ -434,9 +459,31 @@ namespace KekeDreamLand
             return allFound;
         }
 
+        /// <summary>
+        /// Return true if the player has the key.
+        /// </summary>
+        /// <returns></returns>
         public bool HasTheKey()
         {
             return specialItemFound[0];
+        }
+
+        /// <summary>
+        /// Display treasure found or reset item in hud.
+        /// </summary>
+        /// <param name="treasure"></param>
+        /// <param name="unlocked"></param>
+        public void UpdateTreasureInHUD(Chest chest, bool unlocked)
+        {
+            // Update chest of the level.
+            this.chest = chest;
+
+            Sprite treasureSprite = null;
+            if (chest)
+                treasureSprite = chest.treasure.sprite;
+
+            hudMgr.DisplayTreasure(treasureSprite, unlocked);
+            levelOutroMgr.UpdateTreasure(treasureSprite, unlocked);
         }
 
         #endregion
@@ -520,8 +567,11 @@ namespace KekeDreamLand
             Transform parentInArea = nextArea.transform.Find("Level/Character");
 
             // Only one boing can exists.
-            if(boing == null)
+            if (boing == null)
+            {
                 boing = Instantiate(GameManager.instance.boingPrefab, parentInArea);
+                boingScript = boing.GetComponent<BoingManager>();
+            }
 
             // Set respawn position.
             Vector3 newPos = lastCheckpoint.gameObject.transform.position;
@@ -540,14 +590,21 @@ namespace KekeDreamLand
 
         // Utility methods for setup level data.
 
-        // Count all feathers on the level and check for special items.
+        /// <summary>
+        /// Count all feathers on the level and check for special items.
+        /// </summary>
+        /// <returns></returns>
         public int CountFeathersInCurrentLevel()
         {
             GameObject[] feathers = GameObject.FindGameObjectsWithTag("Feather");
+
             return feathers.Length;
         }
 
-        // Check all special items on the level.
+        /// <summary>
+        /// Check all special items on the level.
+        /// </summary>
+        /// <returns></returns>
         public bool[] CheckSpecialItemsPresent()
         {
             GameObject[] items = GameObject.FindGameObjectsWithTag("Item");
@@ -576,6 +633,27 @@ namespace KekeDreamLand
             specialItems[1] = true;
 
             return specialItems;
+        }
+
+        /// <summary>
+        /// Search for a treasure in the level.
+        /// </summary>
+        /// <returns></returns>
+        public Treasure SearchTreasure()
+        {
+            GameObject[] interactables = GameObject.FindGameObjectsWithTag("Interactable");
+            Treasure t = null;
+
+            foreach(GameObject g in interactables)
+            {
+                if(g.name.Equals("Chest"))
+                {
+                    Chest c = g.GetComponent<Chest>();
+                    t = c.treasure;
+                }
+            }
+
+            return t;
         }
 
         #endregion

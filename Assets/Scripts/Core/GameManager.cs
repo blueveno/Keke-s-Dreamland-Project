@@ -231,8 +231,12 @@ namespace KekeDreamLand
         /// </summary>
         /// <param name="feathersCollected"></param>
         /// <param name="itemsFound"></param>
-        public void SaveLevelProgress(int feathersCollected, bool[] itemsFound)
+        public void SaveLevelProgress(int feathersCollected, bool[] itemsFound, bool treasureFound)
         {
+            // Debug.
+            if (playerProgress == null)
+                return;
+
             LevelProgress levelProgress = null;
             
             // Save found. Update for the best values.
@@ -260,7 +264,30 @@ namespace KekeDreamLand
                 playerProgress.worldProgress[currentWorldIndex].finishedLevels.Add(currentLevelIndex, levelProgress);
             }
 
-            // TODO save too world progress / gameprogress.
+            // Update items :
+            for (int i = 0; i < levelProgress.specialItemsFound.Length; i++)
+            {
+                // Don't update item if already found.
+                if (levelProgress.specialItemsFound[i])
+                    continue;
+
+                // Update if item has been found.
+                if (itemsFound[i])
+                {
+                    levelProgress.specialItemsFound[i] = true;
+
+                    // Sunflower seed obtained.
+                    if (i == 3)
+                        playerProgress.worldProgress[currentWorldIndex].sunFlowerSeedCollected++;
+                }
+            }
+
+            // Update treasure if exist and hasn't already save.
+            if (treasureFound && !levelProgress.treasureFound)
+            {
+                levelProgress.treasureFound = treasureFound;
+                playerProgress.treasuresFound.Add(currentWorldIndex + "-" + currentLevelIndex, true);
+            }
 
             // Save.
             SaveLoadManager.SavePlayerProgress(playerProgress, saveSlotSelected);
@@ -459,14 +486,18 @@ namespace KekeDreamLand
                 // Case of a death of Boing.
                 else
                 {
-                    // Reactivate all items collected and mobs killed from the last checkpoint.
-                    CurrentLevel.ReactivateAllItems();
-                    CurrentLevel.ReactivateAllMobs();
-
                     // Respawn to checkpoint.
-                    if (CurrentLevel.LastCheckPoint != null)
-                        CurrentLevel.RespawnAtCheckpoint();
+                    if (CurrentLevel.LastCheckPoint != null) {
 
+                        // Reactivate all items collected and mobs killed from the last checkpoint.
+                        CurrentLevel.ReactivateAllItems();
+                        CurrentLevel.ReactivateAllMobs();
+
+                        // Respawn new Boing.
+                        CurrentLevel.RespawnAtCheckpoint();
+                    }
+
+                    // TODO respawn Boing to optimize ? But create default respawn position => Create a fake checkpoint at the start of the game.
                     // Reset scene if no checkpoint reached.
                     else
                     {

@@ -13,6 +13,15 @@ namespace KekeDreamLand
         private SpriteRenderer treasureRenderer;
 
         private bool isUsed;
+
+        /// <summary>
+        /// Return true if chest has been opened.
+        /// </summary>
+        public bool Opened
+        {
+            get { return opened; }
+            set { opened = value; if (!opened) anim.SetTrigger("Lost"); }
+        }
         private bool opened = false;
 
         private void Awake()
@@ -29,18 +38,15 @@ namespace KekeDreamLand
             // Do nothing if chest already opened.
             if (opened || isUsed)
                 return;
-
-            isUsed = true;
-
+            
             // Open chest.
             if(GameManager.instance.CurrentLevel.HasTheKey())
             {
                 opened = true;
                 anim.SetTrigger("Open");
-                
-                // Get treasure.
-                Debug.Log("Got " + treasure.treasureName);
-                // TODO notify level update HUD.
+
+                // Notify level manager and update HUD.
+                GameManager.instance.CurrentLevel.UpdateTreasureInHUD(this, true);
             }
 
             // Feedback that chest is locked.
@@ -56,6 +62,8 @@ namespace KekeDreamLand
         // Shake the sprite.
         private IEnumerator ShakeSprite()
         {
+            isUsed = true;
+
             GameObject sprite = transform.Find("Sprite").gameObject;
             Vector3 shakingPos = Vector3.zero;
 

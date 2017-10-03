@@ -26,6 +26,19 @@ namespace KekeDreamLand
 
         #endregion
 
+        #region Private attributes
+
+        private Image treasureRenderer;
+        private Sprite keySprite;
+
+        #endregion
+
+        private void Awake()
+        {
+            treasureRenderer = items[0].transform.Find("Sprite").GetComponent<Image>();
+            keySprite = treasureRenderer.sprite;
+        }
+
         #region Public methods
 
         public void UpdateLevelOutro()
@@ -107,7 +120,20 @@ namespace KekeDreamLand
         {
             feather.transform.GetChild(1).GetComponent<Text>().text = featherPickedUp + " / " + featherCount;
         }
-        
+
+        /// <summary>
+        /// Display the treasure when it's got. Display the key if treasure is lost.
+        /// </summary>
+        /// <param name="treasure"></param>
+        /// <param name="displayed"></param>
+        public void UpdateTreasure(Sprite treasure, bool displayed)
+        {
+            if (displayed)
+                treasureRenderer.sprite = treasure;
+            else
+                treasureRenderer.sprite = keySprite;
+        }
+
         /// <summary>
         /// Event animation triggered when the level outro is totaly displayed.
         /// </summary>

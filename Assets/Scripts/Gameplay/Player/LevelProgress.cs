@@ -16,9 +16,12 @@ namespace KekeDreamLand
 
         public bool[] specialItemsFound;
 
+        public bool treasureFound = false;
+
+        // TODO add best time for a level.
+
         public LevelProgress()
         {
-            finished = false;
             feathersCollected = 0;
             specialItemsFound = new bool[4];
         }
@@ -27,7 +30,7 @@ namespace KekeDreamLand
         {
             finished = true;
             this.feathersCollected = feathersCollected;
-            this.specialItemsFound = specialItemsFound;
+            specialItemsFound = new bool[4];
         }
     }
 }

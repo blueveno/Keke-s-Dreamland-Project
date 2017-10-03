@@ -100,7 +100,7 @@ namespace KekeDreamLand
             RaycastHit2D hit = Physics2D.Raycast(rayOrigin, Vector2.left * direction, rayLength, whatIsGround);
 
             // Change direction of the mob if it hits a wall.
-            if (hit.collider != null && hit.collider.tag != "SpecialTiles")
+            if (hit.collider != null && hit.collider.tag != "Interactable")
             {
                 mobScript.FlipSprite();
                 direction *= -1;

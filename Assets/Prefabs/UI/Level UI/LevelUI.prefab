@@ -277,7 +277,7 @@ GameObject:
   - component: {fileID: 222371319214138520}
   - component: {fileID: 114278750108390640}
   m_Layer: 5
-  m_Name: BoingFriend_Sprite
+  m_Name: Sprite
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -570,7 +570,7 @@ GameObject:
   - component: {fileID: 222135002535501926}
   - component: {fileID: 114362097530042566}
   m_Layer: 5
-  m_Name: BoingFriend
+  m_Name: Treasure
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -828,7 +828,7 @@ GameObject:
   - component: {fileID: 222536903276475736}
   - component: {fileID: 114054656127414804}
   m_Layer: 5
-  m_Name: BoingFriend_Rescue
+  m_Name: Found
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

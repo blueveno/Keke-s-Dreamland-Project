@@ -1143,12 +1143,12 @@ Prefab:
       propertyPath: m_isInputParsingRequired
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 224503055361214460, guid: 60aac79dc85f4214f9a4f68301dd224b,
+    - target: {fileID: 114040207379739734, guid: 60aac79dc85f4214f9a4f68301dd224b,
         type: 2}
       propertyPath: m_AnchorMin.y
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 224503055361214460, guid: 60aac79dc85f4214f9a4f68301dd224b,
+    - target: {fileID: 114040207379739734, guid: 60aac79dc85f4214f9a4f68301dd224b,
         type: 2}
       propertyPath: m_AnchorMax.y
       value: 1
@@ -4575,6 +4575,11 @@ Prefab:
       propertyPath: m_RootOrder
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 100002, guid: 87a2357765801c34292d6718d8b4d770, type: 2}
+      propertyPath: m_Icon
+      value: 
+      objectReference: {fileID: -1412012063857583412, guid: 0000000000000000d000000000000000,
+        type: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 87a2357765801c34292d6718d8b4d770, type: 2}
   m_IsPrefabParent: 0
@@ -6513,7 +6518,7 @@ Prefab:
         type: 2}
       propertyPath: doorLinked
       value: 
-      objectReference: {fileID: 1950367346}
+      objectReference: {fileID: 306678306}
     - target: {fileID: 114794971077534492, guid: 2865ad98a8db55b40ae76ec6b05f905e,
         type: 2}
       propertyPath: displayTransition
@@ -12802,12 +12807,6 @@ SpriteRenderer:
   m_PrefabParentObject: {fileID: 212281982358467914, guid: b32309db5e040434582431b1bd8cb70f,
     type: 2}
   m_PrefabInternal: {fileID: 2113881721}
---- !u!114 &1950367346 stripped
-MonoBehaviour:
-  m_PrefabParentObject: {fileID: 114421292198216886, guid: d795e85fd8bddfb4f85f91342c977096,
-    type: 2}
-  m_PrefabInternal: {fileID: 1629358787}
-  m_Script: {fileID: 11500000, guid: 90c61e46d7c3416488f14aafc16d6f37, type: 3}
 --- !u!1 &1971750444
 GameObject:
   m_ObjectHideFlags: 0

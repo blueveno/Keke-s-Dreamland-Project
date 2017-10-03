@@ -74,7 +74,12 @@ namespace KekeDreamLand {
                         {
                             // Item found, highlight it.
                             if (levelProgress.specialItemsFound[i])
+                            {
                                 img.color = Color.white;
+
+                                if (i == 0 && levelProgress.treasureFound)
+                                    img.sprite = levelData.treasureToFound.sprite;
+                            }
 
                             // Item not found, remove highlight.
                             else
@@ -87,7 +92,7 @@ namespace KekeDreamLand {
                     }
 
                     i++;
-                } 
+                }
 
                 levelInfoDisplayed = true;
             }
@@ -104,6 +109,11 @@ namespace KekeDreamLand {
         {
             levelPreview.SetActive(displayed);
             nodeName2.gameObject.SetActive(displayed);
+        }
+
+        private void DisplayTreasureFound()
+        {
+
         }
 
         #endregion

@@ -13,5 +13,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   levelName: Hidden trunks
   isSecretLevel: 0
+  seedNeededToUnlock: 0
   totalFeathers: 20
-  itemsPresent: 01010001
+  itemsPresent: 01010101
+  treasureToFound: {fileID: 11400000, guid: 33b790ec0a0b7e8429a92f213afbdc0a, type: 2}

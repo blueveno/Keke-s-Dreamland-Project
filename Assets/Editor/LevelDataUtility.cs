@@ -40,6 +40,7 @@ public class LevelDataUtility
 
             levelData.totalFeathers = levelMgr.CountFeathersInCurrentLevel();
             levelData.itemsPresent = levelMgr.CheckSpecialItemsPresent();
+            levelData.treasureToFound = levelMgr.SearchTreasure();
 
             // A level is set secret if it contains a chocolatine.
             if (levelData.itemsPresent[2])

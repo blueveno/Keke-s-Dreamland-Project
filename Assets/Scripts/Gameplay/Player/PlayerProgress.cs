@@ -9,7 +9,7 @@ namespace KekeDreamLand {
     [System.Serializable]
     public class PlayerProgress {
 
-        // TODO Cumulate the time played on each level in seconds.
+        // TODO cumulate the time played on each level in seconds.
         // public int timePlayed;
 
         // TODO death count.
@@ -21,6 +21,9 @@ namespace KekeDreamLand {
         public WorldProgress[] worldProgress;
         private int worldCount = 1; // TODO update when add new world.
 
+        // Treasures (key, found).
+        public Dictionary<string, bool> treasuresFound;
+
         public PlayerProgress()
         {
             currentWorldIndex = 0;
@@ -31,6 +34,8 @@ namespace KekeDreamLand {
             {
                 worldProgress[i] = new WorldProgress();
             }
+
+            treasuresFound = new Dictionary<string, bool>();
         }
     }
 }

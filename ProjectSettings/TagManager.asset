@@ -11,9 +11,9 @@ TagManager:
   - Item
   - LevelManager
   - Feather
-  - SpecialTiles
   - Enemy
   - Node
+  - Interactable
   layers:
   - Default
   - TransparentFX

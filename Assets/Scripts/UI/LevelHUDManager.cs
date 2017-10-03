@@ -40,6 +40,8 @@ namespace KekeDreamLand
 
         private List<GameObject> lifePointsSprites = new List<GameObject>();
 
+        private Sprite keySprite;
+
         #endregion
 
         #region Unity methods
@@ -49,6 +51,7 @@ namespace KekeDreamLand
             hudAnimator = GetComponent<Animator>();
 
             displayed = true;
+            keySprite = specialItemSprites[0].sprite;
         }
 
         #endregion
@@ -156,6 +159,19 @@ namespace KekeDreamLand
                 specialItemSprites[i].color = Color.white;
             else
                 specialItemSprites[i].color = notFoundColor;
+        }
+
+        /// <summary>
+        /// Display the treasure when he is found. Display the key if treasure is lost.
+        /// </summary>
+        /// <param name="treasure"></param>
+        /// <param name="displayed"></param>
+        public void DisplayTreasure(Sprite treasure, bool displayed)
+        {
+            if (displayed)
+                specialItemSprites[0].sprite = treasure;
+            else
+                specialItemSprites[0].sprite = keySprite;
         }
 
         /// <summary>

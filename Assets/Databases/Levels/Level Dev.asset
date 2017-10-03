@@ -12,6 +12,8 @@ MonoBehaviour:
   m_Name: Level Dev
   m_EditorClassIdentifier: 
   levelName: Keke Dev Land
-  isSecretLevel: 0
+  isSecretLevel: 1
+  seedNeededToUnlock: 0
   totalFeathers: 3
-  itemsPresent: 01010001
+  itemsPresent: 01010101
+  treasureToFound: {fileID: 11400000, guid: 33b790ec0a0b7e8429a92f213afbdc0a, type: 2}

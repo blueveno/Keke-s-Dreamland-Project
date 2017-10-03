@@ -11,5 +11,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 09d9a6ffc21866948ae4da0ec7ec2c6b, type: 3}
   m_Name: Lemon
   m_EditorClassIdentifier: 
-  treasureName: Default name
+  treasureName: Lemon
   sprite: {fileID: 21300010, guid: 1f7bd9e96ce202a47b79e6b2d08e7d2b, type: 3}

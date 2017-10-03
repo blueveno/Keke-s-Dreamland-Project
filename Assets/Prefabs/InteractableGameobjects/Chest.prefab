@@ -24,8 +24,8 @@ GameObject:
   - component: {fileID: 114853512505214196}
   m_Layer: 0
   m_Name: Chest
-  m_TagString: SpecialTiles
-  m_Icon: {fileID: 0}
+  m_TagString: Interactable
+  m_Icon: {fileID: 5721338939258241955, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1

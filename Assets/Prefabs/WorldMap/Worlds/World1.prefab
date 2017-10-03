@@ -1737,7 +1737,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   nodeIndex: 3
   linkedNodes:
-  - inputNeeded: 0
+  - inputNeeded: 2
     targetNodeindex: 2
     path: {fileID: 114382702425900716}
   positionOnMap: {x: 0, y: 0}

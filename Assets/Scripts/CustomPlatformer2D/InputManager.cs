@@ -312,10 +312,20 @@ namespace KekeDreamLand
                 StopBoing();
             }
 
-            // Stop bouncing when button is released if Boing was bouncing.
-            if(CrossPlatformInputManager.GetButtonUp("Bounce") && boing.IsBouncing)
+            if(boing.IsBouncing)
             {
-                boing.StopBounce();
+                // Stop bouncing when button is released if Boing was bouncing.
+                if (CrossPlatformInputManager.GetButtonUp("Bounce") && boing.IsBouncing)
+                {
+                    boing.StopBounce();
+                }
+
+                // TODO test if bug always exists.
+                // Stop also boing if button is not pressed.
+                if (!CrossPlatformInputManager.GetButton("Bounce"))
+                {
+                    boing.StopBounce();
+                }
             }
         }
 

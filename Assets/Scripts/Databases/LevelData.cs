@@ -16,5 +16,7 @@ namespace KekeDreamLand
 
         [Tooltip("0:Key, 1:Raisin bread, 2:Chocolatine, 3:Sun flower seed.")]
         public bool[] itemsPresent = new bool[4];
+
+        public Treasure treasureToFound;
     }
 }

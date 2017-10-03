@@ -69,7 +69,7 @@ namespace KekeDreamLand
                     {
                         lifePoints = 0;
                         
-                        // Destroy Boing immediatly. TODO trigger particle effect but disble sprite then destroy it.
+                        // Destroy Boing immediatly.
                         Die(0);
                     }
 
@@ -272,16 +272,16 @@ namespace KekeDreamLand
         /// <param name="destroyDelay"></param>
         public void Die(float destroyDelay)
         {
-            // TODO animation, sound, particle effect, ...
+            // TODO add sound.
+
+            // TODO add animation of death.
             
             // Stop Boing velocity.
             GetComponent<InputManager>().StopBoing();
             
             // Destroy Boing.
             Destroy(gameObject, destroyDelay);
-
-            // TODO foreach item of the list, restore it on the level, remove it from HUD and clear items list.
-
+            
             // Reload scene or respawn.
             GameManager.instance.BoingDie();
         }

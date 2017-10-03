@@ -27,7 +27,7 @@ namespace KekeDreamLand
         {
             RaycastHit2D hit = Physics2D.Raycast(transform.position, dir, rayLength, destroyingLayer);
             
-            if (hit.collider != null && hit.collider.tag != "SpecialTiles")
+            if (hit.collider != null && hit.collider.tag != "Interactable")
             {
                 Destroy(gameObject);
             }

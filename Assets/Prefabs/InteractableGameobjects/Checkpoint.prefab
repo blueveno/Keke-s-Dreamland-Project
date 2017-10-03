@@ -23,7 +23,7 @@ GameObject:
   - component: {fileID: 114823411106527342}
   m_Layer: 0
   m_Name: Checkpoint
-  m_TagString: SpecialTiles
+  m_TagString: Interactable
   m_Icon: {fileID: 7707008975528953803, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
