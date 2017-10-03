@@ -17,3 +17,4 @@ MonoBehaviour:
   totalFeathers: 0
   itemsPresent: 00010100
   treasureToFound: {fileID: 0}
+  levelMusic: {fileID: 8300000, guid: 834cf8540d3789f45964d12fe32b2580, type: 3}

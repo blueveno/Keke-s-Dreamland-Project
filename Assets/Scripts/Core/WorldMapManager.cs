@@ -13,8 +13,7 @@ namespace KekeDreamLand
 
         [Tooltip("Boing speed on world map")]
         public float boingSpeed = 10.0f;
-
-        public Sprite[] worldMapSprites;
+        
         public GameObject[] worldGraphPrefabs;
         public AudioClip worldMapMusic;
 
@@ -44,8 +43,10 @@ namespace KekeDreamLand
 
         private WorldData currentWorldData = null;
 
+        public bool IsTravelling { get; private set; }
+
         #endregion
-        
+
         #region Unity methods
 
         private void Awake()
@@ -204,6 +205,8 @@ namespace KekeDreamLand
         {
             Vector2 targetPosition = targetNode.positionOnMap;
 
+            IsTravelling = true;
+
             // Move Boing along the path if not null.
             if (path != null)
             {
@@ -234,6 +237,8 @@ namespace KekeDreamLand
                 targetPosition.y += 0.75f;
                 boing.transform.position = targetPosition;
             }
+
+            IsTravelling = false;
 
             // Update worldmap HUD
             LevelNode ln = targetNode as LevelNode;
@@ -269,7 +274,7 @@ namespace KekeDreamLand
         /// <param name="worldIndex"></param>
         private void ChangeWorldMap(int worldIndex)
         {
-            if (worldIndex >= worldMapSprites.Length || worldIndex >= worldGraphPrefabs.Length)
+            if (worldIndex >= worldGraphPrefabs.Length)
             {
                 Debug.LogWarning("World " + (worldIndex + 1) + " doesn't exist !");
                 return;
@@ -278,20 +283,21 @@ namespace KekeDreamLand
             // Destroy the old graph if exists.
             if (currentGraph)
                 Destroy(currentGraph);
-
-            currentBackground.sprite = worldMapSprites[worldIndex];
+            
             currentGraph = Instantiate(worldGraphPrefabs[worldIndex], transform);
 
             // Get data of this world.
             currentWorldData = currentGraph.GetComponent<WorldManager>().data;
+
+            // Update background.
+            currentBackground.sprite = currentWorldData.background;
         }
 
         private void SwitchToNewWorld(WorldNode node)
         {
             ChangeWorldMap(node.worldIndex);
-
-            // TODO update current world index.
-            // GameManager.instance.UpdateCurrentPosition(0);
+            
+            // GameManager.changeOfWorld => update playerProgress and setup new map.
         }
 
         private void SwitchToNewLevel(LevelNode node)

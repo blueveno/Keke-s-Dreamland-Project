@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace KekeDreamLand
 {
@@ -9,5 +7,9 @@ namespace KekeDreamLand
         public string worldname = "Default world name";
 
         public int sunflowerSeedNeeded;
+
+        public Sprite background = null;
+
+        public int sunFlowerCount;
     }
 }
