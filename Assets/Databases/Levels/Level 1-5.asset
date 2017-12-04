@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 06cc3fdc80489e0498c36aed4b81f084, type: 3}
+  m_Name: Level 1-5
+  m_EditorClassIdentifier: 
+  levelName: Spiky brambles
+  isSecretLevel: 0
+  seedNeededToUnlock: 0
+  exitCount: 1
+  timerTodo: 120
+  levelMusic: {fileID: 8300000, guid: fb31b9b0fad55e34fb9cfaf5f10f2d6c, type: 3}
+  totalFeathers: 19
+  itemsPresent: 01010101
+  treasureToFound: {fileID: 11400000, guid: 81d554f08535414458e434d445682aa6, type: 2}
