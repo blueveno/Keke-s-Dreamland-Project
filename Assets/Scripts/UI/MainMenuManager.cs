@@ -318,7 +318,7 @@ namespace KekeDreamLand
 
         #endregion
 
-        private string GetTimeFormated(int timePlayed)
+        public static string GetTimeFormated(int timePlayed)
         {
             int hours = timePlayed / 3600;
             int minutes = timePlayed / 60;

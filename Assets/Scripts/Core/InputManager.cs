@@ -52,18 +52,17 @@ namespace KekeDreamLand
 
         private void Update()
         {
-            // Case of a level
+            // Case of a level.
             if (GameManager.instance.levelMgr)
                 HandleLevelInteraction();
 
+            // Case of the main screen.
             else if (GameManager.instance.IsMainMenuScreen)
                 HandleMainMenuInteraction();
 
             // Case of the world map.
             else if (GameManager.instance.IsWorldMapScreen)
                 HandleWorldMapInteraction();
-
-            // TODO Main screen, other case, ...
         }
 
         private void FixedUpdate()
@@ -94,8 +93,20 @@ namespace KekeDreamLand
 
         private void HandleWorldMapInteraction()
         {
+            // Interact with node.
+            if (Input.GetButtonDown("Cancel"))
+            {
+                GameManager.instance.LoadMainMenu();
+            }
+
+            // Interact with node.
+            if (Input.GetButtonDown("Pause"))
+            {
+                GameManager.instance.WorldMapMgr.ToggleMenu();
+            }
+
             // Prevent any interaction when Boing moves.
-            if (GameManager.instance.CanMoveOnWorldMap())
+            if (GameManager.instance.WorldMapMgr.CanNotMove())
                 return;
 
             // Interact with node.
@@ -390,7 +401,7 @@ namespace KekeDreamLand
         // Check if a gamepad is connected. If yes, identify it.
         private void IdentifyGamepadIfConnected()
         {
-            // TODO analytics ?
+            // TODO Analytics
 
             gamepadUsed = GamepadType.NONE;
 

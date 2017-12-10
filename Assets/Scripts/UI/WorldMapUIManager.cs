@@ -3,12 +3,20 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using System;
 
 namespace KekeDreamLand {
 
-    public class WorldMapHUDManager : MonoBehaviour
+    public class WorldMapUIManager : MonoBehaviour
     {
         #region Inspector attributes
+
+        [Header("Menu panel")]
+        public GameObject menuPanel;
+        public TextMeshProUGUI deathCount;
+        public TextMeshProUGUI timePlayed;
+
+        public GameObject worldMapHUD;
 
         [Header("Node preview")]
         public Text nodeName;
@@ -28,7 +36,21 @@ namespace KekeDreamLand {
 
         #endregion
 
+        #region Unity methods
+
+        #endregion
+
         #region Public methods
+
+        /// <summary>
+        /// Setup the menu panel.
+        /// </summary>
+        /// <param name="playerProgress"></param>
+        public void SetupMenuPanel(PlayerProgress playerProgress)
+        {
+            deathCount.text = "Number of deaths :\n\n" + playerProgress.deathCount;
+            timePlayed.text = "Time played :\n\n" + MainMenuManager.GetTimeFormated(playerProgress.timePlayed);
+        }
 
         /// <summary>
         /// Update the level preview and informations about the level.

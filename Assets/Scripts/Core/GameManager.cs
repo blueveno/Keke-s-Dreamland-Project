@@ -57,7 +57,11 @@ namespace KekeDreamLand
             get { return isWorldMap; }
         }
         private bool isWorldMap = false;
-        private WorldMapManager worldmap;
+
+        /// <summary>
+        /// Return the worldMap manager if exist.
+        /// </summary>
+        public WorldMapManager WorldMapMgr { get; private set; }
 
         // Load/Save system
         private PlayerProgress playerProgress;
@@ -103,7 +107,7 @@ namespace KekeDreamLand
             mainMenu = null;
 
             isWorldMap = false;
-            worldmap = null;
+            WorldMapMgr = null;
 
             levelMgr = null;
 
@@ -142,8 +146,9 @@ namespace KekeDreamLand
                     currentWorldIndex = playerProgress.currentWorldIndex;
                 }
                     
-                worldmap = GameObject.Find("WorldMap").GetComponent<WorldMapManager>();
-                StartCoroutine(worldmap.SetupMap(playerProgress));
+                WorldMapMgr = GameObject.Find("WorldMap").GetComponent<WorldMapManager>();
+                StartCoroutine(WorldMapMgr.SetupMap(playerProgress));
+                WorldMapMgr.uiMgr.SetupMenuPanel(playerProgress);
 
                 musicToPlay = audioMgr.worldMapMusic;
             }
@@ -344,7 +349,7 @@ namespace KekeDreamLand
         public void LoadNewLevel(int world, int level)
         {
             // Update current level index.
-            currentLevelIndex = worldmap.GetLevelIndex(playerProgress.currentNodeIndex);
+            currentLevelIndex = WorldMapMgr.GetLevelIndex(playerProgress.currentNodeIndex);
 
             SceneManager.LoadScene("Level " + (world + 1) + "-" + (level + 1));
         }
@@ -391,12 +396,12 @@ namespace KekeDreamLand
 
         public void InteractWithCurrentNode()
         {
-            worldmap.InteractWithCurrentNode(playerProgress);
+            WorldMapMgr.InteractWithCurrentNode(playerProgress);
         }
 
         public void MoveOnWorldMap(Direction directionPressed)
         {
-            worldmap.TryToMove(playerProgress, directionPressed);
+            WorldMapMgr.TryToMove(playerProgress, directionPressed);
         }
 
         /// <summary>
@@ -419,12 +424,7 @@ namespace KekeDreamLand
             playerProgress.currentNodeIndex = nodeIndex;
 
             // Setup new map.
-            StartCoroutine(worldmap.SetupMap(playerProgress));
-        }
-
-        public bool CanMoveOnWorldMap()
-        {
-            return worldmap.IsTravelling;
+            StartCoroutine(WorldMapMgr.SetupMap(playerProgress));
         }
 
         #endregion

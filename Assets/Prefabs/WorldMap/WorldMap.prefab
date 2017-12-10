@@ -141,8 +141,8 @@ MonoBehaviour:
   worldGraphPrefabs:
   - {fileID: 1609346904865416, guid: 857f18ea098860b4caae084aeac78642, type: 2}
   - {fileID: 1983921062626288, guid: 2f6add8829501b349bff6d18bb186f7a, type: 2}
-  worldMapMusic: {fileID: 8300000, guid: 6e338508bccc0244f8629b833f2706ad, type: 3}
-  hudMgr: {fileID: 0}
+  uiMgr: {fileID: 0}
+  offset: 0.9
 --- !u!212 &212543677139474172
 SpriteRenderer:
   m_ObjectHideFlags: 1
@@ -152,6 +152,7 @@ SpriteRenderer:
   m_Enabled: 1
   m_CastShadows: 0
   m_ReceiveShadows: 0
+  m_DynamicOccludee: 1
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
@@ -167,6 +168,7 @@ SpriteRenderer:
   m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
+  m_StitchLightmapSeams: 0
   m_SelectedEditorRenderState: 0
   m_MinimumChartSize: 4
   m_AutoUVMaxDistance: 0.5

@@ -1,10 +1,8 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace KekeDreamLand
 {
-    public class SawBlade : Mob
+    public class SawBlade : MonoBehaviour
     {
         public LayerMask destroyingLayer;
         public float rayLength = 0.3f;
@@ -14,6 +12,21 @@ namespace KekeDreamLand
             CheckWalls();
         }
 
+        private void OnTriggerEnter2D(Collider2D collision)
+        {
+            // Damage player if enter in collision with.
+            if (collision.gameObject.tag == "Player")
+            {
+                DealDamageToPlayer(collision.gameObject);
+            }
+        }
+
+        private void DealDamageToPlayer(GameObject player)
+        {
+            player.GetComponent<BoingManager>().LifePoints -= 1;
+        }
+
+        // check side walls to destroy this saw blade when it hits it.
         private void CheckWalls()
         {
             // left wall collision.

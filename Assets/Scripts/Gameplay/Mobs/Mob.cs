@@ -153,7 +153,7 @@ namespace KekeDreamLand
                 pos.y -= 0.1f;
 
                 GameObject deathParticleSystem =  Instantiate(deathParticleEmitter, pos, Quaternion.identity);
-                deathParticleSystem.GetComponent<ParticleSystem>().Emit(1);
+                deathParticleSystem.GetComponent<ParticleSystem>().Emit(2);
                 Destroy(deathParticleSystem, 1.0f);
             }
 

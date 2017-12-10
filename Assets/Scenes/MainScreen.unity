@@ -581,6 +581,16 @@ Prefab:
       propertyPath: m_LocalPosition.y
       value: 1169.286
       objectReference: {fileID: 0}
+    - target: {fileID: 114602821665796720, guid: 32bc88f74159b654aa770b3176ec348d,
+        type: 2}
+      propertyPath: m_text
+      value: KekeDevTeam 2017 v0.5e
+      objectReference: {fileID: 0}
+    - target: {fileID: 114602821665796720, guid: 32bc88f74159b654aa770b3176ec348d,
+        type: 2}
+      propertyPath: m_textInfo.characterCount
+      value: 22
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 32bc88f74159b654aa770b3176ec348d, type: 2}
   m_IsPrefabParent: 0

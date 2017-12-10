@@ -569,7 +569,7 @@ namespace KekeDreamLand
             nextPosition = newPos;
             MoveBoingToNewArea();
 
-            // Reset AI like mushroom.
+            // Reset all AI.
             ResetAI();
 
             GameManager.instance.TriggerFadeOut();

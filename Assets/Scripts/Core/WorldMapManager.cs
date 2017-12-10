@@ -15,9 +15,9 @@ namespace KekeDreamLand
         public float boingSpeed = 10.0f;
         
         public GameObject[] worldGraphPrefabs;
-
-        public WorldMapHUDManager hudMgr;
-
+        
+        public WorldMapUIManager uiMgr;
+        [Tooltip("Offset to positionnate correctly Boing")]
         public float offset = 0.05f;
 
         #endregion
@@ -133,6 +133,22 @@ namespace KekeDreamLand
                 levelIndex = ln.levelIndex;
 
             return levelIndex;
+        }
+
+        /// <summary>
+        /// Return true if player can't move on the world map.
+        /// </summary>
+        /// <returns></returns>
+        public bool CanNotMove()
+        {
+            return IsTravelling || uiMgr.menuPanel.activeSelf;
+        }
+
+
+        public void ToggleMenu()
+        {
+            uiMgr.menuPanel.SetActive(!uiMgr.menuPanel.activeSelf);
+            uiMgr.worldMapHUD.SetActive(!uiMgr.menuPanel.activeSelf);
         }
 
         #endregion
@@ -311,7 +327,7 @@ namespace KekeDreamLand
             else if (wn)
                 whatIsIt = "Go to " + wn.worldDataTarget.worldname;
 
-            hudMgr.UpdateLevelPreview(whatIsIt, levelData, progress);
+            uiMgr.UpdateLevelPreview(whatIsIt, levelData, progress);
         }
 
         /// <summary>

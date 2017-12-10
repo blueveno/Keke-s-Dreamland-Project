@@ -19,7 +19,7 @@ namespace KekeDreamLand {
         public int currentNodeIndex;
 
         public WorldProgress[] worldProgress;
-        private int worldCount = 1; // TODO update when add new world.
+        private int worldCount = 2; // TODO update when add new world.
 
         // Treasures (key, found).
         public Dictionary<string, bool> treasuresFound;
